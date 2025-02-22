@@ -99,7 +99,7 @@ def train(args):
     data_df['category'] = le.fit_transform(data_df['category'])
     print()
     print("Classes are: ", len(le.classes_) , " which are: " ,  le.classes_)
-    args.save_model_path = f"{f'{args.model_id}_RBF_{args.num_kernels}_{args.kernel_name}-kernels' if args.enable_rbf else 'Basic'}_Epochs_{args.EPOCHS}"
+    args.save_model_path = f"{f'RBF_{args.num_kernels}_{args.kernel_name}-kernels' if args.enable_rbf else 'Basic'}_Epochs_{args.EPOCHS}"
     if os.path.exists(args.save_model_path):
         print(f" {args.save_model_path} Directory already exists")
     else:
@@ -207,7 +207,7 @@ def train(args):
                     total_acc_train_plot, 
                     total_acc_validation_plot, 
                     args.EPOCHS, 
-                    os.path.join(args.save_model_path, f"{args.model_id}_{f'RBF_{args.num_kernels}_{args.kernel_name}-kernels' if args.enable_rbf else 'Basic'}_Epochs_{args.EPOCHS}_plot.png"))
+                    os.path.join(args.save_model_path, f"{f'RBF_{args.num_kernels}_{args.kernel_name}-kernels' if args.enable_rbf else 'Basic'}_Epochs_{args.EPOCHS}_plot.png"))
     # Model Save
     torch.save(model.state_dict(), os.path.join(args.save_model_path, "model.pth"))
     print("Model Saved")
@@ -238,7 +238,7 @@ def train(args):
     doc = Document()
     doc.add_paragraph(printed_text)
     # Insert the plot at the end of the document
-    doc.add_picture(os.path.join(args.save_model_path, f"{args.model_id}_{f'RBF_{args.num_kernels}_{args.kernel_name}-kernels' if args.enable_rbf else 'Basic'}_Epochs_{args.EPOCHS}_plot.png"), width=Inches(5))
+    doc.add_picture(os.path.join(args.save_model_path, f"{f'RBF_{args.num_kernels}_{args.kernel_name}-kernels' if args.enable_rbf else 'Basic'}_Epochs_{args.EPOCHS}_plot.png"), width=Inches(5))
     doc.save(f"{args.save_model_path}.docx")
 
 if __name__ == "__main__":
