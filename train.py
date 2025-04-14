@@ -78,11 +78,13 @@ class MyModel(nn.Module):
             norm_function=l_norm,
             normalization=False
         )
+        self.bn1 = nn.BatchNorm1d(384)
 
     def forward(self, input_ids, attention_mask):
         pooled_output = self.bert(input_ids, attention_mask)[0][:,0]
         pooled_output = pooled_output.unsqueeze(1)
         output = self.rbf1(pooled_output)
+        output = self.bn1(output.squeeze(1)).unsqueeze(1)
         output = self.dropout(output)
         output = self.rbf2(output)
         output = output.squeeze(1)
