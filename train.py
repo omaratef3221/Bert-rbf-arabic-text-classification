@@ -65,7 +65,7 @@ class MyModel(nn.Module):
         self.rbf1 = RBFLayer(
             in_features_dim=768, 
             out_features_dim=384, 
-            num_kernels=128,
+            num_kernels=512,
             radial_function=rbf_gaussian,
             norm_function=l_norm,
             normalization=False
@@ -73,7 +73,7 @@ class MyModel(nn.Module):
         self.rbf2 = RBFLayer(
             in_features_dim=384,
             out_features_dim=num_classes,
-            num_kernels=64,
+            num_kernels=256,
             radial_function=rbf_gaussian,
             norm_function=l_norm,
             normalization=False
