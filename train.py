@@ -58,27 +58,36 @@ def get_model_tokenizer(model_id = "lanwuwei/GigaBERT-v3-Arabic-and-English"):
     return model, tokenizer
 
 class MyModel(nn.Module):
-    def __init__(self, bert, num_classes = 2):
-
+    def __init__(self, bert, num_classes=2):
         super(MyModel, self).__init__()
-
         self.bert = bert
-        self.dropout = nn.Dropout(0.25)
-        # self.linear1 = nn.Linear(768, 384)
-        # self.linear2 = nn.Linear(384, num_classes)
-        self.rbf1 = RBFLayer(in_features_dim=768, out_features_dim=384, num_kernels=128, radial_function=rbf_gaussian, norm_function=l_norm, normalization = False)
-        self.rbf2 = RBFLayer(in_features_dim=384, out_features_dim=num_classes, num_kernels=64, radial_function=rbf_gaussian, norm_function=l_norm, normalization = False)
-
-        # self.softmax = nn.Softmax()
+        self.dropout = nn.Dropout(0.1)
+        self.rbf1 = RBFLayer(
+            in_features_dim=768, 
+            out_features_dim=384, 
+            num_kernels=128,
+            radial_function=rbf_gaussian,
+            norm_function=l_norm,
+            normalization=False
+        )
+        self.rbf2 = RBFLayer(
+            in_features_dim=384,
+            out_features_dim=num_classes,
+            num_kernels=64,
+            radial_function=rbf_gaussian,
+            norm_function=l_norm,
+            normalization=False
+        )
 
     def forward(self, input_ids, attention_mask):
         pooled_output = self.bert(input_ids, attention_mask)[0][:,0]
-        pooled_output= pooled_output.unsqueeze(1)  # Add this line
+        pooled_output = pooled_output.unsqueeze(1)
         output = self.rbf1(pooled_output)
         output = self.dropout(output)
         output = self.rbf2(output)
-        output = output.squeeze(1)  # Add this line
+        output = output.squeeze(1)
         return output
+
     
 class dataset(Dataset):
     def __init__(self, X, Y, tokenizer, device):
