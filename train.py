@@ -72,6 +72,7 @@ class MyModel(nn.Module):
 
     def forward(self, input_ids, attention_mask):
         pooled_output = self.bert(input_ids, attention_mask)[0][:,0]
+        pooled_output = pooled_output.unsqueeze(1)  # [batch_size, 1, 768]
         output = self.rbf1(pooled_output)
         output = self.dropout(output)
         output = self.rbf2(output)
