@@ -57,37 +57,59 @@ def get_model_tokenizer(model_id = "lanwuwei/GigaBERT-v3-Arabic-and-English"):
     model = AutoModel.from_pretrained(model_id)
     return model, tokenizer
 
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
 class MyModel(nn.Module):
-    def __init__(self, bert, num_classes=2):
+    def __init__(self, bert, num_classes=7):
         super(MyModel, self).__init__()
+        
         self.bert = bert
         self.dropout = nn.Dropout(0.1)
+        
         self.rbf1 = RBFLayer(
             in_features_dim=768, 
-            out_features_dim=384, 
+            out_features_dim=512, 
             num_kernels=512,
             radial_function=rbf_gaussian,
             norm_function=l_norm,
             normalization=False
         )
+        
         self.rbf2 = RBFLayer(
-            in_features_dim=384,
-            out_features_dim=num_classes,
+            in_features_dim=512, 
+            out_features_dim=256, 
             num_kernels=256,
             radial_function=rbf_gaussian,
             norm_function=l_norm,
             normalization=False
         )
-        self.bn1 = nn.BatchNorm1d(384)
+        
+        self.rbf3 = RBFLayer(
+            in_features_dim=256, 
+            out_features_dim=num_classes, 
+            num_kernels=128,
+            radial_function=rbf_gaussian,
+            norm_function=l_norm,
+            normalization=False
+        )
 
     def forward(self, input_ids, attention_mask):
-        pooled_output = self.bert(input_ids, attention_mask)[0][:,0]
-        pooled_output = pooled_output.unsqueeze(1)
+        pooled_output = self.bert(input_ids, attention_mask)[0][:,0]  # [batch_size, 768]
+        pooled_output = pooled_output.unsqueeze(1)  # [batch_size, 1, 768]
+
         output = self.rbf1(pooled_output)
-        output = self.bn1(output.squeeze(1)).unsqueeze(1)
+        output = F.relu(output)
         output = self.dropout(output)
+
         output = self.rbf2(output)
-        output = output.squeeze(1)
+        output = F.relu(output)
+        output = self.dropout(output)
+
+        output = self.rbf3(output)
+        output = output.squeeze(1)  # [batch_size, num_classes]
+
         return output
 
     
