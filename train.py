@@ -66,8 +66,8 @@ class MyModel(nn.Module):
         self.dropout = nn.Dropout(0.25)
         # self.linear1 = nn.Linear(768, 384)
         # self.linear2 = nn.Linear(384, num_classes)
-        self.rbf1 = RBFLayer(in_features_dim= 768, out_features_dim=384, num_kernels = 2, radial_function = rbf_gaussian)
-        self.rbf2 = RBFLayer(in_features_dim= 384, out_features_dim=num_classes, num_kernels = 2, radial_function = rbf_gaussian)
+        self.rbf1 = RBFLayer(in_features_dim= 768, out_features_dim=384, num_kernels = 2, radial_function = rbf_gaussian, norm_function=l_norm)
+        self.rbf2 = RBFLayer(in_features_dim= 384, out_features_dim=num_classes, num_kernels = 2, radial_function = rbf_gaussian, norm_function=l_norm)
         # self.softmax = nn.Softmax()
 
     def forward(self, input_ids, attention_mask):
