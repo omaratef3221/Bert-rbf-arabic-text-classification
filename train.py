@@ -14,6 +14,7 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
 import os
+from rbf_layer import RBFLayer
 import time
 from replace_with_rbf import replace_ffn_with_rbf_bert
 from get_dataset import download_prepare_dataset
@@ -62,15 +63,17 @@ class MyModel(nn.Module):
 
         self.bert = bert
         self.dropout = nn.Dropout(0.25)
-        self.linear1 = nn.Linear(768, 384)
-        self.linear2 = nn.Linear(384, num_classes)
+        # self.linear1 = nn.Linear(768, 384)
+        # self.linear2 = nn.Linear(384, num_classes)
+        self.rbf1 = RBFLayer(768, 384)
+        self.rbf2 = RBFLayer(384, num_classes)
         # self.softmax = nn.Softmax()
 
     def forward(self, input_ids, attention_mask):
         pooled_output = self.bert(input_ids, attention_mask)[0][:,0]
-        output = self.linear1(pooled_output)
+        output = self.rbf1(pooled_output)
         output = self.dropout(output)
-        output = self.linear2(output)
+        output = self.rbf2(output)
         # output = self.softmax(output)
         return output
     
