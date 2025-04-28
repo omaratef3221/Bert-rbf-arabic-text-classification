@@ -34,7 +34,7 @@ set_seed(42)
 def train(args):
     le= LabelEncoder()
     device = args.device
-    data_df = download_prepare_dataset().sample(2500)
+    data_df = download_prepare_dataset()
     print("Data Distribution: ")
     print(data_df['category'].value_counts())
     data_df['category'] = le.fit_transform(data_df['category'])
