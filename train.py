@@ -35,7 +35,7 @@ set_seed(42)
 def run_all(args):
     le= LabelEncoder()
     device = args.device
-    data_df = download_prepare_dataset().sample(1000)
+    data_df = download_prepare_dataset()
     print("Data Distribution: ")
     print(data_df['category'].value_counts())
     data_df['category'] = le.fit_transform(data_df['category'])
@@ -65,9 +65,10 @@ def run_all(args):
                              "dataset": "SANAD: Single-Label Arabic News Articles Dataset",
                              "epochs": args.EPOCHS, 
                              "batch_size": args.BATCH_SIZE})
-        model = BasicModel(bertmodel, len(data_df['category'].unique())).to(device)
+        model = BasicModel(len(data_df['category'].unique())).to(device)
+        bertmodel.to(device)
         print_number_of_trainable_model_parameters(model)
-        train_normal(args, data_df, device, le, model, tokenizer, run)
+        train_normal(args, data_df, device, le, model, tokenizer, run, bertmodel)
 
     if args.model_type.lower()=='rbf':
         kernel = 'rbf'
@@ -129,7 +130,7 @@ def run_all(args):
             "SVM Classification Report": wandb.Table(data=report_table, columns=report_columns),})
         
 
-def train_normal(args, data_df, device, le, model, tokenizer, run):
+def train_normal(args, data_df, device, le, model, tokenizer, run, bertmodel):
     testing_predictions = []
     criterion = nn.CrossEntropyLoss()
     optimizer = AdamW(model.parameters(), lr= args.lr)
@@ -140,6 +141,10 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
     print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
     print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
 
+    X_train = process_data_in_batches(bertmodel, tokenizer, X_train, args.BATCH_SIZE, device)
+    X_val = process_data_in_batches(bertmodel, tokenizer, X_val, args.BATCH_SIZE, device)
+    X_test = process_data_in_batches(bertmodel, tokenizer, X_test, args.BATCH_SIZE, device)
+
     training_data = dataset(X_train, y_train, tokenizer, device)
     validation_data = dataset(X_val, y_val, tokenizer, device)
     testing_data = dataset(X_test, y_test, tokenizer, device)
@@ -148,7 +153,6 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
     validation_dataloader = DataLoader(validation_data, batch_size=args.BATCH_SIZE, shuffle= False)
     testing_dataloader = DataLoader(testing_data, batch_size=args.BATCH_SIZE, shuffle= False)
 
-    # Initialize tracking lists
     total_loss_train_plot = []
     total_loss_validation_plot = []
     total_acc_train_plot = []
@@ -164,9 +168,8 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
         # Training
         for batch in train_dataloader:
             inputs, labels = batch
-            inputs = {k: v.squeeze(1).to(device) for k, v in inputs.items()}
             labels = labels.to(device)
-            logits = model(inputs['input_ids'], inputs['attention_mask'])  # (batch_size, num_classes)
+            logits = model(inputs) 
             loss = criterion(logits, labels)
             preds = logits.argmax(dim=1)
             acc = (preds == labels).sum().item()
@@ -184,9 +187,8 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
         with torch.no_grad():
             for batch in validation_dataloader:
                 inputs, labels = batch
-                inputs = {k: v.squeeze(1).to(device) for k, v in inputs.items()}
                 labels = labels.to(device)
-                logits = model(inputs['input_ids'], inputs['attention_mask'])
+                logits = model(inputs)
                 loss_val = criterion(logits, labels)
                 preds = logits.argmax(dim=1)
                 acc = (preds == labels).sum().item()
@@ -221,8 +223,7 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
             input, label = data
             input.to(device)
             label.to(device)
-
-            prediction = model(input['input_ids'].squeeze(1), input['attention_mask'].squeeze(1)).squeeze(1)
+            prediction = model(input)
             batch_loss_val = criterion(prediction, label)
             total_loss_test += batch_loss_val.item()
             acc = (prediction.argmax(dim=1).round() == label).sum().item()

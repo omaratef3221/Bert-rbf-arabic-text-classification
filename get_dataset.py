@@ -18,13 +18,14 @@ def download_prepare_dataset():
 
 class dataset(Dataset):
     def __init__(self, X, Y, tokenizer, device, type = 'pt'):
-        self.X = [tokenizer(x,
-                            max_length = 150,
-                            truncation = True,
-                            padding = 'max_length',
-                            return_tensors = type).to(device)
-                for x in X
-                ]
+        # self.X = [tokenizer(x,
+        #                     max_length = 150,
+        #                     truncation = True,
+        #                     padding = 'max_length',
+        #                     return_tensors = type).to(device)
+        #         for x in X
+        #         ]
+        self.X = X
 
         self.Y = torch.tensor(Y, dtype = torch.long).to(device)
     def __len__(self):
