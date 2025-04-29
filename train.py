@@ -35,7 +35,7 @@ set_seed(42)
 def run_all(args):
     le= LabelEncoder()
     device = args.device
-    data_df = download_prepare_dataset()
+    data_df = download_prepare_dataset().sample(1000)
     print("Data Distribution: ")
     print(data_df['category'].value_counts())
     data_df['category'] = le.fit_transform(data_df['category'])
@@ -100,11 +100,17 @@ def run_all(args):
         clf.fit(X_train, y_train)
         print("Time Taken to train RBF: ", time.time() - t1)
         predictions = clf.predict(X_test)
-        report_table= classification_report(y_test, predictions, target_names=le.classes_)
-        print(report_table)
+        class_report= classification_report(y_test, predictions, target_names=le.classes_)
+        print(class_report)
         print("Accuracy Score: ", accuracy_score(y_test, predictions))
+        report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
+
+        report_table = []
+        for line in class_report[2:(len(le.classes_)+2)]:
+            report_table.append(line.split())
         run.log({
-            "Classification Report": wandb.Table(data=report_table, columns=le.classes_)
+            "Classification Report": wandb.Table(data=report_table, columns=report_columns),
+            "Overall Accuracy Score": accuracy_score(y_test, predictions)
             })
 
 def train_normal(args, data_df, device, le, model, tokenizer, run):
@@ -217,12 +223,18 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
 
     print(f"Accuracy Score is: {round((total_acc_test/X_test.shape[0])*100, 2)}%")
     print("Classification Report: ")
-    report_table = classification_report(testing_data.Y.cpu().numpy() , testing_predictions, target_names=le.classes_)
-    print(report_table)
-    print("Accuracy Score: ", accuracy_score(testing_data.Y.cpu().numpy() , testing_predictions))
+    class_report= classification_report(y_test, testing_predictions, target_names=le.classes_)
+    print(class_report)
+    print("Accuracy Score: ", accuracy_score(y_test, testing_predictions))
+    report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
+
+    report_table = []
+    for line in class_report[2:(len(le.classes_)+2)]:
+        report_table.append(line.split())
     run.log({
-    "Classification Report": wandb.Table(data=report_table, columns=le.classes_)
-    })
+        "Classification Report": wandb.Table(data=report_table, columns=report_columns),
+        "Overall Accuracy Score": accuracy_score(y_test, testing_predictions)
+        })
     requests.post("https://ntfy.sh/rbf_bert", data=f"{args.save_model_path} is Done".encode(encoding='utf-8'))
 
 
