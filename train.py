@@ -26,8 +26,9 @@ import sys
 from Models import *
 from sklearn.svm import SVC
 from batching import *
-logging.set_verbosity_error()
+import wandb
 
+logging.set_verbosity_error()
 
 set_seed(42)
     
@@ -50,18 +51,38 @@ def run_all(args):
 
     
     bertmodel, tokenizer = get_model_tokenizer(args.model_id)
-    # print(print_number_of_trainable_model_parameters(model))
     
 
     for param in bertmodel.parameters():
         param.requires_grad = False
 
     if args.model_type.lower()=='basic':
+        run = wandb.init(entity="omaratef3221", project="Fake News Project - RBF", 
+                         name = "Fake News Normal Head",
+                         config={
+                             "learning_rate": args.lr, "architecture": 
+                             "BERT with Dense Classification Head", 
+                             "dataset": "SANAD: Single-Label Arabic News Articles Dataset",
+                             "epochs": args.EPOCHS, 
+                             "batch_size": args.BATCH_SIZE})
         model = BasicModel(bertmodel, len(data_df['category'].unique())).to(device)
         print_number_of_trainable_model_parameters(model)
-        train_normal(args, data_df, device, le, model, tokenizer)
+        train_normal(args, data_df, device, le, model, tokenizer, run)
 
     if args.model_type.lower()=='rbf':
+        kernel = 'rbf'
+        degree= 5
+        gamma='auto'
+        run = wandb.init(entity="omaratef3221", project="Fake News Project - RBF", 
+                         name = "Fake News SVM Head",
+                         config={
+                             "kernel": kernel, 
+                             "architecture": "BERT with SVM Classification Head", 
+                             "dataset": "SANAD: Single-Label Arabic News Articles Dataset",
+                             "degree": degree,
+                             "gamma": gamma
+                             })
+
         X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3, stratify = data_df['category'].values)
         X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, stratify = y_test)
         print("Training set is: ", X_train.shape[0], " rows which is ", round(X_train.shape[0]/data_df.shape[0],4)*100, "%")
@@ -74,21 +95,25 @@ def run_all(args):
         X_train = X_train.cpu().numpy()
         X_val = X_val.cpu().numpy()
         X_test = X_test.cpu().numpy()
-        clf = SVC(kernel = 'rbf', degree= 5, gamma='auto')
+        clf = SVC(kernel = kernel, degree= degree, gamma=gamma)
         t1 = time.time()
         clf.fit(X_train, y_train)
         print("Time Taken to train RBF: ", time.time() - t1)
         predictions = clf.predict(X_test)
-        print(classification_report(y_test, predictions, target_names=le.classes_))
+        report_table= classification_report(y_test, predictions, target_names=le.classes_)
+        print(report_table)
         print("Accuracy Score: ", accuracy_score(y_test, predictions))
+        run.log({
+            "Classification Report": wandb.Table(data=report_table, columns=le.classes_)
+            })
 
-def train_normal(args, data_df, device, le, model, tokenizer):
+def train_normal(args, data_df, device, le, model, tokenizer, run):
     testing_predictions = []
     criterion = nn.CrossEntropyLoss()
     optimizer = AdamW(model.parameters(), lr= args.lr)
 
-    X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3)
-    X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5)
+    X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3, stratify = data_df['category'].values)
+    X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, stratify = y_test)
     print("Training set is: ", X_train.shape[0], " rows which is ", round(X_train.shape[0]/data_df.shape[0],4)*100, "%")
     print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
     print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
@@ -147,18 +172,26 @@ def train_normal(args, data_df, device, le, model, tokenizer):
                 total_loss_val += loss_val.item()
                 total_acc_val += acc
 
-        avg_train_loss = total_loss_train / len(train_dataloader)
-        avg_val_loss = total_loss_val / len(validation_dataloader)
+        total_loss_train = total_loss_train / len(train_dataloader)
+        total_loss_val = total_loss_val / len(validation_dataloader)
 
-        avg_train_acc = total_acc_train / len(training_data) * 100
-        avg_val_acc = total_acc_val / len(validation_data) * 100
+        total_acc_train = total_acc_train / len(training_data) * 100
+        total_acc_val = total_acc_val / len(validation_data) * 100
 
-        total_loss_train_plot.append(round(avg_train_loss, 4))
-        total_loss_validation_plot.append(round(avg_val_loss, 4))
-        total_acc_train_plot.append(round(avg_train_acc, 4))
-        total_acc_validation_plot.append(round(avg_val_acc, 4))
+        total_loss_train_plot.append(round(total_loss_train, 4))
+        total_loss_validation_plot.append(round(total_loss_val, 4))
+        total_acc_train_plot.append(round(total_acc_train, 4))
+        total_acc_validation_plot.append(round(total_acc_val, 4))
 
-        print(f"Epoch {epoch+1}: Train Loss = {avg_train_loss:.4f}, Train Acc = {avg_train_acc:.2f}%, Val Loss = {avg_val_loss:.4f}, Val Acc = {avg_val_acc:.2f}%")
+        run.log(
+            {
+                "train/accuracy": total_acc_train,
+                "train/loss": total_loss_train,
+                "validate/accuracy": total_acc_val,
+                "validate/loss": total_loss_val,
+            }
+        )
+        print(f"Epoch {epoch+1}: Train Loss = {total_loss_train:.4f}, Train Acc = {total_acc_train:.2f}%, Val Loss = {total_loss_val:.4f}, Val Acc = {total_acc_val:.2f}%")
         print("=" * 50)
 
     print(f"Training Time: {time.time()-t1:.2f} seconds")
@@ -184,8 +217,12 @@ def train_normal(args, data_df, device, le, model, tokenizer):
 
     print(f"Accuracy Score is: {round((total_acc_test/X_test.shape[0])*100, 2)}%")
     print("Classification Report: ")
-    print(classification_report(testing_data.Y.cpu().numpy() , testing_predictions, target_names=le.classes_))
+    report_table = classification_report(testing_data.Y.cpu().numpy() , testing_predictions, target_names=le.classes_)
+    print(report_table)
     print("Accuracy Score: ", accuracy_score(testing_data.Y.cpu().numpy() , testing_predictions))
+    run.log({
+    "Classification Report": wandb.Table(data=report_table, columns=le.classes_)
+    })
     requests.post("https://ntfy.sh/rbf_bert", data=f"{args.save_model_path} is Done".encode(encoding='utf-8'))
 
 
