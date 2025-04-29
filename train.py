@@ -12,7 +12,7 @@ from torch.optim import Adam, AdamW
 import numpy as np
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import LabelEncoder
 from torch.utils.data import Dataset, DataLoader
 import os
@@ -80,6 +80,7 @@ def run_all(args):
         print("Time Taken to train RBF: ", time.time() - t1)
         predictions = clf.predict(X_test)
         print(classification_report(y_test, predictions, target_names=le.classes_))
+        print("Accuracy Score: ", accuracy_score(y_test, predictions))
 
 def train_normal(args, data_df, device, le, model, tokenizer):
     testing_predictions = []
@@ -184,6 +185,7 @@ def train_normal(args, data_df, device, le, model, tokenizer):
     print(f"Accuracy Score is: {round((total_acc_test/X_test.shape[0])*100, 2)}%")
     print("Classification Report: ")
     print(classification_report(testing_data.Y.cpu().numpy() , testing_predictions, target_names=le.classes_))
+    print("Accuracy Score: ", accuracy_score(testing_data.Y.cpu().numpy() , testing_predictions))
     requests.post("https://ntfy.sh/rbf_bert", data=f"{args.save_model_path} is Done".encode(encoding='utf-8'))
 
 
