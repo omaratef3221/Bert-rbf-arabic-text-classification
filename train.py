@@ -25,7 +25,7 @@ import random
 import sys
 from Models import *
 from sklearn.svm import SVC
-
+from batching import *
 logging.set_verbosity_error()
 
 
@@ -68,17 +68,16 @@ def run_all(args):
         print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
         print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
         bertmodel.to(device)
-        with torch.no_grad():
-            X_train = bertmodel(**tokenizer(X_train.tolist(), max_length = 150, truncation = True, padding = 'max_length', return_tensors = 'pt').to(device)).last_hidden_state[:, 0, :]
-            X_val = bertmodel(**tokenizer(X_val.tolist(), max_length = 150, truncation = True, padding = 'max_length', return_tensors = 'pt').to(device)).last_hidden_state[:, 0, :]
-            X_test = bertmodel(**tokenizer(X_test.tolist(), max_length = 150, truncation = True, padding = 'max_length', return_tensors = 'pt').to(device)).last_hidden_state[:, 0, :]
+        X_train = process_data_in_batches(bertmodel, tokenizer, X_train, args.BATCH_SIZE, device)
+        X_val = process_data_in_batches(bertmodel, tokenizer, X_val, args.BATCH_SIZE, device)
+        X_test = process_data_in_batches(bertmodel, tokenizer, X_test, args.BATCH_SIZE, device)
         X_train = X_train.cpu().numpy()
         X_val = X_val.cpu().numpy()
         X_test = X_test.cpu().numpy()
-        clf = SVC(kernel = 'linear')
+        clf = SVC(kernel = 'rbf')
         t1 = time.time()
         clf.fit(X_train, y_train)
-        print("Time Taken to train RBF: ", t1- time.time())
+        print("Time Taken to train RBF: ", time.time() - t1)
         predictions = clf.predict(X_test)
         print(classification_report(y_test, predictions, target_names=le.classes_))
 
