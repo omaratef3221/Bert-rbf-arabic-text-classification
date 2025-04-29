@@ -72,7 +72,7 @@ def run_all(args):
 
     if args.model_type.lower()=='rbf':
         kernel = 'rbf'
-        degree= 5
+        degree= 3
         gamma='auto'
         run = wandb.init(entity="omaratef3221", project="Fake News Project - RBF", 
                          name = "Fake News SVM Head",
@@ -96,7 +96,7 @@ def run_all(args):
         X_train = X_train.cpu().numpy()
         X_val = X_val.cpu().numpy()
         X_test = X_test.cpu().numpy()
-        clf = SVC(kernel = kernel, degree= degree, gamma=gamma)
+        clf = SVC(kernel = kernel, degree= degree, gamma=gamma, cache_size=1024)
         t1 = time.time()
         clf.fit(X_train, y_train)
         train_time =  time.time() - t1

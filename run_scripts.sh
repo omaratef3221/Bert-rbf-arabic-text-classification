@@ -1,2 +1,2 @@
-python train.py --device mps --EPOCHS 10 --BATCH_SIZE 32 --model_id CAMeL-Lab/bert-base-arabic-camelbert-msa --model_type basic
-python train.py --device mps --EPOCHS 10 --BATCH_SIZE 32 --model_id CAMeL-Lab/bert-base-arabic-camelbert-msa --model_type rbf
+python train.py --device cuda --EPOCHS 10 --BATCH_SIZE 32 --model_id CAMeL-Lab/bert-base-arabic-camelbert-msa --model_type basic
+python train.py --device cuda --EPOCHS 10 --BATCH_SIZE 32 --model_id CAMeL-Lab/bert-base-arabic-camelbert-msa --model_type rbf
