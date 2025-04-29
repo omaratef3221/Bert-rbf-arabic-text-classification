@@ -27,6 +27,7 @@ from Models import *
 from sklearn.svm import SVC
 from batching import *
 import wandb
+from cuml.svm import SVC as cuSVC
 
 logging.set_verbosity_error()
 
@@ -96,7 +97,7 @@ def run_all(args):
         X_train = X_train.cpu().numpy()
         X_val = X_val.cpu().numpy()
         X_test = X_test.cpu().numpy()
-        clf = SVC(kernel = kernel, degree= degree, gamma=gamma, cache_size=1024)
+        clf = cuSVC(kernel = kernel, degree= degree, gamma=gamma, cache_size=1024)
         t1 = time.time()
         clf.fit(X_train, y_train)
         train_time =  time.time() - t1
