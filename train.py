@@ -98,20 +98,35 @@ def run_all(args):
         clf = SVC(kernel = kernel, degree= degree, gamma=gamma)
         t1 = time.time()
         clf.fit(X_train, y_train)
-        print("Time Taken to train RBF: ", time.time() - t1)
+        train_time =  time.time() - t1
+        print("Time Taken to train RBF: ",train_time)
+        t1 = time.time()
         predictions = clf.predict(X_test)
+        test_time =  time.time() - t1
         class_report= classification_report(y_test, predictions, target_names=le.classes_)
         print(class_report)
         print("Accuracy Score: ", accuracy_score(y_test, predictions))
         report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
+        for class_name, metrics in report_columns.items():
+            if class_name in le.classes_:  # Filter to actual class names only
+                wandb.log({
+                    f"{class_name}/Precision": metrics["precision"],
+                    f"{class_name}/Recall": metrics["recall"],
+                    f"{class_name}/F1-score": metrics["f1-score"],
+                    f"{class_name}/Support": metrics["support"]
+                })
+        run.log({"Overall Accuracy Score": accuracy_score(y_test, predictions)})
+        run.log({"Training time: ", train_time})
+        run.log({"Testing/Inference time: ", test_time})
 
+        class_report = class_report.splitlines()
+        
         report_table = []
         for line in class_report[2:(len(le.classes_)+2)]:
             report_table.append(line.split())
         run.log({
-            "Classification Report": wandb.Table(data=report_table, columns=report_columns),
-            "Overall Accuracy Score": accuracy_score(y_test, predictions)
-            })
+            "SVM Classification Report": wandb.Table(data=report_table, columns=report_columns),})
+        
 
 def train_normal(args, data_df, device, le, model, tokenizer, run):
     testing_predictions = []
@@ -189,18 +204,11 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
         total_acc_train_plot.append(round(total_acc_train, 4))
         total_acc_validation_plot.append(round(total_acc_val, 4))
 
-        run.log(
-            {
-                "train/accuracy": total_acc_train,
-                "train/loss": total_loss_train,
-                "validate/accuracy": total_acc_val,
-                "validate/loss": total_loss_val,
-            }
-        )
+        run.log({"epoch": epoch, "train-loss": total_loss_train, "train accuracy": total_acc_train, "val loss": total_loss_val, "val accuracy": total_acc_val})
         print(f"Epoch {epoch+1}: Train Loss = {total_loss_train:.4f}, Train Acc = {total_acc_train:.2f}%, Val Loss = {total_loss_val:.4f}, Val Acc = {total_acc_val:.2f}%")
         print("=" * 50)
-
-    print(f"Training Time: {time.time()-t1:.2f} seconds")
+    train_time = time.time()-t1
+    print(f"Training Time: {train_time:.2f} seconds")
     print("Training Complete")
     torch.save(model.state_dict(), os.path.join(args.save_model_path, "model.pth"))
     print("Model Saved")
@@ -219,22 +227,35 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
             acc = (prediction.argmax(dim=1).round() == label).sum().item()
             testing_predictions += prediction.argmax(dim=1).round().cpu().numpy().tolist()
             total_acc_test += acc
-    print(f"Testing Time: {time.time()-t1:.2f} seconds")
-
+    
+    test_time = time.time()-t1
+    print(f"Testing Time: {test_time:.2f} seconds")
     print(f"Accuracy Score is: {round((total_acc_test/X_test.shape[0])*100, 2)}%")
     print("Classification Report: ")
     class_report= classification_report(y_test, testing_predictions, target_names=le.classes_)
     print(class_report)
     print("Accuracy Score: ", accuracy_score(y_test, testing_predictions))
+    for class_name, metrics in report_columns.items():
+        if class_name in le.classes_:  # Filter to actual class names only
+            wandb.log({
+                f"{class_name}/Precision": metrics["precision"],
+                f"{class_name}/Recall": metrics["recall"],
+                f"{class_name}/F1-score": metrics["f1-score"],
+                f"{class_name}/Support": metrics["support"]
+            })
+    run.log({"Overall Accuracy Score": accuracy_score(y_test, testing_predictions)})
+    run.log({"Training time: ", train_time})
+    run.log({"Testing/Inference time: ", test_time})
+    
     report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
-
+    class_report = class_report.splitlines()
     report_table = []
     for line in class_report[2:(len(le.classes_)+2)]:
         report_table.append(line.split())
     run.log({
-        "Classification Report": wandb.Table(data=report_table, columns=report_columns),
-        "Overall Accuracy Score": accuracy_score(y_test, testing_predictions)
+        "Normal Head Classification Report": wandb.Table(data=report_table, columns=report_columns)
         })
+    
     requests.post("https://ntfy.sh/rbf_bert", data=f"{args.save_model_path} is Done".encode(encoding='utf-8'))
 
 
