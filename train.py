@@ -103,11 +103,11 @@ def run_all(args):
         t1 = time.time()
         predictions = clf.predict(X_test)
         test_time =  time.time() - t1
-        class_report= classification_report(y_test, predictions, target_names=le.classes_)
-        print(class_report)
+        class_report= classification_report(y_test, predictions, target_names=le.classes_, output_dict=True)
+        
         print("Accuracy Score: ", accuracy_score(y_test, predictions))
         report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
-        for class_name, metrics in report_columns.items():
+        for class_name, metrics in class_report.items():
             if class_name in le.classes_:  # Filter to actual class names only
                 wandb.log({
                     f"{class_name}/Precision": metrics["precision"],
@@ -116,9 +116,10 @@ def run_all(args):
                     f"{class_name}/Support": metrics["support"]
                 })
         run.log({"Overall Accuracy Score": accuracy_score(y_test, predictions)})
-        run.log({"Training time: ", train_time})
-        run.log({"Testing/Inference time: ", test_time})
-
+        run.log({"Training time: ": train_time})
+        run.log({"Testing/Inference time: ": test_time})
+        class_report= classification_report(y_test, predictions, target_names=le.classes_)
+        print(class_report)
         class_report = class_report.splitlines()
         
         report_table = []
@@ -232,10 +233,10 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
     print(f"Testing Time: {test_time:.2f} seconds")
     print(f"Accuracy Score is: {round((total_acc_test/X_test.shape[0])*100, 2)}%")
     print("Classification Report: ")
-    class_report= classification_report(y_test, testing_predictions, target_names=le.classes_)
-    print(class_report)
+    class_report= classification_report(y_test, testing_predictions, target_names=le.classes_, output_dict=True)
+    
     print("Accuracy Score: ", accuracy_score(y_test, testing_predictions))
-    for class_name, metrics in report_columns.items():
+    for class_name, metrics in class_report.items():
         if class_name in le.classes_:  # Filter to actual class names only
             wandb.log({
                 f"{class_name}/Precision": metrics["precision"],
@@ -244,10 +245,12 @@ def train_normal(args, data_df, device, le, model, tokenizer, run):
                 f"{class_name}/Support": metrics["support"]
             })
     run.log({"Overall Accuracy Score": accuracy_score(y_test, testing_predictions)})
-    run.log({"Training time: ", train_time})
-    run.log({"Testing/Inference time: ", test_time})
-    
+    run.log({"Training time: ": train_time})
+    run.log({"Testing/Inference time: ": test_time})
+
     report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
+    class_report= classification_report(y_test, testing_predictions, target_names=le.classes_)
+    print(class_report)
     class_report = class_report.splitlines()
     report_table = []
     for line in class_report[2:(len(le.classes_)+2)]:
