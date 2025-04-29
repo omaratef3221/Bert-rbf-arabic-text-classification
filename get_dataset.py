@@ -17,12 +17,12 @@ def download_prepare_dataset():
     return data
 
 class dataset(Dataset):
-    def __init__(self, X, Y, tokenizer, device):
+    def __init__(self, X, Y, tokenizer, device, type = 'pt'):
         self.X = [tokenizer(x,
                             max_length = 150,
                             truncation = True,
                             padding = 'max_length',
-                            return_tensors='pt').to(device)
+                            return_tensors = type).to(device)
                 for x in X
                 ]
 

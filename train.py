@@ -23,15 +23,15 @@ from transformers import logging
 import requests
 import random
 import sys
-from rbf_layer import *
 from Models import *
+from sklearn.svm import SVC
 
 logging.set_verbosity_error()
 
 
 set_seed(42)
     
-def train(args):
+def run_all(args):
     le= LabelEncoder()
     device = args.device
     data_df = download_prepare_dataset()
@@ -58,13 +58,31 @@ def train(args):
 
     if args.model_type.lower()=='basic':
         model = BasicModel(bertmodel, len(data_df['category'].unique())).to(device)
-    if args.model_type.lower()=='rbf':
-        model = RBFModel(bertmodel, len(data_df['category'].unique())).to(device)
+        print_number_of_trainable_model_parameters(model)
+        train_normal(args, data_df, device, le, model, tokenizer)
 
-    print_number_of_trainable_model_parameters(model)
-    print()
-    print("=="*30)
-    
+    if args.model_type.lower()=='rbf':
+        X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3)
+        X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5)
+        print("Training set is: ", X_train.shape[0], " rows which is ", round(X_train.shape[0]/data_df.shape[0],4)*100, "%")
+        print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
+        print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
+        bertmodel.to(device)
+        with torch.no_grad():
+            X_train = bertmodel(**tokenizer(X_train.tolist(), max_length = 150, truncation = True, padding = 'max_length', return_tensors = 'pt').to(device)).last_hidden_state[:, 0, :]
+            X_val = bertmodel(**tokenizer(X_val.tolist(), max_length = 150, truncation = True, padding = 'max_length', return_tensors = 'pt').to(device)).last_hidden_state[:, 0, :]
+            X_test = bertmodel(**tokenizer(X_test.tolist(), max_length = 150, truncation = True, padding = 'max_length', return_tensors = 'pt').to(device)).last_hidden_state[:, 0, :]
+        X_train = X_train.cpu().numpy()
+        X_val = X_val.cpu().numpy()
+        X_test = X_test.cpu().numpy()
+        clf = SVC(kernel = 'linear')
+        t1 = time.time()
+        clf.fit(X_train, y_train)
+        print("Time Taken to train RBF: ", t1- time.time())
+        predictions = clf.predict(X_test)
+        print(classification_report(y_test, predictions, target_names=le.classes_))
+
+def train_normal(args, data_df, device, le, model, tokenizer):
     criterion = nn.CrossEntropyLoss()
     optimizer = AdamW(model.parameters(), lr= args.lr)
 
@@ -144,13 +162,6 @@ def train(args):
 
     print(f"Training Time: {time.time()-t1:.2f} seconds")
     print("Training Complete")
-    # create_plots(total_loss_train_plot, 
-    #                 total_loss_validation_plot, 
-    #                 total_acc_train_plot, 
-    #                 total_acc_validation_plot, 
-    #                 args.EPOCHS, 
-    #                 os.path.join("_plot.png"))
-    # Model Save
     torch.save(model.state_dict(), os.path.join(args.save_model_path, "model.pth"))
     print("Model Saved")
     t1 = time.time()
@@ -186,4 +197,4 @@ if __name__ == "__main__":
     parser.add_argument("--save_model_path", type=str, default="basic_model_path")
     parser.add_argument("--model_type", type = str, default = 'basic')
     args = parser.parse_args()
-    train(args)
+    run_all(args)
