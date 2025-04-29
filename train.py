@@ -48,7 +48,7 @@ def run_all(args):
         print(f"{args.save_model_path} Directory Created")
     np.save(os.path.join(args.save_model_path, "label_encoder.npy"), le.classes_)
 
-    testing_predictions = []
+    
     bertmodel, tokenizer = get_model_tokenizer(args.model_id)
     # print(print_number_of_trainable_model_parameters(model))
     
@@ -62,8 +62,8 @@ def run_all(args):
         train_normal(args, data_df, device, le, model, tokenizer)
 
     if args.model_type.lower()=='rbf':
-        X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3)
-        X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5)
+        X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3, stratify = data_df['category'].values)
+        X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, stratify = y_test)
         print("Training set is: ", X_train.shape[0], " rows which is ", round(X_train.shape[0]/data_df.shape[0],4)*100, "%")
         print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
         print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
@@ -74,7 +74,7 @@ def run_all(args):
         X_train = X_train.cpu().numpy()
         X_val = X_val.cpu().numpy()
         X_test = X_test.cpu().numpy()
-        clf = SVC(kernel = 'rbf')
+        clf = SVC(kernel = 'rbf', degree= 5, gamma='auto')
         t1 = time.time()
         clf.fit(X_train, y_train)
         print("Time Taken to train RBF: ", time.time() - t1)
@@ -82,6 +82,7 @@ def run_all(args):
         print(classification_report(y_test, predictions, target_names=le.classes_))
 
 def train_normal(args, data_df, device, le, model, tokenizer):
+    testing_predictions = []
     criterion = nn.CrossEntropyLoss()
     optimizer = AdamW(model.parameters(), lr= args.lr)
 
