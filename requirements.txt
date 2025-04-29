@@ -11,4 +11,3 @@ nltk==3.9.1
 scikit-learn==1.6.1
 matplotlib==3.10.0
 wandb
-cuml-cu12
