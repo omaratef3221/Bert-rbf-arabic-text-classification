@@ -28,6 +28,7 @@ from sklearn.svm import SVC
 from batching import *
 import wandb
 from cuml.svm import SVC as cuSVC
+import pickle
 
 logging.set_verbosity_error()
 
@@ -106,6 +107,8 @@ def run_all(args):
         train_time =  time.time() - t1
         print("Time Taken to train RBF: ",train_time)
         t1 = time.time()
+        with open('model.pkl','wb') as f:
+            pickle.dump(clf,f)
         predictions = clf.predict(X_test)
         test_time =  time.time() - t1
         class_report= classification_report(y_test, predictions, target_names=le.classes_, output_dict=True)
