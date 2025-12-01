@@ -12,7 +12,7 @@ from torch.optim import Adam, AdamW
 import numpy as np
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from sklearn.preprocessing import LabelEncoder
 from torch.utils.data import Dataset, DataLoader
 import os
@@ -29,10 +29,73 @@ from batching import *
 import wandb
 from cuml.svm import SVC as cuSVC
 import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 logging.set_verbosity_error()
 
 set_seed(42)
+
+def save_confusion_matrices(y_true, y_pred, class_names, model_name):
+    """
+    Generate and save confusion matrices for overall and per-class analysis.
+
+    Args:
+        y_true: True labels
+        y_pred: Predicted labels
+        class_names: List of class names
+        model_name: Name of the model (for file naming)
+    """
+    # Create output directory for confusion matrices
+    cm_dir = f"confusion_matrices_{model_name}"
+    os.makedirs(cm_dir, exist_ok=True)
+
+    # Overall confusion matrix
+    cm = confusion_matrix(y_true, y_pred)
+
+    # Save overall confusion matrix as CSV
+    cm_df = pd.DataFrame(cm, index=class_names, columns=class_names)
+    cm_df.to_csv(os.path.join(cm_dir, f"overall_confusion_matrix.csv"))
+
+    # Save overall confusion matrix as heatmap
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues', cbar=True)
+    plt.title(f'Overall Confusion Matrix - {model_name}')
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.tight_layout()
+    plt.savefig(os.path.join(cm_dir, f"overall_confusion_matrix.png"), dpi=300)
+    plt.close()
+
+    # Per-class confusion matrices (one-vs-rest)
+    for idx, class_name in enumerate(class_names):
+        # Create binary labels (current class vs all others)
+        y_true_binary = (y_true == idx).astype(int)
+        y_pred_binary = (y_pred == idx).astype(int)
+
+        # Compute binary confusion matrix
+        cm_binary = confusion_matrix(y_true_binary, y_pred_binary)
+
+        # Save as CSV
+        cm_binary_df = pd.DataFrame(
+            cm_binary,
+            index=[f'Not {class_name}', class_name],
+            columns=[f'Not {class_name}', class_name]
+        )
+        cm_binary_df.to_csv(os.path.join(cm_dir, f"cm_{class_name}.csv"))
+
+        # Save as heatmap
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm_binary_df, annot=True, fmt='d', cmap='Blues', cbar=True)
+        plt.title(f'Confusion Matrix - {class_name} (One-vs-Rest)')
+        plt.ylabel('True Label')
+        plt.xlabel('Predicted Label')
+        plt.tight_layout()
+        plt.savefig(os.path.join(cm_dir, f"cm_{class_name}.png"), dpi=300)
+        plt.close()
+
+    print(f"Confusion matrices saved in {cm_dir}/")
+    return cm_dir
     
 def run_all(args):
     le= LabelEncoder()
@@ -114,6 +177,10 @@ def run_all(args):
         class_report= classification_report(y_test, predictions, target_names=le.classes_, output_dict=True)
         
         print("Accuracy Score: ", accuracy_score(y_test, predictions))
+
+        # Generate and save confusion matrices
+        cm_dir = save_confusion_matrices(y_test, predictions, le.classes_, "RBF_SVM")
+
         report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
         for class_name, metrics in class_report.items():
             if class_name in le.classes_:  # Filter to actual class names only
@@ -242,8 +309,11 @@ def train_normal(args, data_df, device, le, model, tokenizer, run, bertmodel):
     print(f"Accuracy Score is: {round((total_acc_test/X_test.shape[0])*100, 2)}%")
     print("Classification Report: ")
     class_report= classification_report(y_test, testing_predictions, target_names=le.classes_, output_dict=True)
-    
+
     print("Accuracy Score: ", accuracy_score(y_test, testing_predictions))
+
+    # Generate and save confusion matrices
+    cm_dir = save_confusion_matrices(y_test, np.array(testing_predictions), le.classes_, "Basic_Model")
     for class_name, metrics in class_report.items():
         if class_name in le.classes_:  # Filter to actual class names only
             wandb.log({
