@@ -59,10 +59,12 @@ def save_confusion_matrices(y_true, y_pred, class_names, model_name):
 
     # Save overall confusion matrix as heatmap
     plt.figure(figsize=(12, 10))
-    sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues', cbar=True)
-    plt.title(f'Overall Confusion Matrix - {model_name}')
-    plt.ylabel('True Label')
-    plt.xlabel('Predicted Label')
+    sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues', cbar=True, annot_kws={"size": 14})
+    plt.title(f'Overall Confusion Matrix - {model_name}', fontsize=18, fontweight='bold')
+    plt.ylabel('True Label', fontsize=14, fontweight='bold')
+    plt.xlabel('Predicted Label', fontsize=14, fontweight='bold')
+    plt.xticks(fontsize=12, rotation=45, ha='right')
+    plt.yticks(fontsize=12, rotation=0)
     plt.tight_layout()
     plt.savefig(os.path.join(cm_dir, f"overall_confusion_matrix.png"), dpi=300)
     plt.close()
@@ -96,7 +98,35 @@ def save_confusion_matrices(y_true, y_pred, class_names, model_name):
 
     print(f"Confusion matrices saved in {cm_dir}/")
     return cm_dir
-    
+
+def save_predictions_csv(X_test, y_true, y_pred, class_names, model_name):
+    """
+    Save test data with original and predicted labels to CSV.
+
+    Args:
+        X_test: Test data (text)
+        y_true: True labels (encoded)
+        y_pred: Predicted labels (encoded)
+        class_names: List of class names
+        model_name: Name of the model (for file naming)
+    """
+    # Convert encoded labels to class names
+    y_true_labels = [class_names[label] for label in y_true]
+    y_pred_labels = [class_names[label] for label in y_pred]
+
+    # Create DataFrame
+    results_df = pd.DataFrame({
+        'test_data': X_test,
+        'original_label': y_true_labels,
+        'predicted_label': y_pred_labels
+    })
+
+    # Save to CSV
+    output_file = f"predictions_{model_name}.csv"
+    results_df.to_csv(output_file, index=False, encoding='utf-8-sig')
+    print(f"Predictions saved to {output_file}")
+    return output_file
+
 def run_all(args):
     le= LabelEncoder()
     device = args.device
@@ -152,6 +182,10 @@ def run_all(args):
 
         X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3, stratify = data_df['category'].values, random_state = 42)
         X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, stratify = y_test, random_state = 42)
+
+        # Save original text data before converting to embeddings
+        X_test_text = X_test.copy()
+
         print("Training set is: ", X_train.shape[0], " rows which is ", round(X_train.shape[0]/data_df.shape[0],4)*100, "%")
         print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
         print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
@@ -180,6 +214,9 @@ def run_all(args):
 
         # Generate and save confusion matrices
         cm_dir = save_confusion_matrices(y_test, predictions, le.classes_, "RBF_SVM")
+
+        # Save predictions to CSV
+        save_predictions_csv(X_test_text, y_test, predictions, le.classes_, "RBF_SVM")
 
         report_columns =  ["Class", "Precision", "Recall", "F1-score", "Support"]
         for class_name, metrics in class_report.items():
@@ -211,6 +248,10 @@ def train_normal(args, data_df, device, le, model, tokenizer, run, bertmodel):
 
     X_train, X_test, y_train, y_test = train_test_split(np.array(data_df["text"]), np.array(data_df["category"]), test_size=0.3, stratify = data_df['category'].values)
     X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, stratify = y_test)
+
+    # Save original text data before converting to embeddings
+    X_test_text = X_test.copy()
+
     print("Training set is: ", X_train.shape[0], " rows which is ", round(X_train.shape[0]/data_df.shape[0],4)*100, "%")
     print("Validation set is: ",X_val.shape[0], " rows which is ", round(X_val.shape[0]/data_df.shape[0],4)*100, "%")
     print("Testing set is: ",X_test.shape[0], " rows which is ", round(X_test.shape[0]/data_df.shape[0],4)*100, "%")
@@ -314,6 +355,10 @@ def train_normal(args, data_df, device, le, model, tokenizer, run, bertmodel):
 
     # Generate and save confusion matrices
     cm_dir = save_confusion_matrices(y_test, np.array(testing_predictions), le.classes_, "Basic_Model")
+
+    # Save predictions to CSV
+    save_predictions_csv(X_test_text, y_test, np.array(testing_predictions), le.classes_, "Basic_Model")
+
     for class_name, metrics in class_report.items():
         if class_name in le.classes_:  # Filter to actual class names only
             wandb.log({
