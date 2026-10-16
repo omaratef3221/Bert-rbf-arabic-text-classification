@@ -86,7 +86,7 @@ sensitivity.
 | Machine | Use | Details |
 |---|---|---|
 | MacBook (OneDrive copy of the repo) | split building, API LLM runs, statistics, writing | Python 3.12 venv; API keys in `revision/.env` (git-ignored); W&B key in `~/.netrc` |
-| vast.ai instance `root@38.64.63.43:21769` | all GPU work (E2, E3, E4, E6a, E7, E8, Qwen zero-shot) | spec to be recorded once reachable (GPU, CUDA, torch, disk); repo at `/workspace/revision`, data at `/workspace/data/sanad/1`, HF cache `/workspace/hf` |
+| vast.ai instance `ssh -p 31447 root@194.228.55.129` (container `1a06c5e7698f`) | all GPU work (E2, E3, E4, E6a, E7, E8, Qwen zero-shot) | NVIDIA A100-PCIE-40GB, driver 595.104, CUDA 13.2, 64 CPUs, 503 GB RAM, 152 GB disk (not a persistent volume: results are rsynced to the Mac every 10 min and pushed to git). Envs: `/venv/main` (torch 2.14.1+cu132, transformers 5.20.1, scikit-learn 1.9.1, pandas 3.0.6, wandb 0.30) for the supervised runs; `/venv/vllm` (vLLM) for Qwen zero-shot; `/venv/lora` (Unsloth, TRL, PEFT, bitsandbytes) for QLoRA. Code `/workspace/revision`, data `/workspace/data/sanad/1` (45,500 files, tarball sha1 `ae7dd22b…`), HF cache `/workspace/hf` (CAMeLBERT + Qwen2.5-7B-Instruct pre-downloaded). A first instance (`38.64.63.43`) was abandoned: its outbound network dropped all HTTP responses. |
 
 The GPU sequence is `revision/run_all_gpu.sh` (idempotent: each step writes `results/markers/<step>.done`
 and is skipped on re-run; `STEP=<name> bash run_all_gpu.sh` runs one step). It is launched under
@@ -108,7 +108,8 @@ and is skipped on re-run; `STEP=<name> bash run_all_gpu.sh` runs one step). It i
 |---|---|
 | 2026-10-12 | Audit of the submitted pipeline; leakage analysis; canonical split built; scripts written and smoke-tested on CPU. |
 | 2026-10-14 | Live-API check of model availability; Claude Haiku 4.5 and DeepSeek V4 Flash verified; OpenAI keys invalid; Gemini account without credits. |
-| 2026-10-16 | W&B project `arabic-news-revision` created; opt-in W&B logging added to all scripts and tested offline; `run_all_gpu.sh` written; dataset packaged for the GPU box (`sanad_alkhaleej_v1.tar.gz`, 54 MB, sha1 `ae7dd22b…`). vast.ai host `38.64.63.43:21769` unreachable (port and ICMP time out); polling. |
+| 2026-10-16 | W&B project `arabic-news-revision` created; opt-in W&B logging added to all scripts and tested offline; `run_all_gpu.sh` written; dataset packaged for the GPU box (`sanad_alkhaleej_v1.tar.gz`, 54 MB, sha1 `ae7dd22b…`). Code pushed to GitHub. First vast.ai host (`38.64.63.43`) had no working egress and was replaced. |
+| 2026-10-16 18:49 UTC | GPU box `194.228.55.129:31447` set up (see §6); split checksum verified on the box (train 31,833 / val 6,822 / test 6,822 after dedup); GPU smoke tests of dense, SVM and fine-tune heads passed; **`run_all_gpu.sh` launched in tmux session `rev`** (steps in the order of §4: full-data heads → legacy split → learning curves → dateline → full fine-tuning → Qwen zero-shot → QLoRA → tables). Results stream to W&B and are rsynced to `revision/results/` on the Mac every 10 minutes. |
 
 ## 9. Open items
 
