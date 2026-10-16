@@ -71,8 +71,20 @@ silent fallback to another host or quantization happens; (2) report the served m
 that OpenRouter returns in every response (logged in `served_model` as "model via provider");
 (3) use vendor-pinned ids where OpenRouter offers them (e.g. `openai/gpt-4.1-2025-04-14`). Prices
 are the vendors' list prices plus OpenRouter's deposit fee (about 5 %); Anthropic cache markers and
-OpenAI/Gemini automatic caching pass through. Recommended use: GPT-4.1 and Gemini via OpenRouter;
-Claude and DeepSeek stay on their direct, already-verified routes.
+OpenAI/Gemini automatic caching pass through.
+
+**Decision (16 Oct 2026): GPT-4.1, Claude Haiku 4.5 and Gemini 3.8 Flash all run through OpenRouter**
+(one $55 credit; the direct OpenAI key was invalid and the Gemini account had no credit); DeepSeek stays
+on Together. Verified on 16 Oct: `openai/gpt-4.1` pinned to provider `openai` (served "via OpenAI");
+`anthropic/claude-haiku-4.5` pinned to `anthropic` (served "via Anthropic", 71 % cached tokens at k = 2);
+`google/gemini-3.8-flash` pinned to `google-ai-studio/flex` (served "via Google AI Studio"; the flex tier is
+the same model at half price with best-effort latency). Gemini 3.8 Flash rejects `reasoning.enabled=false`
+("Reasoning is mandatory for this endpoint"), so it runs with `reasoning.effort = minimal` and a 256-token
+output budget; the number of thinking tokens per request is logged and will be reported (0–60 in the
+smoke test). OpenRouter's `:batch` model variants (half price) are not usable with the synchronous
+chat endpoint and were not used. Cost design: primary prompt on the full 6,822-article test set for every
+model; prompt variants, few-shot (k = 1, 2), controls and the determinism repeat on the fixed 700-article
+subset (`splits/llm_subset_700.csv`; DeepSeek on the 1,400 superset, filtered to the same 700 for tables).
 
 ## 4. Decoding and logging settings (identical for every API model)
 

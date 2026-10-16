@@ -61,8 +61,7 @@ the regimes cross.*
 
 | # | Item | Needed for | Status |
 |---|---|---|---|
-| P1 | **A valid OpenAI API key.** Both keys found in `Final Experiments Notebooks/.env` and in the GPT notebook return HTTP 401. Put it in `revision/.env` as `OPENAI_API_KEY=...` (the file is git-ignored). | GPT-4.1 runs (E1, E5, E6b) | **blocked** |
-| P1b | **Gemini credits.** The Gemini key works but the AI Studio account answers 402 "prepayment credits are depleted". About $15 covers all Gemini runs in the plan. | Gemini runs | **blocked** |
+| P1 | OpenAI key / Gemini credits | — | **resolved 16 Oct**: GPT-4.1, Claude Haiku 4.5 and Gemini 3.8 Flash run through OpenRouter (`OPEN_ROUTER_KEY` in `.env`, $55 credit, key limit $50); runs launched 19:41–19:45 UTC |
 | P1c | **DeepSeek route.** DeepSeek V3 and V3.1 are no longer serverless on Together. Default is option A, Together serverless `DeepSeek-V4-Flash-0731` (verified working, nothing to do); say so only if you prefer option B (official DeepSeek API, needs a new key in `.env` as `DEEPSEEK_API_KEY`). See `MODEL_SNAPSHOTS.md` §3. | DeepSeek runs | default A unless told otherwise |
 | P2 | Spend caps on the OpenAI, Anthropic, Google and Together consoles (≈ $300 total is enough for everything in the plan). | all API runs | open |
 | P3 | Rotate the keys that are stored in plaintext in the notebooks on OneDrive (Together and Gemini keys are literally in the `.ipynb` files). Not blocking, but worth doing after the runs. | security | open |
