@@ -372,13 +372,20 @@ def run(args):
         pass
     df = load_split(args.root, args.split_csv)
     data = df[df.split == args.split].reset_index(drop=True)
+    if args.subset:  # fixed stratified evaluation subset shared by every model (persisted so it is identical everywhere)
+        sub_path = os.path.join(HERE, "splits", f"llm_subset_{args.subset}.csv")
+        if not os.path.exists(sub_path):
+            ids = data.groupby("category").sample(args.subset // 7, random_state=0)["doc_id"]
+            pd.DataFrame({"doc_id": sorted(ids)}).to_csv(sub_path, index=False)
+        ids = set(pd.read_csv(sub_path)["doc_id"])
+        data = data[data.doc_id.isin(ids)].reset_index(drop=True)
     if args.max_docs:
         data = data.groupby("category").head(max(1, args.max_docs // 7)).reset_index(drop=True)
     exemplars = fewshot_exemplars(df, args.shots, args.fewshot_seed, args.shot_words) if args.shots > 0 else None
     if exemplars is not None:
         exemplars = exemplars.sample(frac=1.0, random_state=args.fewshot_seed).reset_index(drop=True)  # fixed interleaved order
     provider = make_provider(args)
-    tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "") + ("__nodateline" if args.strip_dateline else "") + (f"__{args.tag_suffix}" if args.tag_suffix else "")
+    tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "") + ("__nodateline" if args.strip_dateline else "") + (f"__sub{args.subset}" if args.subset else "") + (f"__{args.tag_suffix}" if args.tag_suffix else "")
     provider.cache_key = tag  # one prompt-cache namespace per run (OpenAI prompt_cache_key, Gemini cache display name)
     out = args.out or os.path.join(HERE, "results", f"{tag}.jsonl")
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -395,7 +402,7 @@ def run(args):
     todo = data[~data.doc_id.isin(done)]
     meta = dict(run=tag, provider=args.provider, model=args.model, prompt=args.prompt, shots=args.shots, fewshot_seed=args.fewshot_seed,
                 shot_words=args.shot_words, temperature=args.temperature, top_p=args.top_p, max_tokens=args.max_tokens, seed=args.seed,
-                split=args.split, split_csv=os.path.basename(args.split_csv), n_docs=int(len(data)), truncate_words=args.truncate_words,
+                split=args.split, split_csv=os.path.basename(args.split_csv), n_docs=int(len(data)), truncate_words=args.truncate_words, subset=args.subset,
                 started=datetime.datetime.now(datetime.timezone.utc).isoformat(), exemplar_ids=(exemplars.doc_id.tolist() if exemplars is not None else []),
                 prompt_text=PROMPTS[args.prompt])
     with open(out.replace(".jsonl", ".meta.json"), "w") as f:
@@ -510,6 +517,7 @@ if __name__ == "__main__":
     ap.add_argument("--split-csv", default=os.path.join(HERE, "splits", "sanad_alkhaleej_split_v1.csv"))
     ap.add_argument("--root", default=None)
     ap.add_argument("--max-docs", type=int, default=0, help="smoke test: stratified head of N docs")
+    ap.add_argument("--subset", type=int, default=0, help="evaluate on the fixed stratified subset splits/llm_subset_<N>.csv (N/7 per class, seed 0; created on first use)")
     ap.add_argument("--temperature", type=float, default=0.0)
     ap.add_argument("--top-p", type=float, default=1.0)
     ap.add_argument("--max-tokens", type=int, default=16)
