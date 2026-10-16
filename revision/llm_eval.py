@@ -30,6 +30,7 @@ sys.path.insert(0, HERE)
 from data_split import load_split, fewshot_exemplars, CATS  # noqa: E402
 
 LABELS = CATS  # ['Culture','Finance','Medical','Politics','Religion','Sports','Tech']
+DATELINE = re.compile(r"^\s*[ء-ي ]{2,20}?\s*[:\-–]?\s*[«\"']?\s*الخليج\s*[»\"']?\s*[:\-–]?\s*")  # "<city>: «الخليج»" prefix (E7)
 AR_LABEL = {"Culture": "ثقافة", "Finance": "اقتصاد", "Medical": "طب", "Politics": "سياسة",
             "Religion": "دين", "Sports": "رياضة", "Tech": "تقنية"}
 
@@ -318,7 +319,7 @@ def run(args):
     if exemplars is not None:
         exemplars = exemplars.sample(frac=1.0, random_state=args.fewshot_seed).reset_index(drop=True)  # fixed interleaved order
     provider = make_provider(args)
-    tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "")
+    tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "") + ("__nodateline" if args.strip_dateline else "")
     out = args.out or os.path.join(HERE, "results", f"{tag}.jsonl")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     done = set()
@@ -343,7 +344,8 @@ def run(args):
     lock = threading.Lock()
 
     def work(row):
-        text = row.text if not args.truncate_words else " ".join(row.text.split()[: args.truncate_words])
+        text = DATELINE.sub("", row.text, count=1) if args.strip_dateline else row.text
+        text = text if not args.truncate_words else " ".join(text.split()[: args.truncate_words])
         system, user = build_messages(args.prompt, text, exemplars)
         r = call_with_retry(provider, system, user)
         lab, method = map_output(r["raw"], strict=True)
@@ -436,6 +438,7 @@ if __name__ == "__main__":
     ap.add_argument("--fewshot-seed", type=int, default=0, choices=[0, 1, 2])
     ap.add_argument("--shot-words", type=int, default=120)
     ap.add_argument("--truncate-words", type=int, default=0, help="feed only the first N words (input-length control)")
+    ap.add_argument("--strip-dateline", action="store_true", help="remove the '<city>: «الخليج»' dateline prefix before prompting (lexical-shortcut control)")
     ap.add_argument("--split", default="test", choices=["test", "val"])
     ap.add_argument("--split-csv", default=os.path.join(HERE, "splits", "sanad_alkhaleej_split_v1.csv"))
     ap.add_argument("--root", default=None)
