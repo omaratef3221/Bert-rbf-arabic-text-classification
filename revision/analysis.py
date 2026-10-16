@@ -20,6 +20,7 @@ from scipy.stats import binomtest
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from data_split import CATS  # noqa: E402
+SUBSET_N = int(os.environ.get("LLM_SUBSET_N", "700"))  # the shared LLM evaluation subset (splits/llm_subset_<N>.csv)
 
 
 def load_preds(path):
@@ -78,17 +79,27 @@ def main_table(results_dir):
                          macro_f1=r["macro_f1"], f1_lo=r["macro_f1_ci95"][0], f1_hi=r["macro_f1_ci95"][1],
                          **{f"recall_{c}": r["per_class"][c]["recall"] for c in CATS}, unmapped_rate=0.0, train_sec=r.get("train_sec"),
                          trainable_params=r.get("trainable_params"), served_model="", file=r["run"]))
+    sub_path = os.path.join(HERE, "splits", f"llm_subset_{SUBSET_N}.csv")
+    sub_ids = set(pd.read_csv(sub_path)["doc_id"]) if os.path.exists(sub_path) else set()
+    from sklearn.metrics import f1_score
     for f in glob.glob(os.path.join(results_dir, "*.summary.json")):
         r = json.load(open(f))
         meta_f = f.replace(".summary.json", ".meta.json")
         m = json.load(open(meta_f)) if os.path.exists(meta_f) else {}
         d = load_preds(f.replace(".summary.json", ".jsonl"))
         (alo, ahi), (flo, fhi) = bootstrap(d.gold, d.pred)
-        rows.append(dict(system=f"LLM-{m.get('provider', '?')}", model=m.get("model", "?"), config=f"T={m.get('temperature')} max_tok={m.get('max_tokens')}" + (f" trunc={m['truncate_words']}" if m.get("truncate_words") else ""),
+        ds = d[d.index.isin(sub_ids)] if sub_ids else d.iloc[0:0]   # the same evaluation subset for every LLM run
+        sub_acc = float((ds.pred == ds.gold).mean()) if len(ds) == len(sub_ids) and len(ds) else None
+        sub_f1 = float(f1_score(ds.gold, ds.pred, labels=CATS, average="macro", zero_division=0)) if sub_acc is not None else None
+        sub_rel = float((ds.pred[ds.gold == "Religion"] == "Religion").mean()) if sub_acc is not None else None
+        rows.append(dict(system=f"LLM-{m.get('provider', '?')}", model=m.get("model", "?"), config=f"T={m.get('temperature')} max_tok={m.get('max_tokens')}" + (f" trunc={m['truncate_words']}" if m.get("truncate_words") else "") + (" nodateline" if "nodateline" in os.path.basename(f) else "") + (" rep2" if "rep2" in os.path.basename(f) else ""),
+                         eval_set=("full" if not m.get("subset") else f"sub{m['subset']}"), n=int(r["n"]),
                          prompt=m.get("prompt"), shots=m.get("shots"), n_train=(m.get("shots", 0) or 0) * 7, seed=m.get("fewshot_seed"),
                          acc=r["strict"]["accuracy"], acc_lo=alo, acc_hi=ahi, macro_f1=r["strict"]["macro_f1"], f1_lo=flo, f1_hi=fhi,
+                         acc_sub=sub_acc, macro_f1_sub=sub_f1, recall_Religion_sub=sub_rel,
                          **{f"recall_{c}": r["strict"]["per_class"][c]["recall"] for c in CATS}, unmapped_rate=r["unmapped_rate"], train_sec=None,
-                         trainable_params=0, served_model=";".join(r["served_models"]), file=os.path.basename(f)))
+                         trainable_params=0, served_model=";".join(r["served_models"]), cached_share=r.get("tokens", {}).get("cached_share"),
+                         input_tokens=r.get("tokens", {}).get("input"), file=os.path.basename(f)))
     return pd.DataFrame(rows).sort_values(["system", "model", "config", "prompt", "shots", "seed"])
 
 
@@ -101,12 +112,29 @@ def learning_curve(main):
 
 
 def prompt_robustness(main):
-    l = main[main.system.str.startswith("LLM")].copy()
-    zs = l[l.shots == 0].groupby(["system", "model"]).agg(n_prompts=("prompt", "nunique"), acc_mean=("acc", "mean"), acc_std=("acc", "std"), acc_min=("acc", "min"),
-                                                          acc_max=("acc", "max"), f1_mean=("macro_f1", "mean"), f1_std=("macro_f1", "std"),
-                                                          religion_recall_mean=("recall_Religion", "mean"), religion_recall_min=("recall_Religion", "min"))
-    fs = l[l.shots > 0].groupby(["system", "model", "shots"]).agg(acc_mean=("acc", "mean"), acc_std=("acc", "std")).reset_index()
+    """Prompt spread and few-shot gains, all computed on the shared evaluation subset (acc_sub) so that full-set and
+    subset runs are comparable; plain zero-shot runs only (no controls, no repeats)."""
+    l = main[main.system.str.startswith("LLM") & main.acc_sub.notna() & ~main.config.str.contains("trunc|nodateline|rep2")].copy()
+    zs = l[l.shots == 0].groupby(["system", "model"]).agg(n_prompts=("prompt", "nunique"), acc_mean=("acc_sub", "mean"), acc_std=("acc_sub", "std"),
+                                                          acc_min=("acc_sub", "min"), acc_max=("acc_sub", "max"), f1_mean=("macro_f1_sub", "mean"),
+                                                          f1_std=("macro_f1_sub", "std"), religion_recall_mean=("recall_Religion_sub", "mean"),
+                                                          religion_recall_min=("recall_Religion_sub", "min"))
+    zs_primary = l[(l.shots == 0) & (l.prompt == "en_v2")].set_index(["system", "model"])["acc_sub"].rename("acc_primary_sub")
+    zs = zs.join(zs_primary)
+    fs = l[l.shots > 0].groupby(["system", "model", "shots"]).agg(acc_sub=("acc_sub", "mean"), macro_f1_sub=("macro_f1_sub", "mean"),
+                                                                  religion_recall_sub=("recall_Religion_sub", "mean")).reset_index()
+    fs = fs.merge(zs_primary.reset_index(), on=["system", "model"], how="left"); fs["gain_vs_zero_shot"] = fs.acc_sub - fs.acc_primary_sub
     return zs.reset_index(), fs
+
+
+def controls_and_repeats(main):
+    """Input-length control, dateline control and the determinism repeat, each against the primary zero-shot run on the subset."""
+    l = main[main.system.str.startswith("LLM") & main.acc_sub.notna()].copy()
+    base = l[(l.shots == 0) & (l.prompt == "en_v2") & ~l.config.str.contains("trunc|nodateline|rep2")].set_index(["system", "model"])["acc_sub"].rename("acc_primary_sub")
+    ctl = l[l.config.str.contains("trunc|nodateline|rep2")].copy()
+    ctl["control"] = ctl.config.str.extract(r"(trunc=\d+|nodateline|rep2)")[0]
+    ctl = ctl.merge(base.reset_index(), on=["system", "model"], how="left"); ctl["delta"] = ctl.acc_sub - ctl.acc_primary_sub
+    return ctl[["system", "model", "control", "acc_sub", "acc_primary_sub", "delta", "recall_Religion_sub", "file"]]
 
 
 def mapping_audit(results_dir):
@@ -138,6 +166,7 @@ if __name__ == "__main__":
         lc = learning_curve(main); lc.to_csv(os.path.join(out, "learning_curve.csv"), index=False); print("\n", lc.to_string(index=False))
         zs, fs = prompt_robustness(main); zs.to_csv(os.path.join(out, "prompt_robustness.csv"), index=False); fs.to_csv(os.path.join(out, "fewshot.csv"), index=False)
         print("\n", zs.to_string(index=False)); print("\n", fs.to_string(index=False))
+        ct = controls_and_repeats(main); ct.to_csv(os.path.join(out, "controls.csv"), index=False); print("\n", ct.to_string(index=False))
         ma = mapping_audit(a.results_dir); ma.to_csv(os.path.join(out, "mapping_audit.csv"), index=False); print("\n", ma.drop(columns=["examples"]).to_string(index=False))
     if a.pairs:
         pd.DataFrame([mcnemar(*p.split(",")) for p in a.pairs]).to_csv(os.path.join(out, "pairwise_mcnemar.csv"), index=False)
