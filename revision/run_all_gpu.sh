@@ -73,7 +73,7 @@ run_step qwen_zeroshot bash -c '
   VPID=$!; for i in $(seq 1 120); do curl -s localhost:8000/v1/models >/dev/null && break; sleep 5; done
   for p in en_v1 en_v2 en_v3 ar_v1 ar_v2; do $PY_VLLM llm_eval.py --provider vllm --model Qwen/Qwen2.5-7B-Instruct --prompt $p --workers 16 --wandb-project $WANDB_PROJECT; done
   $PY_VLLM llm_eval.py --provider vllm --model Qwen/Qwen2.5-7B-Instruct --prompt en_v2 --shots 1 --workers 16 --wandb-project $WANDB_PROJECT
-  $PY_VLLM llm_eval.py --provider vllm --model Qwen/Qwen2.5-7B-Instruct --prompt en_v2 --shots 3 --workers 16 --wandb-project $WANDB_PROJECT
+  $PY_VLLM llm_eval.py --provider vllm --model Qwen/Qwen2.5-7B-Instruct --prompt en_v2 --shots 2 --workers 16 --wandb-project $WANDB_PROJECT
   kill $VPID; sleep 15'
 run_step lora_100   $PY_LORA lora_finetune.py --model Qwen/Qwen2.5-7B-Instruct --n-per-class 100  --epochs 3 --eval-after-train
 run_step lora_1000  $PY_LORA lora_finetune.py --model Qwen/Qwen2.5-7B-Instruct --n-per-class 1000 --epochs 2 --eval-after-train

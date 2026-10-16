@@ -50,7 +50,7 @@ the regimes cross.*
 |---|---|
 | LLM snapshots | Use the original ids where still served; otherwise the closest same-tier successor, with the date of evaluation and the served model id logged per request. Details and rationale in `MODEL_SNAPSHOTS.md`. |
 | Open-weight model for the LoRA baseline (Reviewer 1, 2(i)) | One model, `Qwen/Qwen2.5-7B-Instruct`, used twice: zero-shot (same harness and prompts as the API models) and after QLoRA on the train split. Same weights before/after adaptation is what makes the comparison clean. No additional API models are added; the reviewers did not ask for more models, only for an adapted one. |
-| Few-shot setting (Reviewer 2, 2) | The reviewers gave no k. We use k = 1 and k = 3 exemplars per class (7 and 21 exemplars), drawn from the train split with a fixed seed, truncated to 120 words each, full 6,825-article test set, primary English prompt `en_v2`. |
+| Few-shot setting (Reviewer 2, 2) | The reviewers gave no k. We use k = 1 and k = 2 exemplars per class (7 and 14 exemplars; author decision 16 Oct 2026), drawn from the train split with a fixed seed, truncated to 120 words each, full 6,825-article test set, primary English prompt `en_v2`. |
 | Prompt robustness (Reviewer 1, 2(v); Reviewer 2, 3) | Five prompts: `en_v1` (paper wording), `en_v2`, `en_v3`, `ar_v1`, `ar_v2`; report mean ± std and min–max per model. |
 | Test set for LLMs | Full test set for every run (≈ $10 per zero-shot pass for GPT-4.1, less for the others). |
 | Dense-head training | Early stopping on validation loss, lr 1e-3 (needed for the small-n learning curve); the paper's lr 5e-5 × 10 epochs is also run for the full-data row. |

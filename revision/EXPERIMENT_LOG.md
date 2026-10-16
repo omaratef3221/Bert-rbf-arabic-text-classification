@@ -51,7 +51,7 @@ articles with cosine ≥ 0.5 to a non-test article moves dense 96.82 → 96.48 a
 | E2 | Supervised learning curve, dense and SVM, n ∈ {10, 50, 100, 500, 1000, all} per class, 3 seeds, 150 and 512 wordpieces | `lc_dense_150`, `lc_svm_150`, `lc_dense_512` | learning-curve figure (where supervised overtakes zero-/few-shot) |
 | E3 | Full fine-tuning of CAMeLBERT at n ∈ {100, 1000, all} | `ft_100`, `ft_1000`, `ft_all` | main table row + learning-curve line; settles the frozen-vs-fine-tuned question |
 | E4 | QLoRA on Qwen2.5-7B-Instruct at n ∈ {100, 1000, all}, with budget | `lora_100`, `lora_1000`, `lora_all` | main table row "task-adapted LLM"; budget table (params, tokens, GPU-h) |
-| E5 | Few-shot k = 1 and 3 per class, primary prompt `en_v2`, all LLMs | `llm_eval.py --shots` | few-shot rows; gain over zero-shot |
+| E5 | Few-shot k = 1 and 2 per class, primary prompt `en_v2`, all LLMs | `llm_eval.py --shots` | few-shot rows; gain over zero-shot |
 | E6 | Input-length control: BERT 150 vs 512 (from E2); best LLM on first 100 words | `lc_dense_512`, `svm_full_512`; `llm_eval.py --truncate-words 100` | replaces mechanistic claims |
 | E7 | Dateline intervention: dense head with test-only and train+test dateline removal; best LLM test-only | `dense_dateline_test`, `dense_dateline_both`; `llm_eval.py` on stripped text (TODO flag) | lexical-shortcut analysis (Reviewer 2, point 7) |
 | E8 | Paper-style split replication, dense and SVM | `dense_legacy`, `svm_legacy` | shows the effect of deduplication |

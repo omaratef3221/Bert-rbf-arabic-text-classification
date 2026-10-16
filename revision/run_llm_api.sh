@@ -18,7 +18,7 @@ run () { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG"; $PY llm_eval.py --provi
 
 for p in en_v2 en_v1 en_v3 ar_v1 ar_v2; do run --prompt $p; done          # E1: zero-shot, five prompts (primary first)
 run --prompt en_v2 --shots 1                                                # E5: few-shot k=1 (7 exemplars)
-run --prompt en_v2 --shots 3                                                # E5: few-shot k=3 (21 exemplars)
+run --prompt en_v2 --shots 2                                                # E5: few-shot k=2 (14 exemplars)
 run --prompt en_v2 --truncate-words 100                                     # E6b: input-length control
 run --prompt en_v2 --strip-dateline                                         # E7: lexical-shortcut control
 run --prompt en_v2 --tag-suffix rep2                                        # determinism check: identical config, second pass

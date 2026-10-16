@@ -1,0 +1,24 @@
+{
+  "run": "together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v1__k0",
+  "provider": "together",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "prompt": "en_v1",
+  "shots": 0,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 16,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 6822,
+  "truncate_words": 0,
+  "started": "2026-10-16T19:19:07.124002+00:00",
+  "exemplar_ids": [],
+  "prompt_text": {
+    "lang": "en",
+    "system": null,
+    "user": "Act as an Arabic Text Classifier that has to classify between the following:\n{labels}\n\nWrite only the final output class without anything more.\n{examples}Text:\n{text}\n\nClass:"
+  }
+}

@@ -80,7 +80,7 @@ paired significance tests against the supervised models possible.
 | R1 minor: "multi-label" | Replace with "multi-class (single-label)" everywhere incl. keywords. | text |
 | R1-1 / R2-1: frozen vs fine-tuned | State per system what is trained; rewrite Discussion. Add a genuinely fine-tuned CAMeLBERT so the claim can be tested. | text + **E3** |
 | R1-2(i) / R2-2: task-adapted LLM | QLoRA on an open-weight LLM on the same train split, with budget (GPU-h, params, tokens). | **E4** |
-| R2-2: few-shot LLMs; learning curve | k = 1 and 3 exemplars per class; supervised learning curve 10/50/100/500/1000/all per class, 3 seeds. | **E5**, **E2** |
+| R2-2: few-shot LLMs; learning curve | k = 1 and 2 exemplars per class; supervised learning curve 10/50/100/500/1000/all per class, 3 seeds. | **E5**, **E2** |
 | R1-2(ii) / R2-4: decoding + snapshots | temperature 0, top-p 1, max_tokens 16, seed, pinned snapshot ids, served model id, date, retry policy logged per request. | `llm_eval.py`, **E1** |
 | R1-2(iii, iv) / R2-5: mapping + non-compliance | Deterministic audited mapper (strict and lenient tiers), rates of exact / normalized / Arabic / contains / ambiguous / unmapped per run; unmapped counted as errors; examples in the paper. | `llm_eval.py`, table `mapping_audit.csv` |
 | R1-2(v) / R2-3: prompt robustness | 5 prompts (3 English, 2 Arabic), mean ± std and min–max per model; 95 % bootstrap CIs; McNemar vs supervised. | **E1**, `analysis.py` |
@@ -105,7 +105,7 @@ paper's random stratified split for comparison.
 | **E2** | Supervised learning curve | dense and SVM heads, frozen CAMeLBERT, n ∈ {10, 50, 100, 500, 1000, all} per class × 3 seeds, max_len 150 (paper) and 512. Early stopping on val loss. | < 1 h A100 (one encoder pass per length, cached) |
 | **E3** | Full fine-tuning of CAMeLBERT | all 109 M params, lr 2e-5, 3 epochs, early stopping, max_len 512, at n ∈ {100, 1000, all}; reports params, GPU-h. | ≈ 1.5 h A100 |
 | **E4** | QLoRA LLM baseline | Qwen2.5-7B-Instruct (D2), 4-bit, LoRA r=16 on all linear layers, 1 epoch on the full train split (≈ 19 M tokens) and at n = 100 and 1000 per class; same prompt as zero-shot; budget json. Evaluate via vLLM with `llm_eval.py`. | ≈ 2–3 h A100 for full data; 10 min per small run |
-| **E5** | Few-shot LLMs | k = 1 and k = 3 exemplars per class from the train split (fixed seed, 120-word exemplars), primary prompt, full test set, all API models. | k=1 ≈ 4×, k=3 ≈ 8× the zero-shot tokens: ≈ **$150** for the four APIs (D3 offers a cheaper option) |
+| **E5** | Few-shot LLMs | k = 1 and k = 2 exemplars per class from the train split (fixed seed, 120-word exemplars), primary prompt; full test set for DeepSeek, fixed stratified subset (`splits/llm_subset_*.csv`) for the OpenRouter models, all API models. | k=1 ≈ 4×, k=3 ≈ 8× the zero-shot tokens: ≈ **$150** for the four APIs (D3 offers a cheaper option) |
 | **E6** | Input-length control | (a) dense head at 150 vs 512 wordpieces (from E2); (b) best API LLM on the first 100 words only vs full article (one prompt). | ≈ $5 |
 | **E7** | Lexical intervention (dateline) | dense head and best LLM evaluated on test articles with the dateline removed; dense head also retrained without datelines. Reports accuracy drop per class, especially Medical. | minutes + ≈ $10 |
 | **E8** | Legacy-split replication | dense + SVM on `split_legacy` (paper setting) to show the effect of deduplication. | minutes |
@@ -126,7 +126,7 @@ Religion/Culture; the learning curve shows where the two regimes cross.*
 |---|---|---|
 | D1 | Which API snapshots? | **Decided 14 Oct 2026:** originals where still served, otherwise the closest same-tier successor, with served ids and dates logged. Verified against the live APIs: `gpt-4.1-2025-04-14` (original; key pending), `claude-haiku-4-5-20251001` (3.5 Haiku retired; smoke test passed), `gemini-3.5-flash` or `gemini-3.8-flash` (2.0 retired, 2.5 closed to new users; credits pending), DeepSeek via Together serverless `DeepSeek-V4-Flash-0731` or the official DeepSeek API (V3 and V3.1 no longer serverless). Full rationale in `MODEL_SNAPSHOTS.md`. |
 | D2 | Open-weight model for E4 | **Decided:** one model, `Qwen/Qwen2.5-7B-Instruct`, used zero-shot and after QLoRA (same weights before/after adaptation). No extra API models; the reviewers asked for an adapted open-weight model, not for more models. |
-| D3 | Few-shot setting for E5 | **Decided:** k = 1 and k = 3 exemplars per class on the full test set (the reviewers gave no k). |
+| D3 | Few-shot setting for E5 | **Decided (16 Oct 2026):** k = 1 and k = 2 exemplars per class. Primary-prompt zero-shot on the full test set for every model; prompt variants, few-shot, controls and the repeat run on a fixed stratified subset (1,400 or 700 articles, `splits/llm_subset_*.csv`) for GPT-4.1, Claude and Gemini via OpenRouter; DeepSeek on the full set for everything (cheap) as the subset-vs-full check. |
 | D4 | Keep Claude Haiku in the paper at all? | Yes, re-run properly (Haiku 4.5), and state in the response letter that the original 3.5 Haiku number was a parsing bug. |
 | D5 | Hyperparameters of the dense head | Paper: lr 5e-5, 10 epochs. New default: lr 1e-3, early stopping (needed for the small-n learning curve). Report both for the full-data row. |
 | D6 | API keys and spend cap | Anthropic and Together keys work. OpenAI keys return 401 (new key needed); Gemini account has no credits. See `STATUS_AND_TODO.md` P1–P2. |
@@ -182,7 +182,7 @@ done
 # 3. few-shot (E5) and controls (E6b, E7)
 for m in "openai gpt-4.1-2025-04-14" "anthropic claude-haiku-4-5-20251001" "gemini gemini-3.5-flash" "together deepseek-ai/DeepSeek-V4-Flash-0731"; do
   set -- $m; python llm_eval.py --provider $1 --model $2 --prompt en_v2 --shots 1
-             python llm_eval.py --provider $1 --model $2 --prompt en_v2 --shots 3
+             python llm_eval.py --provider $1 --model $2 --prompt en_v2 --shots 2
 done
 python llm_eval.py --provider openai --model gpt-4.1-2025-04-14 --prompt en_v2 --truncate-words 100
 # 4. open-weight zero-shot + QLoRA (E1, E4)
