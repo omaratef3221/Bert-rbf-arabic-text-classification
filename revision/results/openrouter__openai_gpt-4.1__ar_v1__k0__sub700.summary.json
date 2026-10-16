@@ -1,0 +1,186 @@
+{
+  "strict": {
+    "accuracy": 0.95,
+    "macro_f1": 0.9497292476612103,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8738738738738738,
+        "recall": 0.97,
+        "f1": 0.919431279620853,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.908256880733945,
+        "recall": 0.99,
+        "f1": 0.9473684210526315,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9791666666666666,
+        "recall": 0.94,
+        "f1": 0.9591836734693877,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9595959595959596,
+        "recall": 0.95,
+        "f1": 0.9547738693467337,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9651162790697675,
+        "recall": 0.83,
+        "f1": 0.8924731182795699,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9797979797979798,
+        "recall": 0.97,
+        "f1": 0.9748743718592965,
+        "support": 100
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.95,
+    "macro_f1": 0.9497292476612103,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8738738738738738,
+        "recall": 0.97,
+        "f1": 0.919431279620853,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.908256880733945,
+        "recall": 0.99,
+        "f1": 0.9473684210526315,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9791666666666666,
+        "recall": 0.94,
+        "f1": 0.9591836734693877,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9595959595959596,
+        "recall": 0.95,
+        "f1": 0.9547738693467337,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9651162790697675,
+        "recall": 0.83,
+        "f1": 0.8924731182795699,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9797979797979798,
+        "recall": 0.97,
+        "f1": 0.9748743718592965,
+        "support": 100
+      }
+    }
+  },
+  "n": 700,
+  "mapping_methods": {
+    "contains": 644,
+    "arabic": 56
+  },
+  "unmapped_rate": 0.0,
+  "non_exact_rate": 1.0,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 700
+  },
+  "served_models": {
+    "openai/gpt-4.1 via OpenAI": 700
+  },
+  "tokens": {
+    "input": 530891,
+    "output": 3850,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": 0.936,
+  "unmapped_examples": [],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 97,
+      "Finance": 1,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 11,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 0,
+      "Finance": 99,
+      "Medical": 1,
+      "Politics": 2,
+      "Religion": 5,
+      "Sports": 0,
+      "Tech": 2
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 94,
+      "Politics": 1,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 1
+    },
+    "Politics": {
+      "Culture": 3,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 95,
+      "Religion": 1,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 2,
+      "Religion": 83,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 100,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 97
+    }
+  }
+}

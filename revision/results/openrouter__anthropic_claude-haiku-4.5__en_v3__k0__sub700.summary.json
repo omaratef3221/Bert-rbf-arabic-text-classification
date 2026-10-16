@@ -1,0 +1,187 @@
+{
+  "strict": {
+    "accuracy": 0.9242857142857143,
+    "macro_f1": 0.9245903907308017,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8660714285714286,
+        "recall": 0.97,
+        "f1": 0.9150943396226415,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.8048780487804879,
+        "recall": 0.99,
+        "f1": 0.8878923766816144,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9775280898876404,
+        "recall": 0.87,
+        "f1": 0.9206349206349206,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9405940594059405,
+        "recall": 0.95,
+        "f1": 0.945273631840796,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9651162790697675,
+        "recall": 0.83,
+        "f1": 0.8924731182795699,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.99,
+        "f1": 0.9949748743718593,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9666666666666667,
+        "recall": 0.87,
+        "f1": 0.9157894736842105,
+        "support": 100
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9114285714285715,
+    "macro_f1": 0.9215011150018171,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8738738738738738,
+        "recall": 0.97,
+        "f1": 0.919431279620853,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.8347826086956521,
+        "recall": 0.96,
+        "f1": 0.8930232558139535,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9772727272727273,
+        "recall": 0.86,
+        "f1": 0.9148936170212766,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.95,
+        "recall": 0.95,
+        "f1": 0.95,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9634146341463414,
+        "recall": 0.79,
+        "f1": 0.8681318681318682,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.99,
+        "f1": 0.9949748743718593,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9662921348314607,
+        "recall": 0.86,
+        "f1": 0.91005291005291,
+        "support": 100
+      }
+    }
+  },
+  "n": 700,
+  "mapping_methods": {
+    "contains": 388,
+    "exact": 312
+  },
+  "unmapped_rate": 0.0,
+  "non_exact_rate": 0.5542857142857143,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "length": 388,
+    "stop": 312
+  },
+  "served_models": {
+    "anthropic/claude-haiku-4.5 via Anthropic": 700
+  },
+  "tokens": {
+    "input": 1022206,
+    "output": 7456,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": 0.7855000000000001,
+  "unmapped_examples": [],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 97,
+      "Finance": 1,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 12,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 0,
+      "Finance": 99,
+      "Medical": 6,
+      "Politics": 1,
+      "Religion": 4,
+      "Sports": 1,
+      "Tech": 12
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 87,
+      "Politics": 2,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Politics": {
+      "Culture": 3,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 95,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 1
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 2,
+      "Religion": 83,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 99,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 1,
+      "Sports": 0,
+      "Tech": 87
+    }
+  }
+}

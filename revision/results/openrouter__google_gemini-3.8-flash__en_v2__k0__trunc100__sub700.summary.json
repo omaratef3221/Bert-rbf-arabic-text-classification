@@ -1,0 +1,185 @@
+{
+  "strict": {
+    "accuracy": 0.9242857142857143,
+    "macro_f1": 0.9245222039396924,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8648648648648649,
+        "recall": 0.96,
+        "f1": 0.909952606635071,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.8064516129032258,
+        "recall": 1.0,
+        "f1": 0.8928571428571429,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9787234042553191,
+        "recall": 0.92,
+        "f1": 0.9484536082474226,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9494949494949495,
+        "recall": 0.94,
+        "f1": 0.9447236180904522,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9759036144578314,
+        "recall": 0.81,
+        "f1": 0.8852459016393442,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.98,
+        "f1": 0.98989898989899,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.945054945054945,
+        "recall": 0.86,
+        "f1": 0.900523560209424,
+        "support": 100
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9242857142857143,
+    "macro_f1": 0.9245222039396924,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8648648648648649,
+        "recall": 0.96,
+        "f1": 0.909952606635071,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.8064516129032258,
+        "recall": 1.0,
+        "f1": 0.8928571428571429,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9787234042553191,
+        "recall": 0.92,
+        "f1": 0.9484536082474226,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9494949494949495,
+        "recall": 0.94,
+        "f1": 0.9447236180904522,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9759036144578314,
+        "recall": 0.81,
+        "f1": 0.8852459016393442,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.98,
+        "f1": 0.98989898989899,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.945054945054945,
+        "recall": 0.86,
+        "f1": 0.900523560209424,
+        "support": 100
+      }
+    }
+  },
+  "n": 700,
+  "mapping_methods": {
+    "exact": 700
+  },
+  "unmapped_rate": 0.0,
+  "non_exact_rate": 0.0,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 700
+  },
+  "served_models": {
+    "google/gemini-3.8-flash via Google AI Studio": 700
+  },
+  "tokens": {
+    "input": 190758,
+    "output": 31423,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": 1.8195000000000001,
+  "unmapped_examples": [],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 96,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 13,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 0,
+      "Finance": 100,
+      "Medical": 3,
+      "Politics": 3,
+      "Religion": 4,
+      "Sports": 1,
+      "Tech": 13
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 92,
+      "Politics": 1,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 1
+    },
+    "Politics": {
+      "Culture": 3,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 94,
+      "Religion": 0,
+      "Sports": 1,
+      "Tech": 0
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 2,
+      "Religion": 81,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 98,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 2,
+      "Sports": 0,
+      "Tech": 86
+    }
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "strict": {
+    "accuracy": 0.9357142857142857,
+    "macro_f1": 0.9348542846983332,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8418803418803419,
+        "recall": 0.985,
+        "f1": 0.9078341013824884,
+        "support": 200
+      },
+      "Finance": {
+        "precision": 0.9120370370370371,
+        "recall": 0.985,
+        "f1": 0.9471153846153846,
+        "support": 200
+      },
+      "Medical": {
+        "precision": 0.9629629629629629,
+        "recall": 0.91,
+        "f1": 0.9357326478149101,
+        "support": 200
+      },
+      "Politics": {
+        "precision": 0.9405940594059405,
+        "recall": 0.95,
+        "f1": 0.945273631840796,
+        "support": 200
+      },
+      "Religion": {
+        "precision": 0.9625,
+        "recall": 0.77,
+        "f1": 0.8555555555555555,
+        "support": 200
+      },
+      "Sports": {
+        "precision": 0.9899497487437185,
+        "recall": 0.985,
+        "f1": 0.9874686716791979,
+        "support": 200
+      },
+      "Tech": {
+        "precision": 0.965,
+        "recall": 0.965,
+        "f1": 0.965,
+        "support": 200
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9357142857142857,
+    "macro_f1": 0.9348542846983332,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8418803418803419,
+        "recall": 0.985,
+        "f1": 0.9078341013824884,
+        "support": 200
+      },
+      "Finance": {
+        "precision": 0.9120370370370371,
+        "recall": 0.985,
+        "f1": 0.9471153846153846,
+        "support": 200
+      },
+      "Medical": {
+        "precision": 0.9629629629629629,
+        "recall": 0.91,
+        "f1": 0.9357326478149101,
+        "support": 200
+      },
+      "Politics": {
+        "precision": 0.9405940594059405,
+        "recall": 0.95,
+        "f1": 0.945273631840796,
+        "support": 200
+      },
+      "Religion": {
+        "precision": 0.9625,
+        "recall": 0.77,
+        "f1": 0.8555555555555555,
+        "support": 200
+      },
+      "Sports": {
+        "precision": 0.9899497487437185,
+        "recall": 0.985,
+        "f1": 0.9874686716791979,
+        "support": 200
+      },
+      "Tech": {
+        "precision": 0.965,
+        "recall": 0.965,
+        "f1": 0.965,
+        "support": 200
+      }
+    }
+  },
+  "n": 1400,
+  "mapping_methods": {
+    "exact": 1400
+  },
+  "unmapped_rate": 0.0,
+  "non_exact_rate": 0.0,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 1400
+  },
+  "served_models": {
+    "deepseek-ai/DeepSeek-V4-Flash-0731": 1400
+  },
+  "tokens": {
+    "input": 6525067,
+    "output": 2800,
+    "cached_read": 5007904,
+    "cache_write": 0,
+    "cached_share": 0.7674869851911099
+  },
+  "latency_s_median": 0.8805000000000001,
+  "unmapped_examples": [],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 197,
+      "Finance": 1,
+      "Medical": 4,
+      "Politics": 0,
+      "Religion": 32,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 0,
+      "Finance": 197,
+      "Medical": 6,
+      "Politics": 3,
+      "Religion": 3,
+      "Sports": 1,
+      "Tech": 6
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 182,
+      "Politics": 3,
+      "Religion": 2,
+      "Sports": 1,
+      "Tech": 1
+    },
+    "Politics": {
+      "Culture": 2,
+      "Finance": 0,
+      "Medical": 5,
+      "Politics": 190,
+      "Religion": 5,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 4,
+      "Religion": 154,
+      "Sports": 1,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 1,
+      "Sports": 197,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 0,
+      "Finance": 2,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 3,
+      "Sports": 0,
+      "Tech": 193
+    }
+  }
+}

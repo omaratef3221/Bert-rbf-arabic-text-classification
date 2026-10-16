@@ -1,0 +1,40 @@
+{
+  "run": "together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v2__k2__sub1400",
+  "provider": "together",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "prompt": "en_v2",
+  "shots": 2,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 16,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 1400,
+  "truncate_words": 0,
+  "subset": 1400,
+  "started": "2026-10-16T19:52:15.385534+00:00",
+  "exemplar_ids": [
+    "Religion/3044.txt",
+    "Politics/0404.txt",
+    "Medical/0736.txt",
+    "Sports/4592.txt",
+    "Finance/2427.txt",
+    "Tech/3377.txt",
+    "Religion/3730.txt",
+    "Culture/3898.txt",
+    "Politics/3463.txt",
+    "Sports/1668.txt",
+    "Finance/3585.txt",
+    "Culture/2241.txt",
+    "Medical/4057.txt",
+    "Tech/3032.txt"
+  ],
+  "prompt_text": {
+    "lang": "en",
+    "system": "You are a precise news-topic classifier for Modern Standard Arabic.",
+    "user": "Classify the Arabic news article below into exactly one of these categories:\n{labels}\n\nRespond with the category name only, copied exactly from the list, with no explanation.\n{examples}Article:\n{text}\n\nCategory:"
+  }
+}

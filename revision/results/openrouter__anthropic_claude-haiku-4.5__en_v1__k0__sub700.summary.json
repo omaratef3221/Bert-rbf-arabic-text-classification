@@ -1,0 +1,185 @@
+{
+  "strict": {
+    "accuracy": 0.9342857142857143,
+    "macro_f1": 0.9342483237415937,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8636363636363636,
+        "recall": 0.95,
+        "f1": 0.9047619047619048,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.8761061946902655,
+        "recall": 0.99,
+        "f1": 0.9295774647887324,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9888888888888889,
+        "recall": 0.89,
+        "f1": 0.9368421052631579,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9065420560747663,
+        "recall": 0.97,
+        "f1": 0.9371980676328503,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9764705882352941,
+        "recall": 0.83,
+        "f1": 0.8972972972972973,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.98,
+        "f1": 0.98989898989899,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9587628865979382,
+        "recall": 0.93,
+        "f1": 0.9441624365482234,
+        "support": 100
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9342857142857143,
+    "macro_f1": 0.9342483237415937,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8636363636363636,
+        "recall": 0.95,
+        "f1": 0.9047619047619048,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.8761061946902655,
+        "recall": 0.99,
+        "f1": 0.9295774647887324,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9888888888888889,
+        "recall": 0.89,
+        "f1": 0.9368421052631579,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9065420560747663,
+        "recall": 0.97,
+        "f1": 0.9371980676328503,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9764705882352941,
+        "recall": 0.83,
+        "f1": 0.8972972972972973,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.98,
+        "f1": 0.98989898989899,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9587628865979382,
+        "recall": 0.93,
+        "f1": 0.9441624365482234,
+        "support": 100
+      }
+    }
+  },
+  "n": 700,
+  "mapping_methods": {
+    "exact": 700
+  },
+  "unmapped_rate": 0.0,
+  "non_exact_rate": 0.0,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 700
+  },
+  "served_models": {
+    "anthropic/claude-haiku-4.5 via Anthropic": 700
+  },
+  "tokens": {
+    "input": 1024306,
+    "output": 2800,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": 0.661,
+  "unmapped_examples": [],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 95,
+      "Finance": 1,
+      "Medical": 3,
+      "Politics": 0,
+      "Religion": 11,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 0,
+      "Finance": 99,
+      "Medical": 4,
+      "Politics": 1,
+      "Religion": 3,
+      "Sports": 0,
+      "Tech": 6
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 89,
+      "Politics": 1,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Politics": {
+      "Culture": 4,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 97,
+      "Religion": 2,
+      "Sports": 2,
+      "Tech": 1
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 1,
+      "Religion": 83,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 98,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 1,
+      "Sports": 0,
+      "Tech": 93
+    }
+  }
+}

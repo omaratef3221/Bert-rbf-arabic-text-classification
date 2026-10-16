@@ -1,0 +1,25 @@
+{
+  "run": "vllm__Qwen_Qwen2.5-7B-Instruct__ar_v1__k0",
+  "provider": "vllm",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "prompt": "ar_v1",
+  "shots": 0,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 16,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 6822,
+  "truncate_words": 0,
+  "subset": 0,
+  "started": "2026-10-16T20:35:39.299514+00:00",
+  "exemplar_ids": [],
+  "prompt_text": {
+    "lang": "ar",
+    "system": null,
+    "user": "تصرّف كمصنّف نصوص عربية. صنّف المقال التالي إلى واحدة فقط من الفئات التالية:\n{labels}\n\nاكتب اسم الفئة فقط كما هو مكتوب في القائمة دون أي إضافة.\n{examples}المقال:\n{text}\n\nالفئة:"
+  }
+}

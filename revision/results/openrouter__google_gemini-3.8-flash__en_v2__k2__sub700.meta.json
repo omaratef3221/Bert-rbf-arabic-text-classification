@@ -1,0 +1,40 @@
+{
+  "run": "openrouter__google_gemini-3.8-flash__en_v2__k2__sub700",
+  "provider": "openrouter",
+  "model": "google/gemini-3.8-flash",
+  "prompt": "en_v2",
+  "shots": 2,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 256,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 700,
+  "truncate_words": 0,
+  "subset": 700,
+  "started": "2026-10-16T20:42:18.680429+00:00",
+  "exemplar_ids": [
+    "Religion/3044.txt",
+    "Politics/0404.txt",
+    "Medical/0736.txt",
+    "Sports/4592.txt",
+    "Finance/2427.txt",
+    "Tech/3377.txt",
+    "Religion/3730.txt",
+    "Culture/3898.txt",
+    "Politics/3463.txt",
+    "Sports/1668.txt",
+    "Finance/3585.txt",
+    "Culture/2241.txt",
+    "Medical/4057.txt",
+    "Tech/3032.txt"
+  ],
+  "prompt_text": {
+    "lang": "en",
+    "system": "You are a precise news-topic classifier for Modern Standard Arabic.",
+    "user": "Classify the Arabic news article below into exactly one of these categories:\n{labels}\n\nRespond with the category name only, copied exactly from the list, with no explanation.\n{examples}Article:\n{text}\n\nCategory:"
+  }
+}

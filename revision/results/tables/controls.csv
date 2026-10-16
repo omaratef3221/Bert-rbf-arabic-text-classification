@@ -1,0 +1,2 @@
+system,model,control,acc_sub,acc_primary_sub,delta,recall_Religion_sub,file
+LLM-together,deepseek-ai/DeepSeek-V4-Flash-0731,trunc=100,0.9257142857142857,0.9328571428571428,-0.0071428571428571175,0.79,together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v2__k0__trunc100__sub1400.summary.json

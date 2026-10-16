@@ -1,0 +1,25 @@
+{
+  "run": "together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v3__k0__sub1400",
+  "provider": "together",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "prompt": "en_v3",
+  "shots": 0,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 16,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 1400,
+  "truncate_words": 0,
+  "subset": 1400,
+  "started": "2026-10-16T19:35:52.096424+00:00",
+  "exemplar_ids": [],
+  "prompt_text": {
+    "lang": "en",
+    "system": null,
+    "user": "Which section of a Gulf Arabic newspaper would the following article appear in? Choose one of: {labels}.\n{examples}Article:\n{text}\n\nAnswer with one word from the list:"
+  }
+}

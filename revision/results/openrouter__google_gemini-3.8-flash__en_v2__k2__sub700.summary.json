@@ -1,0 +1,185 @@
+{
+  "strict": {
+    "accuracy": 0.9528571428571428,
+    "macro_f1": 0.9527936247252147,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8695652173913043,
+        "recall": 1.0,
+        "f1": 0.9302325581395349,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.9245283018867925,
+        "recall": 0.98,
+        "f1": 0.9514563106796117,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9690721649484536,
+        "recall": 0.94,
+        "f1": 0.9543147208121827,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9895833333333334,
+        "recall": 0.95,
+        "f1": 0.9693877551020408,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9770114942528736,
+        "recall": 0.85,
+        "f1": 0.9090909090909091,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.98,
+        "f1": 0.98989898989899,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9603960396039604,
+        "recall": 0.97,
+        "f1": 0.9651741293532339,
+        "support": 100
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9528571428571428,
+    "macro_f1": 0.9527936247252147,
+    "per_class": {
+      "Culture": {
+        "precision": 0.8695652173913043,
+        "recall": 1.0,
+        "f1": 0.9302325581395349,
+        "support": 100
+      },
+      "Finance": {
+        "precision": 0.9245283018867925,
+        "recall": 0.98,
+        "f1": 0.9514563106796117,
+        "support": 100
+      },
+      "Medical": {
+        "precision": 0.9690721649484536,
+        "recall": 0.94,
+        "f1": 0.9543147208121827,
+        "support": 100
+      },
+      "Politics": {
+        "precision": 0.9895833333333334,
+        "recall": 0.95,
+        "f1": 0.9693877551020408,
+        "support": 100
+      },
+      "Religion": {
+        "precision": 0.9770114942528736,
+        "recall": 0.85,
+        "f1": 0.9090909090909091,
+        "support": 100
+      },
+      "Sports": {
+        "precision": 1.0,
+        "recall": 0.98,
+        "f1": 0.98989898989899,
+        "support": 100
+      },
+      "Tech": {
+        "precision": 0.9603960396039604,
+        "recall": 0.97,
+        "f1": 0.9651741293532339,
+        "support": 100
+      }
+    }
+  },
+  "n": 700,
+  "mapping_methods": {
+    "exact": 700
+  },
+  "unmapped_rate": 0.0,
+  "non_exact_rate": 0.0,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 700
+  },
+  "served_models": {
+    "google/gemini-3.8-flash via Google AI Studio": 700
+  },
+  "tokens": {
+    "input": 2937956,
+    "output": 700,
+    "cached_read": 145902,
+    "cache_write": 0,
+    "cached_share": 0.049661056870831284
+  },
+  "latency_s_median": 1.663,
+  "unmapped_examples": [],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 100,
+      "Finance": 1,
+      "Medical": 1,
+      "Politics": 0,
+      "Religion": 13,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 0,
+      "Finance": 98,
+      "Medical": 2,
+      "Politics": 2,
+      "Religion": 2,
+      "Sports": 1,
+      "Tech": 1
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 94,
+      "Politics": 1,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 2
+    },
+    "Politics": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 95,
+      "Religion": 0,
+      "Sports": 1,
+      "Tech": 0
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 2,
+      "Religion": 85,
+      "Sports": 0,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 98,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 0,
+      "Finance": 1,
+      "Medical": 3,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 97
+    }
+  }
+}

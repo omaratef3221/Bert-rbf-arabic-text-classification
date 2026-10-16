@@ -111,7 +111,10 @@
   },
   "tokens": {
     "input": 6148353,
-    "output": 13644
+    "output": 13644,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
   },
   "latency_s_median": 0.758,
   "unmapped_examples": [

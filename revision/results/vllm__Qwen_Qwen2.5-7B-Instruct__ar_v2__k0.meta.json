@@ -1,0 +1,25 @@
+{
+  "run": "vllm__Qwen_Qwen2.5-7B-Instruct__ar_v2__k0",
+  "provider": "vllm",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "prompt": "ar_v2",
+  "shots": 0,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 16,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 6822,
+  "truncate_words": 0,
+  "subset": 0,
+  "started": "2026-10-16T20:51:17.725957+00:00",
+  "exemplar_ids": [],
+  "prompt_text": {
+    "lang": "ar",
+    "system": "أنت مصنّف دقيق لموضوعات الأخبار المكتوبة بالعربية الفصحى.",
+    "user": "حدّد القسم الصحفي الذي ينتمي إليه المقال التالي. الأقسام المتاحة هي:\n{labels}\n\nأجب بكلمة واحدة فقط من القائمة أعلاه.\n{examples}المقال:\n{text}\n\nالقسم:"
+  }
+}

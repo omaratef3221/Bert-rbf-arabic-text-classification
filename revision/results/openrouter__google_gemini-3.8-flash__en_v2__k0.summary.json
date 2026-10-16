@@ -1,0 +1,201 @@
+{
+  "strict": {
+    "accuracy": 0.9146877748460862,
+    "macro_f1": 0.9138521526148999,
+    "per_class": {
+      "Culture": {
+        "precision": 0.7940691927512356,
+        "recall": 0.9897330595482546,
+        "f1": 0.8811700182815356,
+        "support": 974
+      },
+      "Finance": {
+        "precision": 0.8351931330472103,
+        "recall": 0.997948717948718,
+        "f1": 0.9093457943925234,
+        "support": 975
+      },
+      "Medical": {
+        "precision": 0.9634801288936627,
+        "recall": 0.92,
+        "f1": 0.9412381951731374,
+        "support": 975
+      },
+      "Politics": {
+        "precision": 0.9496919917864476,
+        "recall": 0.9487179487179487,
+        "f1": 0.9492047203694202,
+        "support": 975
+      },
+      "Religion": {
+        "precision": 0.9694019471488178,
+        "recall": 0.7163412127440905,
+        "f1": 0.8238770685579196,
+        "support": 973
+      },
+      "Sports": {
+        "precision": 0.995880535530381,
+        "recall": 0.9917948717948718,
+        "f1": 0.9938335046248715,
+        "support": 975
+      },
+      "Tech": {
+        "precision": 0.9680094786729858,
+        "recall": 0.837948717948718,
+        "f1": 0.8982957669048928,
+        "support": 975
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9146877748460862,
+    "macro_f1": 0.9138521526148999,
+    "per_class": {
+      "Culture": {
+        "precision": 0.7940691927512356,
+        "recall": 0.9897330595482546,
+        "f1": 0.8811700182815356,
+        "support": 974
+      },
+      "Finance": {
+        "precision": 0.8351931330472103,
+        "recall": 0.997948717948718,
+        "f1": 0.9093457943925234,
+        "support": 975
+      },
+      "Medical": {
+        "precision": 0.9634801288936627,
+        "recall": 0.92,
+        "f1": 0.9412381951731374,
+        "support": 975
+      },
+      "Politics": {
+        "precision": 0.9496919917864476,
+        "recall": 0.9487179487179487,
+        "f1": 0.9492047203694202,
+        "support": 975
+      },
+      "Religion": {
+        "precision": 0.9694019471488178,
+        "recall": 0.7163412127440905,
+        "f1": 0.8238770685579196,
+        "support": 973
+      },
+      "Sports": {
+        "precision": 0.995880535530381,
+        "recall": 0.9917948717948718,
+        "f1": 0.9938335046248715,
+        "support": 975
+      },
+      "Tech": {
+        "precision": 0.9680094786729858,
+        "recall": 0.837948717948718,
+        "f1": 0.8982957669048928,
+        "support": 975
+      }
+    }
+  },
+  "n": 6822,
+  "mapping_methods": {
+    "exact": 6818,
+    "UNMAPPED": 4
+  },
+  "unmapped_rate": 0.0005863383172090296,
+  "non_exact_rate": 0.0005863383172090296,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 6817,
+    "length": 5
+  },
+  "served_models": {
+    "google/gemini-3.8-flash via Google AI Studio": 6822
+  },
+  "tokens": {
+    "input": 5620393,
+    "output": 313380,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": 1.877,
+  "unmapped_examples": [
+    " العلاجية النفسية والروحية إلى جانب العلا",
+    "هزة غسل الكلى في البلاد\".\n",
+    "\"\nIn UAE newspapers (Al Khaleej",
+    "32 بي وجوي بوك"
+  ],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 964,
+      "Finance": 0,
+      "Medical": 22,
+      "Politics": 8,
+      "Religion": 217,
+      "Sports": 3,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 1,
+      "Finance": 973,
+      "Medical": 15,
+      "Politics": 13,
+      "Religion": 10,
+      "Sports": 2,
+      "Tech": 151
+    },
+    "Medical": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 897,
+      "Politics": 9,
+      "Religion": 19,
+      "Sports": 0,
+      "Tech": 5
+    },
+    "Politics": {
+      "Culture": 4,
+      "Finance": 0,
+      "Medical": 25,
+      "Politics": 925,
+      "Religion": 18,
+      "Sports": 2,
+      "Tech": 0
+    },
+    "Religion": {
+      "Culture": 2,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 17,
+      "Religion": 697,
+      "Sports": 1,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 3,
+      "Sports": 967,
+      "Tech": 0
+    },
+    "Tech": {
+      "Culture": 1,
+      "Finance": 2,
+      "Medical": 12,
+      "Politics": 3,
+      "Religion": 9,
+      "Sports": 0,
+      "Tech": 817
+    },
+    "UNMAPPED": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 0,
+      "Tech": 2
+    }
+  }
+}

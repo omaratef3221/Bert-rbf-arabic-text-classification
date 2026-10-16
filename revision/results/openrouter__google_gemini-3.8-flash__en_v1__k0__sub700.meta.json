@@ -1,0 +1,25 @@
+{
+  "run": "openrouter__google_gemini-3.8-flash__en_v1__k0__sub700",
+  "provider": "openrouter",
+  "model": "google/gemini-3.8-flash",
+  "prompt": "en_v1",
+  "shots": 0,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 256,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 700,
+  "truncate_words": 0,
+  "subset": 700,
+  "started": "2026-10-16T20:22:06.392663+00:00",
+  "exemplar_ids": [],
+  "prompt_text": {
+    "lang": "en",
+    "system": null,
+    "user": "Act as an Arabic Text Classifier that has to classify between the following:\n{labels}\n\nWrite only the final output class without anything more.\n{examples}Text:\n{text}\n\nClass:"
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "strict": {
+    "accuracy": 0.8328935795954265,
+    "macro_f1": 0.8247705020311317,
+    "per_class": {
+      "Culture": {
+        "precision": 0.6412894375857339,
+        "recall": 0.9599589322381931,
+        "f1": 0.7689144736842105,
+        "support": 974
+      },
+      "Finance": {
+        "precision": 0.7537022603273578,
+        "recall": 0.9917948717948718,
+        "f1": 0.8565101860053145,
+        "support": 975
+      },
+      "Medical": {
+        "precision": 0.9117021276595745,
+        "recall": 0.8789743589743589,
+        "f1": 0.8950391644908616,
+        "support": 975
+      },
+      "Politics": {
+        "precision": 0.8827586206896552,
+        "recall": 0.918974358974359,
+        "f1": 0.9005025125628141,
+        "support": 975
+      },
+      "Religion": {
+        "precision": 0.9565217391304348,
+        "recall": 0.38437821171634123,
+        "f1": 0.5483870967741935,
+        "support": 973
+      },
+      "Sports": {
+        "precision": 0.9872746553552492,
+        "recall": 0.9548717948717949,
+        "f1": 0.9708029197080292,
+        "support": 975
+      },
+      "Tech": {
+        "precision": 0.9525065963060686,
+        "recall": 0.7405128205128205,
+        "f1": 0.8332371609924986,
+        "support": 975
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.8358252711814718,
+    "macro_f1": 0.8264173917811389,
+    "per_class": {
+      "Culture": {
+        "precision": 0.6412894375857339,
+        "recall": 0.9599589322381931,
+        "f1": 0.7689144736842105,
+        "support": 974
+      },
+      "Finance": {
+        "precision": 0.7537022603273578,
+        "recall": 0.9917948717948718,
+        "f1": 0.8565101860053145,
+        "support": 975
+      },
+      "Medical": {
+        "precision": 0.913451511991658,
+        "recall": 0.8984615384615384,
+        "f1": 0.905894519131334,
+        "support": 975
+      },
+      "Politics": {
+        "precision": 0.8827586206896552,
+        "recall": 0.918974358974359,
+        "f1": 0.9005025125628141,
+        "support": 975
+      },
+      "Religion": {
+        "precision": 0.9565217391304348,
+        "recall": 0.38437821171634123,
+        "f1": 0.5483870967741935,
+        "support": 973
+      },
+      "Sports": {
+        "precision": 0.9872746553552492,
+        "recall": 0.9548717948717949,
+        "f1": 0.9708029197080292,
+        "support": 975
+      },
+      "Tech": {
+        "precision": 0.9525691699604744,
+        "recall": 0.7415384615384616,
+        "f1": 0.8339100346020761,
+        "support": 975
+      }
+    }
+  },
+  "n": 6822,
+  "mapping_methods": {
+    "exact": 6372,
+    "normalized": 412,
+    "UNMAPPED": 33,
+    "arabic": 3,
+    "contains": 1,
+    "EMPTY": 1
+  },
+  "unmapped_rate": 0.004983875696276752,
+  "non_exact_rate": 0.06596306068601583,
+  "error_rate_api": 0.0001465845793022574,
+  "finish_reasons": {
+    "stop": 6821,
+    "ERROR": 1
+  },
+  "served_models": {
+    "Qwen/Qwen2.5-7B-Instruct": 6821
+  },
+  "tokens": {
+    "input": 6445637,
+    "output": 14468,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": 1.92,
+  "unmapped_examples": [
+    "Climate (تغير المناخ)",
+    "Medicine",
+    "Education",
+    "Medicine",
+    "Education",
+    "Medicine",
+    "Medicine",
+    "Medicine",
+    "Medicine",
+    "Medicine",
+    "Medicine",
+    "Medicine",
+    "Health",
+    "Medicine",
+    "Health",
+    "Health",
+    "Medicine",
+    "Environment",
+    "Medicine",
+    "Health",
+    "Medicine",
+    "Health",
+    "Medicine",
+    "Weather",
+    "Accidents",
+    "Education",
+    "Education",
+    "Science",
+    "Education",
+    "Education"
+  ],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 935,
+      "Finance": 0,
+      "Medical": 37,
+      "Politics": 16,
+      "Religion": 455,
+      "Sports": 3,
+      "Tech": 12
+    },
+    "EMPTY": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 1,
+      "Tech": 0
+    },
+    "Finance": {
+      "Culture": 6,
+      "Finance": 967,
+      "Medical": 25,
+      "Politics": 28,
+      "Religion": 26,
+      "Sports": 16,
+      "Tech": 215
+    },
+    "Medical": {
+      "Culture": 4,
+      "Finance": 0,
+      "Medical": 857,
+      "Politics": 16,
+      "Religion": 45,
+      "Sports": 9,
+      "Tech": 9
+    },
+    "Politics": {
+      "Culture": 19,
+      "Finance": 5,
+      "Medical": 20,
+      "Politics": 896,
+      "Religion": 51,
+      "Sports": 14,
+      "Tech": 10
+    },
+    "Religion": {
+      "Culture": 0,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 15,
+      "Religion": 374,
+      "Sports": 1,
+      "Tech": 1
+    },
+    "Sports": {
+      "Culture": 3,
+      "Finance": 1,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 2,
+      "Sports": 931,
+      "Tech": 4
+    },
+    "Tech": {
+      "Culture": 6,
+      "Finance": 2,
+      "Medical": 12,
+      "Politics": 1,
+      "Religion": 15,
+      "Sports": 0,
+      "Tech": 722
+    },
+    "UNMAPPED": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 22,
+      "Politics": 3,
+      "Religion": 5,
+      "Sports": 0,
+      "Tech": 2
+    }
+  }
+}
