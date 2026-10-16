@@ -1,0 +1,85 @@
+{
+  "root": "/Users/omaratef/.cache/kagglehub/datasets/haithemhermessi/sanad-dataset/versions/1",
+  "n_docs": 45500,
+  "exact_dups_dropped": 23,
+  "near_threshold": 0.8,
+  "near_dup_pairs": 44407,
+  "docs_in_clusters": 1403,
+  "split_counts": {
+    "Culture": {
+      "test": 974,
+      "train": 4547,
+      "val": 974
+    },
+    "Finance": {
+      "test": 975,
+      "train": 4548,
+      "val": 975
+    },
+    "Medical": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Politics": {
+      "test": 975,
+      "train": 4549,
+      "val": 975
+    },
+    "Religion": {
+      "test": 973,
+      "train": 4541,
+      "val": 973
+    },
+    "Sports": {
+      "test": 975,
+      "train": 4549,
+      "val": 975
+    },
+    "Tech": {
+      "test": 975,
+      "train": 4549,
+      "val": 975
+    }
+  },
+  "legacy_split_counts": {
+    "Culture": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Finance": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Medical": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Politics": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Religion": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Sports": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    },
+    "Tech": {
+      "test": 975,
+      "train": 4550,
+      "val": 975
+    }
+  },
+  "test_docs_with_cos>=0.5_elsewhere": 561,
+  "seed": 42,
+  "sha1_of_split_file": "951575cb8d963cf99b56c37f8090dd1e81f5dd0f"
+}

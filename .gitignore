@@ -1,1 +1,17 @@
 label_encoder.npy
+.env
+revision/results/emb_cache/
+__pycache__/
+# large or local-only artifacts of the original pipeline (kept on OneDrive, not in git)
+model.pth
+model.pkl
+*.pth
+wandb/
+.ipynb_checkpoints/
+confusion_matrices.tar.gz
+final_df_*.csv
+result_sample_basic_model.csv
+paper v1.pdf
+*.png
+revision/results/lora/*/adapter/
+revision/logs/

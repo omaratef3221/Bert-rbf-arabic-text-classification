@@ -1,0 +1,23 @@
+# core (split building, supervised heads, analysis)
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.4
+scipy>=1.11
+torch>=2.1
+transformers>=4.44
+kagglehub>=0.3
+tqdm
+python-dotenv
+# LLM APIs
+openai>=1.40
+anthropic>=0.34
+google-genai>=1.0
+# LoRA baseline (A100): pick ONE of the two lines below
+# pip install "unsloth[cu121-torch240]"            # fastest; falls back to peft automatically if missing
+peft>=0.12
+trl>=0.9
+bitsandbytes>=0.43
+datasets>=2.20
+# optional
+# vllm>=0.6          # serve open-weight / LoRA models for llm_eval.py --provider vllm
+# cuml               # GPU SVM via RAPIDS (conda install -c rapidsai -c conda-forge cuml); sklearn SVC is the fallback
