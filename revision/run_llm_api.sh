@@ -19,6 +19,7 @@ mkdir -p logs results
 LOG="logs/llm_${PROVIDER}_${SAFE}.log"
 SUB=(); [[ "$SUBSET" != "0" ]] && SUB=(--subset "$SUBSET")
 EXTRA=(); [[ -n "${OR_PROVIDER:-}" ]] && EXTRA=(--or-provider "$OR_PROVIDER")   # openrouter upstream pinning, e.g. OR_PROVIDER=anthropic
+[[ -n "${MAX_TOKENS:-}" ]] && EXTRA+=(--max-tokens "$MAX_TOKENS")                   # e.g. MAX_TOKENS=64 for Gemini 3.x (mandatory reasoning tokens)
 run () { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG"; $PY llm_eval.py --provider "$PROVIDER" --model "$MODEL" --workers "$WORKERS" ${EXTRA[@]+"${EXTRA[@]}"} "$@" >> "$LOG" 2>&1 || echo "[FAIL] $*" | tee -a "$LOG"; }
 
 for p in $FULL_PROMPTS; do run --prompt "$p"; done                                                   # E1 primary (full test set)

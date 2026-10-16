@@ -204,7 +204,9 @@ class OpenAICompatible(Provider):
             eb = {"seed": self.seed}
             if self.or_providers:  # pin the upstream provider(s) so the served model/quantization is fixed and reportable
                 eb["provider"] = {"order": self.or_providers, "allow_fallbacks": False}
-            if re.search(r"deepseek|qwen|glm|kimi", self.model, re.I):
+            if re.search(r"gemini-[23]", self.model, re.I):  # Gemini 3.x: reasoning cannot be disabled through OpenRouter -> minimal effort, thinking tokens logged
+                eb["reasoning"] = {"effort": "minimal"}
+            elif re.search(r"deepseek|qwen|glm|kimi", self.model, re.I):  # reasoning models: off, else the 16-token budget is spent thinking
                 eb["reasoning"] = {"enabled": False}
             kw["extra_body"] = eb
         else:  # open-weight reasoning models (DeepSeek V3.1+/V4, Qwen3): switch "thinking" off via the chat template,
@@ -214,12 +216,14 @@ class OpenAICompatible(Provider):
         c = r.choices[0]
         reasoning = getattr(c.message, "reasoning_content", None) or getattr(c.message, "reasoning", None)
         ptd = getattr(r.usage, "prompt_tokens_details", None)
+        ctd = getattr(r.usage, "completion_tokens_details", None)
         upstream = (getattr(r, "provider", None) or (getattr(r, "model_extra", None) or {}).get("provider")) if self.name == "openrouter" else None
         return dict(raw=c.message.content, finish_reason=c.finish_reason,
                     in_tokens=getattr(r.usage, "prompt_tokens", None), out_tokens=getattr(r.usage, "completion_tokens", None),
                     served_model=(f"{r.model} via {upstream}" if upstream else r.model),
                     extra={"system_fingerprint": getattr(r, "system_fingerprint", None),
                            "reasoning_chars": (len(reasoning) if reasoning else None),
+                           "thinking_tokens": getattr(ctd, "reasoning_tokens", None),
                            "cached_tokens": getattr(ptd, "cached_tokens", None)})
 
 
@@ -323,7 +327,7 @@ def make_provider(args):
     if args.provider == "together":
         p = OpenAICompatible(args.model, api_key=key("TOGETHER_API_KEY"), base_url="https://api.together.xyz/v1", **common); p.name = "together"; return p
     if args.provider == "openrouter":  # one key for several vendors; model ids like openai/gpt-4.1, anthropic/claude-haiku-4.5, google/gemini-3.8-flash
-        p = OpenAICompatible(args.model, api_key=key("OPENROUTER_API_KEY"), base_url="https://openrouter.ai/api/v1", **common)
+        p = OpenAICompatible(args.model, api_key=os.environ.get("OPENROUTER_API_KEY") or key("OPEN_ROUTER_KEY"), base_url="https://openrouter.ai/api/v1", **common)
         p.name = "openrouter"; p.or_providers = [s for s in (args.or_provider or "").split(",") if s]; return p
     if args.provider == "vllm":
         p = OpenAICompatible(args.model, api_key=os.environ.get("VLLM_API_KEY", "EMPTY"), base_url=args.base_url or "http://localhost:8000/v1", **common); p.name = "vllm"; return p
