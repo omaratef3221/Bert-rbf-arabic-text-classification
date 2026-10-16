@@ -74,7 +74,10 @@ AMP, early stopping on val loss, max_len 512.
 | Open-weight | `Qwen/Qwen2.5-7B-Instruct` (bf16, vLLM; QLoRA 4-bit r=16) | vast.ai A100 | pending |
 
 Decoding for every API model: temperature 0, top-p 1, max 16 output tokens, seed 42 where
-supported, thinking/reasoning disabled, 60 s timeout, retries only on 429/5xx/timeouts. Prompts
+supported, thinking/reasoning disabled, 60 s timeout, retries only on 429/5xx/timeouts. Prompt
+caching is always on (shared prefix = instruction + labels + examples; Anthropic explicit
+`cache_control`, OpenAI `prompt_cache_key`, Gemini explicit context cache; cache reads logged per
+request, see `MODEL_SNAPSHOTS.md` §4). OpenRouter is supported as an alternative route (§3b there). Prompts
 `en_v1` (paper wording), `en_v2` (primary), `en_v3`, `ar_v1`, `ar_v2`; full text in `llm_eval.py`.
 Few-shot exemplars: the first k per class by `lc_rank_s0` in the train split, truncated to 120 words,
 shuffled with a fixed seed. Scoring: strict mapping (7 labels + Arabic names), unmapped / ambiguous /

@@ -68,7 +68,9 @@ def label_list(lang):
     return str(LABELS)
 
 
-def build_messages(prompt_name, text, exemplars=None):
+def build_prompt_parts(prompt_name, text, exemplars=None):
+    """Return (system, prefix, suffix). prefix = instruction + labels + examples (identical for every article of a run,
+    hence prompt-cacheable); suffix = the article + answer cue. prefix + suffix is the exact user message."""
     p = PROMPTS[prompt_name]
     ex_block = ""
     if exemplars is not None and len(exemplars):
@@ -78,8 +80,16 @@ def build_messages(prompt_name, text, exemplars=None):
             lines.append(f"Text: {r.text}\nClass: {r.category}\n" if p["lang"] == "en"
                          else f"المقال: {r.text}\nالفئة: {r.category}\n")
         ex_block = "\n".join(lines) + "\n"
-    user = p["user"].format(labels=label_list(p["lang"]), examples=ex_block, text=text)
-    return p["system"], user
+    tpl = p["user"]
+    cut = tpl.index("{text}")
+    prefix = tpl[:cut].format(labels=label_list(p["lang"]), examples=ex_block)
+    suffix = tpl[cut:].format(text=text)
+    return p["system"], prefix, suffix
+
+
+def build_messages(prompt_name, text, exemplars=None):
+    system, prefix, suffix = build_prompt_parts(prompt_name, text, exemplars)
+    return system, prefix + suffix
 
 
 # --------------------------------------------------------------------------------------------
@@ -163,8 +173,9 @@ class Provider:
     def __init__(self, model, max_tokens, temperature=0.0, top_p=1.0, seed=42, base_url=None, api_key=None):
         self.model, self.max_tokens, self.temperature, self.top_p, self.seed = model, max_tokens, temperature, top_p, seed
         self.base_url, self.api_key = base_url, api_key
+        self.cache_key = None  # set by the runner (= run tag); prompt caching is always on where the provider supports it
 
-    def complete(self, system, user):
+    def complete(self, system, prefix, suffix):
         raise NotImplementedError
 
 
@@ -177,21 +188,39 @@ class OpenAICompatible(Provider):
         from openai import OpenAI
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url, max_retries=0, timeout=60)
 
-    def complete(self, system, user):
-        msgs = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": user}]
+    def complete(self, system, prefix, suffix):
+        # The shared prefix comes first in the user turn, so OpenAI's automatic prefix caching (>= 1024 tokens) applies;
+        # prompt_cache_key pins all requests of a run to the same cache route. Together/vLLM ignore these fields.
+        user_content = prefix + suffix
+        if self.name == "openrouter" and self.model.startswith("anthropic/"):  # OpenRouter passes cache_control through to Anthropic
+            user_content = [{"type": "text", "text": prefix, "cache_control": {"type": "ephemeral"}}, {"type": "text", "text": suffix}]
+        msgs = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": user_content}]
         kw = dict(model=self.model, messages=msgs, max_tokens=self.max_tokens, temperature=self.temperature, top_p=self.top_p)
         if self.name == "openai":
             kw["seed"] = self.seed
+            if self.cache_key:
+                kw["extra_body"] = {"prompt_cache_key": self.cache_key}
+        elif self.name == "openrouter":
+            eb = {"seed": self.seed}
+            if self.or_providers:  # pin the upstream provider(s) so the served model/quantization is fixed and reportable
+                eb["provider"] = {"order": self.or_providers, "allow_fallbacks": False}
+            if re.search(r"deepseek|qwen|glm|kimi", self.model, re.I):
+                eb["reasoning"] = {"enabled": False}
+            kw["extra_body"] = eb
         else:  # open-weight reasoning models (DeepSeek V3.1+/V4, Qwen3): switch "thinking" off via the chat template,
             #    otherwise the whole token budget is spent on reasoning and `content` comes back empty (verified 2026-10-14)
             kw["extra_body"] = {"chat_template_kwargs": {"thinking": False, "enable_thinking": False}}
         r = self.client.chat.completions.create(**kw)
         c = r.choices[0]
         reasoning = getattr(c.message, "reasoning_content", None) or getattr(c.message, "reasoning", None)
+        ptd = getattr(r.usage, "prompt_tokens_details", None)
+        upstream = (getattr(r, "provider", None) or (getattr(r, "model_extra", None) or {}).get("provider")) if self.name == "openrouter" else None
         return dict(raw=c.message.content, finish_reason=c.finish_reason,
                     in_tokens=getattr(r.usage, "prompt_tokens", None), out_tokens=getattr(r.usage, "completion_tokens", None),
-                    served_model=r.model, extra={"system_fingerprint": getattr(r, "system_fingerprint", None),
-                                                 "reasoning_chars": (len(reasoning) if reasoning else None)})
+                    served_model=(f"{r.model} via {upstream}" if upstream else r.model),
+                    extra={"system_fingerprint": getattr(r, "system_fingerprint", None),
+                           "reasoning_chars": (len(reasoning) if reasoning else None),
+                           "cached_tokens": getattr(ptd, "cached_tokens", None)})
 
 
 class AnthropicProvider(Provider):
@@ -202,17 +231,22 @@ class AnthropicProvider(Provider):
         import anthropic
         self.client = anthropic.Anthropic(api_key=self.api_key, max_retries=0, timeout=60)
 
-    def complete(self, system, user):
+    def complete(self, system, prefix, suffix):
         # anthropic SDK >= 1.0 removed temperature/top_p from the method signature; models up to the 4.5 line still
         # honour them when sent in the request body (Haiku 4.5 does; Haiku 5.5 rejects non-default values).
-        kw = dict(model=self.model, max_tokens=self.max_tokens, messages=[{"role": "user", "content": user}],
+        # Prompt caching: an explicit breakpoint after the shared prefix block caches system + prefix (5-minute TTL,
+        # refreshed by every request); prefixes below the model's minimum cacheable length are silently not cached.
+        content = [{"type": "text", "text": prefix, "cache_control": {"type": "ephemeral"}}, {"type": "text", "text": suffix}]
+        kw = dict(model=self.model, max_tokens=self.max_tokens, messages=[{"role": "user", "content": content}],
                   extra_body={"temperature": self.temperature})
         if system:
             kw["system"] = system
         r = self.client.messages.create(**kw)
         txt = "".join(b.text for b in r.content if getattr(b, "type", "") == "text")
-        return dict(raw=txt, finish_reason=r.stop_reason, in_tokens=r.usage.input_tokens, out_tokens=r.usage.output_tokens,
-                    served_model=r.model, extra={})
+        u = r.usage
+        cread, cwrite = getattr(u, "cache_read_input_tokens", 0) or 0, getattr(u, "cache_creation_input_tokens", 0) or 0
+        return dict(raw=txt, finish_reason=r.stop_reason, in_tokens=u.input_tokens + cread + cwrite, out_tokens=u.output_tokens,
+                    served_model=r.model, extra={"cached_tokens": cread, "cache_write_tokens": cwrite})
 
 
 class GeminiProvider(Provider):
@@ -224,14 +258,33 @@ class GeminiProvider(Provider):
         from google.genai import types
         self.types = types
         self.client = genai.Client(api_key=self.api_key, http_options=types.HttpOptions(timeout=60_000))  # ms; no default timeout otherwise
+        self._cache, self._cache_err, self._lock = None, None, threading.Lock()
 
-    def complete(self, system, user):
-        kw = dict(temperature=self.temperature, top_p=self.top_p, candidate_count=1, max_output_tokens=self.max_tokens,
-                  seed=self.seed, system_instruction=system or None)
+    def _explicit_cache(self, system, prefix):
+        """Create one explicit context cache per run for the shared prefix (guaranteed cache-read pricing). Prefixes below
+        the model's minimum (zero-shot prompts) are rejected by the API; then implicit caching is the fallback."""
+        with self._lock:
+            if self._cache is None:
+                try:
+                    c = self.client.caches.create(model=self.model, config=self.types.CreateCachedContentConfig(
+                        contents=[prefix], system_instruction=system or None, ttl="10800s", display_name=(self.cache_key or "sanad")[:120]))
+                    self._cache = c.name
+                except Exception as e:
+                    self._cache, self._cache_err = "", f"{type(e).__name__}: {str(e)[:120]}"
+            return self._cache
+
+    def complete(self, system, prefix, suffix):
+        kw = dict(temperature=self.temperature, top_p=self.top_p, candidate_count=1, max_output_tokens=self.max_tokens, seed=self.seed)
         if not re.search(r"gemini-(1\.|2\.0)", self.model):  # 2.5+ models think by default; a 16-token budget would be eaten by thinking
             kw["thinking_config"] = self.types.ThinkingConfig(thinking_budget=0, include_thoughts=False)
-        cfg = self.types.GenerateContentConfig(**kw)
-        r = self.client.models.generate_content(model=self.model, contents=user, config=cfg)
+        cache = self._explicit_cache(system, prefix)
+        if cache:
+            kw["cached_content"] = cache
+            contents = suffix
+        else:  # implicit caching still applies to identical prefixes >= the model minimum
+            kw["system_instruction"] = system or None
+            contents = prefix + suffix
+        r = self.client.models.generate_content(model=self.model, contents=contents, config=self.types.GenerateContentConfig(**kw))
         cand = r.candidates[0] if r.candidates else None
         fr = str(getattr(cand, "finish_reason", None)) if cand else "NO_CANDIDATE"
         um = getattr(r, "usage_metadata", None)
@@ -241,14 +294,17 @@ class GeminiProvider(Provider):
             txt = ""
         return dict(raw=txt, finish_reason=fr,
                     in_tokens=getattr(um, "prompt_token_count", None), out_tokens=getattr(um, "candidates_token_count", None),
-                    served_model=getattr(r, "model_version", self.model), extra={"thinking_tokens": getattr(um, "thoughts_token_count", None)})
+                    served_model=getattr(r, "model_version", self.model),
+                    extra={"thinking_tokens": getattr(um, "thoughts_token_count", None), "cached_tokens": getattr(um, "cached_content_token_count", None),
+                           "explicit_cache": bool(cache)})
 
 
 class MockProvider(Provider):
     """Offline dry run: deterministic pseudo-labels with a few deliberately messy outputs."""
     name = "mock"
 
-    def complete(self, system, user):
+    def complete(self, system, prefix, suffix):
+        user = prefix + suffix
         h = int(hashlib.sha1(user.encode()).hexdigest(), 16)
         lab = LABELS[h % 7]
         style = h % 23
@@ -266,6 +322,9 @@ def make_provider(args):
         p = OpenAICompatible(args.model, api_key=key("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com", **common); p.name = "deepseek"; return p
     if args.provider == "together":
         p = OpenAICompatible(args.model, api_key=key("TOGETHER_API_KEY"), base_url="https://api.together.xyz/v1", **common); p.name = "together"; return p
+    if args.provider == "openrouter":  # one key for several vendors; model ids like openai/gpt-4.1, anthropic/claude-haiku-4.5, google/gemini-3.8-flash
+        p = OpenAICompatible(args.model, api_key=key("OPENROUTER_API_KEY"), base_url="https://openrouter.ai/api/v1", **common)
+        p.name = "openrouter"; p.or_providers = [s for s in (args.or_provider or "").split(",") if s]; return p
     if args.provider == "vllm":
         p = OpenAICompatible(args.model, api_key=os.environ.get("VLLM_API_KEY", "EMPTY"), base_url=args.base_url or "http://localhost:8000/v1", **common); p.name = "vllm"; return p
     if args.provider == "anthropic":
@@ -280,12 +339,12 @@ def make_provider(args):
 # --------------------------------------------------------------------------------------------
 # Runner
 # --------------------------------------------------------------------------------------------
-def call_with_retry(provider, system, user, max_attempts=6, log=print):
+def call_with_retry(provider, system, prefix, suffix, max_attempts=6, log=print):
     delay = 2.0
     for attempt in range(1, max_attempts + 1):
         try:
             t0 = time.time()
-            r = provider.complete(system, user)
+            r = provider.complete(system, prefix, suffix)
             r["latency_s"] = round(time.time() - t0, 3)
             r["attempts"] = attempt
             r["error"] = None
@@ -320,6 +379,7 @@ def run(args):
         exemplars = exemplars.sample(frac=1.0, random_state=args.fewshot_seed).reset_index(drop=True)  # fixed interleaved order
     provider = make_provider(args)
     tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "") + ("__nodateline" if args.strip_dateline else "") + (f"__{args.tag_suffix}" if args.tag_suffix else "")
+    provider.cache_key = tag  # one prompt-cache namespace per run (OpenAI prompt_cache_key, Gemini cache display name)
     out = args.out or os.path.join(HERE, "results", f"{tag}.jsonl")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     done = set()
@@ -346,8 +406,8 @@ def run(args):
     def work(row):
         text = DATELINE.sub("", row.text, count=1) if args.strip_dateline else row.text
         text = text if not args.truncate_words else " ".join(text.split()[: args.truncate_words])
-        system, user = build_messages(args.prompt, text, exemplars)
-        r = call_with_retry(provider, system, user)
+        system, prefix, suffix = build_prompt_parts(args.prompt, text, exemplars)
+        r = call_with_retry(provider, system, prefix, suffix)
         lab, method = map_output(r["raw"], strict=True)
         lab_l, method_l = map_output(r["raw"], strict=False)
         rec = dict(doc_id=row.doc_id, gold=row.category, raw=r["raw"], pred=lab, map_method=method, pred_lenient=lab_l,
@@ -375,7 +435,8 @@ def run(args):
                        group=f"{args.provider}_{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}", config={k: v for k, v in meta.items() if k not in ("exemplar_ids", "prompt_text")}, reinit=True)
         w.log({"accuracy": res["strict"]["accuracy"], "macro_f1": res["strict"]["macro_f1"], "accuracy_lenient": res["lenient"]["accuracy"],
                "unmapped_rate": res["unmapped_rate"], "non_exact_rate": res["non_exact_rate"], "api_error_rate": res["error_rate_api"],
-               "input_tokens": res["tokens"]["input"], "output_tokens": res["tokens"]["output"], "latency_s_median": res["latency_s_median"] or 0,
+               "input_tokens": res["tokens"]["input"], "output_tokens": res["tokens"]["output"], "cached_share": res["tokens"]["cached_share"],
+               "cache_write_tokens": res["tokens"]["cache_write"], "latency_s_median": res["latency_s_median"] or 0,
                "n": res["n"], **{f"{c}/recall": res["strict"]["per_class"][c]["recall"] for c in LABELS},
                **{f"{c}/precision": res["strict"]["per_class"][c]["precision"] for c in LABELS},
                **{f"mapping/{k}": v / res["n"] for k, v in res["mapping_methods"].items()}})
@@ -400,7 +461,11 @@ def summarize(jsonl):
     res["error_rate_api"] = float(d["error"].notna().mean())
     res["finish_reasons"] = d["finish_reason"].astype(str).value_counts().to_dict()
     res["served_models"] = d["served_model"].astype(str).value_counts().to_dict()
-    res["tokens"] = dict(input=int(d["in_tokens"].fillna(0).sum()), output=int(d["out_tokens"].fillna(0).sum()))
+    cached = d["cached_tokens"].fillna(0) if "cached_tokens" in d else pd.Series(0, index=d.index)
+    cwrite = d["cache_write_tokens"].fillna(0) if "cache_write_tokens" in d else pd.Series(0, index=d.index)
+    res["tokens"] = dict(input=int(d["in_tokens"].fillna(0).sum()), output=int(d["out_tokens"].fillna(0).sum()),
+                         cached_read=int(cached.sum()), cache_write=int(cwrite.sum()),
+                         cached_share=float(cached.sum() / max(1, d["in_tokens"].fillna(0).sum())))
     res["latency_s_median"] = float(d["latency_s"].median()) if d["latency_s"].notna().any() else None
     res["unmapped_examples"] = d.loc[d["pred"].isin(["UNMAPPED", "AMBIGUOUS", "EMPTY"]), "raw"].astype(str).head(30).tolist()
     res["confusion_strict"] = pd.crosstab(d["gold"], d["pred"]).to_dict()
@@ -408,7 +473,7 @@ def summarize(jsonl):
         json.dump(res, f, ensure_ascii=False, indent=2)
     print(f"[{os.path.basename(jsonl)}] n={res['n']} strict acc={res['strict']['accuracy']:.4f} macroF1={res['strict']['macro_f1']:.4f} | "
           f"lenient acc={res['lenient']['accuracy']:.4f} | unmapped={res['unmapped_rate']:.2%} non-exact={res['non_exact_rate']:.2%} | "
-          f"Religion recall={res['strict']['per_class']['Religion']['recall']:.3f} | served={list(res['served_models'])}")
+          f"Religion recall={res['strict']['per_class']['Religion']['recall']:.3f} | tokens in={res['tokens']['input']} cached={res['tokens']['cached_share']:.0%} | served={list(res['served_models'])}")
     return res
 
 
@@ -431,7 +496,8 @@ def _selftest():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--provider", choices=["openai", "anthropic", "gemini", "deepseek", "together", "vllm", "mock"])
+    ap.add_argument("--provider", choices=["openai", "anthropic", "gemini", "deepseek", "together", "openrouter", "vllm", "mock"])
+    ap.add_argument("--or-provider", default="", help="openrouter only: comma-separated upstream provider slugs to pin, e.g. 'openai' or 'anthropic'; fallbacks disabled")
     ap.add_argument("--model", help="pinned snapshot id, e.g. gpt-4.1-2025-04-14, claude-3-5-haiku-20241022, gemini-2.0-flash-001")
     ap.add_argument("--prompt", default="en_v1", choices=list(PROMPTS))
     ap.add_argument("--shots", type=int, default=0, help="exemplars PER CLASS from the train split (0 = zero-shot)")

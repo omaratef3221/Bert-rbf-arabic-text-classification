@@ -61,6 +61,19 @@ harness as the API models) and after adaptation, which isolates the effect of ta
 If the authors have no preference, A is used. Serverless availability is read from Together's
 model list at run time; the exact id is logged.
 
+## 3b. OpenRouter as an alternative route (option, 16 Oct 2026)
+
+OpenRouter (`https://openrouter.ai/api/v1`, OpenAI-compatible) can serve GPT-4.1, Claude Haiku 4.5, Gemini
+Flash and DeepSeek under one key and one bill, which would remove the two blockers (invalid OpenAI key,
+empty Gemini credit). The harness supports it (`--provider openrouter --model openai/gpt-4.1 …`).
+Conditions for it to stay reproducible: (1) pin the upstream provider with `--or-provider` so no
+silent fallback to another host or quantization happens; (2) report the served model and provider
+that OpenRouter returns in every response (logged in `served_model` as "model via provider");
+(3) use vendor-pinned ids where OpenRouter offers them (e.g. `openai/gpt-4.1-2025-04-14`). Prices
+are the vendors' list prices plus OpenRouter's deposit fee (about 5 %); Anthropic cache markers and
+OpenAI/Gemini automatic caching pass through. Recommended use: GPT-4.1 and Gemini via OpenRouter;
+Claude and DeepSeek stay on their direct, already-verified routes.
+
 ## 4. Decoding and logging settings (identical for every API model)
 
 | Setting | Value | Notes |
@@ -71,6 +84,7 @@ model list at run time; the exact id is logged.
 | seed | 42 | honoured by OpenAI and Gemini; ignored elsewhere |
 | system prompt | per prompt variant | `en_v2`, `ar_v2` use one; others do not |
 | thinking | off | Gemini 3.x: `thinking_budget=0` or `thinking_level="minimal"`, thinking tokens logged |
+| prompt caching | **always on** (author decision, 16 Oct 2026). Every prompt is sent as a shared prefix (instruction + labels + few-shot examples) followed by the article, so the prefix is identical across the 6,822 requests of a run. Anthropic: explicit `cache_control` breakpoint after the prefix (verified: 75 % of input tokens served from cache at k = 3; the k = 1 prefix of ≈ 3,300 tokens is below Haiku 4.5's minimum and is not cached). OpenAI: automatic prefix caching plus `prompt_cache_key` = run name. Gemini: one explicit context cache per run for prefixes above the minimum, implicit caching otherwise. Together: no caching offered. Cache reads/writes are logged per request and summarised (`tokens.cached_share`). | caching does not change outputs; it only changes price |
 | retries | up to 6 with exponential backoff (2 s → 60 s) on 429 / 5xx / timeouts only | 400/401/402/403/404/422 and client-side errors fail fast and are recorded |
 | timeout | 60 s per request | |
 | logged per request | raw output, finish reason, input/output/thinking tokens, served model id, latency, attempts, error, timestamp | JSONL in `results/` |
