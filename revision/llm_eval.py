@@ -319,7 +319,7 @@ def run(args):
     if exemplars is not None:
         exemplars = exemplars.sample(frac=1.0, random_state=args.fewshot_seed).reset_index(drop=True)  # fixed interleaved order
     provider = make_provider(args)
-    tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "") + ("__nodateline" if args.strip_dateline else "")
+    tag = f"{args.provider}__{re.sub(r'[^A-Za-z0-9.-]+', '_', args.model)}__{args.prompt}__k{args.shots}" + (f"__trunc{args.truncate_words}" if args.truncate_words else "") + ("__nodateline" if args.strip_dateline else "") + (f"__{args.tag_suffix}" if args.tag_suffix else "")
     out = args.out or os.path.join(HERE, "results", f"{tag}.jsonl")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     done = set()
@@ -439,6 +439,7 @@ if __name__ == "__main__":
     ap.add_argument("--shot-words", type=int, default=120)
     ap.add_argument("--truncate-words", type=int, default=0, help="feed only the first N words (input-length control)")
     ap.add_argument("--strip-dateline", action="store_true", help="remove the '<city>: «الخليج»' dateline prefix before prompting (lexical-shortcut control)")
+    ap.add_argument("--tag-suffix", default="", help="suffix for the run name/output file, e.g. rep2 for a repeated determinism run")
     ap.add_argument("--split", default="test", choices=["test", "val"])
     ap.add_argument("--split-csv", default=os.path.join(HERE, "splits", "sanad_alkhaleej_split_v1.csv"))
     ap.add_argument("--root", default=None)
