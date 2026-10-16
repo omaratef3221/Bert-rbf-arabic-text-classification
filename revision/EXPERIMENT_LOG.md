@@ -1,0 +1,115 @@
+# Experiment log and handoff — NLP-D-26-00114 revision
+
+This file is written so that anyone (including a Claude session in the browser that has only this
+repository and the W&B project) can continue the revision: find every result, know how it was
+produced, and write the paper from it. Read this first, then `REVISION_PLAN.md` (what and why),
+`MODEL_SNAPSHOTS.md` (which LLMs and settings), `STATUS_AND_TODO.md` (open items).
+
+Last updated: 16 Oct 2026 (see §8 for the dated status log).
+
+---
+
+## 1. Context in five lines
+
+- Paper: *Arabic News Classification: Lightweight Supervised Models vs. Zero-Shot Large Language Models*, Natural Language Processing Journal, manuscript NLP-D-26-00114, major revision due **22 Nov 2026**. Authors: Omar Elgendy, Ali Bou Nassif, Ashraf Elnagar (University of Sharjah). Submitted PDF: `paper v1.pdf` in the repo root (not in git).
+- Task: 7-way single-label topic classification of SANAD AlKhaleej articles (Culture, Finance, Medical, Politics, Religion, Sports, Tech; 6,500 each).
+- Systems: frozen CAMeLBERT-MSA [CLS] embedding + dense head or RBF-SVM (paper); full CAMeLBERT fine-tuning (new); zero-/few-shot API LLMs (GPT-4.1, Claude Haiku 4.5, Gemini Flash, DeepSeek V4 Flash); open-weight Qwen2.5-7B-Instruct zero-shot and QLoRA (new).
+- The submitted LLM numbers cannot be reused: different random test samples per model, non-deterministic decoding, and the Claude 75 % / Religion-recall-0 result was a parsing bug (`max_tokens=1`, mapper without a Religion branch). Everything is recomputed on one split.
+- Code: GitHub `omaratef3221/Bert-arabic-fake-news-rbf`, folder `revision/`. W&B: https://wandb.ai/omaratef3221/arabic-news-revision.
+
+## 2. Where everything is
+
+| What | Where |
+|---|---|
+| Canonical split (all systems) | `revision/splits/sanad_alkhaleej_split_v1.csv` (+ `_summary.json`, sha1 `951575cb…`). Columns: `doc_id`, `category`, `split` (dedup, cluster-aware), `split_legacy` (paper-style), `dup_group`, `dup_group_size`, `max_cos_other`, `n_words`, `text_sha1`, `lc_rank_s0..2` (learning-curve / few-shot ranks). Text is re-read from the Kaggle dump `haithemhermessi/sanad-dataset` by `data_split.load_split()`. |
+| Supervised results | `revision/results/supervised/runs.jsonl` (one JSON line per run: config, accuracy, macro-F1, 95 % bootstrap CIs, per-class P/R/F1, confusion matrix, timings, trainable params, epoch history) and `revision/results/supervised/<run>.pred.csv` (doc_id, gold, pred). |
+| LLM results | `revision/results/<provider>__<model>__<prompt>__k<shots>[__truncN].jsonl` (one line per article: raw output, mapped label, mapping method, finish reason, tokens, served model id, latency, attempts, error) + `.meta.json` (exact prompt text, exemplar ids, decoding settings, date) + `.summary.json` (strict and lenient metrics, mapping audit, unmapped examples, confusion). |
+| LoRA budget | `revision/results/lora/<run>/budget.json` (trainable params, tokens, GPU-hours, peak VRAM, LoRA config); the adapter itself is not committed. Its test predictions are in `results/vllm__lora__…jsonl`. |
+| Tables for the paper | `revision/results/tables/*.csv` produced by `python analysis.py --results-dir results`: `main_table.csv`, `learning_curve.csv`, `prompt_robustness.csv`, `fewshot.csv`, `mapping_audit.csv`, `pairwise_mcnemar.csv`. |
+| Logs of the GPU box | `revision/logs/<step>.log` and `revision/logs/run_all.log` (not committed; copied to OneDrive at the end). |
+| W&B | project `arabic-news-revision`, run names identical to the result file names; supervised runs grouped by `<head>_len<L>_<split>`, LLM runs grouped by `<provider>_<model>`. |
+
+Naming of supervised runs: `<head>__<model>__len<maxlen>__n<per-class>__s<seed>__<split-col>__dl-<dateline>[__trunc<N>]`,
+e.g. `dense__CAMeL-Lab_bert-base-arabic-camelbert-msa__len150__nall__s0__split__dl-none`.
+
+## 3. The split (E0), already final
+
+45,500 articles; 23 exact duplicates removed; 183 near-duplicate clusters at TF-IDF cosine ≥ 0.8
+covering 1,403 articles (largest: templated daily market reports in Finance, 376 / 259 / 188
+articles). Clusters are allocated whole, largest first, to the most under-filled split, so no
+near-duplicate crosses train/val/test. Resulting counts (train / val / test): Culture 4547/974/974,
+Finance 4548/975/975, Medical 4550/975/975, Politics 4549/975/975, Religion 4541/973/973, Sports
+4549/975/975, Tech 4549/975/975. Zero test articles have a cosine ≥ 0.8 neighbour outside the test
+set (the paper-style split had 212). Leakage effect measured on the submitted models: dropping test
+articles with cosine ≥ 0.5 to a non-test article moves dense 96.82 → 96.48 and SVM 97.23 → 96.90.
+
+## 4. Experiments and the paper element each one feeds
+
+| ID | Experiment | Script / step in `run_all_gpu.sh` | Paper element |
+|---|---|---|---|
+| E1 | Zero-shot LLMs, 4 APIs + Qwen2.5-7B, 5 prompts each, full test set, T = 0 | `llm_eval.py`; Qwen via `qwen_zeroshot` | main table; prompt-robustness table (mean ± std, min–max); mapping-audit table |
+| E2 | Supervised learning curve, dense and SVM, n ∈ {10, 50, 100, 500, 1000, all} per class, 3 seeds, 150 and 512 wordpieces | `lc_dense_150`, `lc_svm_150`, `lc_dense_512` | learning-curve figure (where supervised overtakes zero-/few-shot) |
+| E3 | Full fine-tuning of CAMeLBERT at n ∈ {100, 1000, all} | `ft_100`, `ft_1000`, `ft_all` | main table row + learning-curve line; settles the frozen-vs-fine-tuned question |
+| E4 | QLoRA on Qwen2.5-7B-Instruct at n ∈ {100, 1000, all}, with budget | `lora_100`, `lora_1000`, `lora_all` | main table row "task-adapted LLM"; budget table (params, tokens, GPU-h) |
+| E5 | Few-shot k = 1 and 3 per class, primary prompt `en_v2`, all LLMs | `llm_eval.py --shots` | few-shot rows; gain over zero-shot |
+| E6 | Input-length control: BERT 150 vs 512 (from E2); best LLM on first 100 words | `lc_dense_512`, `svm_full_512`; `llm_eval.py --truncate-words 100` | replaces mechanistic claims |
+| E7 | Dateline intervention: dense head with test-only and train+test dateline removal; best LLM test-only | `dense_dateline_test`, `dense_dateline_both`; `llm_eval.py` on stripped text (TODO flag) | lexical-shortcut analysis (Reviewer 2, point 7) |
+| E8 | Paper-style split replication, dense and SVM | `dense_legacy`, `svm_legacy` | shows the effect of deduplication |
+| E9 | Statistics: bootstrap CIs, McNemar, prompt spread | `analysis.py` | CIs on every number, p-values for headline pairs |
+| — | Paper-config dense head (lr 5e-5, 10 epochs) | `dense_full_paperlr` | continuity with the submitted numbers |
+
+Supervised runs on the new split use early stopping on validation loss (patience 5, max 50 epochs,
+lr 1e-3, AdamW, weight decay 0.01, batch 32) for the dense head; SVM: RBF, C = 9, gamma = scale
+(cuML if installed, else scikit-learn); full fine-tuning: lr 2e-5, linear schedule with 6 % warm-up,
+AMP, early stopping on val loss, max_len 512.
+
+## 5. LLM settings (see `MODEL_SNAPSHOTS.md` for the rationale)
+
+| Role | Model id | Provider | Status 16 Oct 2026 |
+|---|---|---|---|
+| GPT | `gpt-4.1-2025-04-14` | OpenAI | waiting for a valid key |
+| Claude | `claude-haiku-4-5-20251001` | Anthropic | verified (smoke tests passed) |
+| Gemini | `gemini-3.5-flash` (fallback `gemini-3.8-flash`) | Google AI Studio | waiting for credits |
+| DeepSeek | `deepseek-ai/DeepSeek-V4-Flash-0731`, reasoning off | Together AI serverless | verified |
+| Open-weight | `Qwen/Qwen2.5-7B-Instruct` (bf16, vLLM; QLoRA 4-bit r=16) | vast.ai A100 | pending |
+
+Decoding for every API model: temperature 0, top-p 1, max 16 output tokens, seed 42 where
+supported, thinking/reasoning disabled, 60 s timeout, retries only on 429/5xx/timeouts. Prompts
+`en_v1` (paper wording), `en_v2` (primary), `en_v3`, `ar_v1`, `ar_v2`; full text in `llm_eval.py`.
+Few-shot exemplars: the first k per class by `lc_rank_s0` in the train split, truncated to 120 words,
+shuffled with a fixed seed. Scoring: strict mapping (7 labels + Arabic names), unmapped / ambiguous /
+empty outputs count as errors; lenient mapping (synonyms such as Economy → Finance) reported as a
+sensitivity.
+
+## 6. Infrastructure
+
+| Machine | Use | Details |
+|---|---|---|
+| MacBook (OneDrive copy of the repo) | split building, API LLM runs, statistics, writing | Python 3.12 venv; API keys in `revision/.env` (git-ignored); W&B key in `~/.netrc` |
+| vast.ai instance `root@38.64.63.43:21769` | all GPU work (E2, E3, E4, E6a, E7, E8, Qwen zero-shot) | spec to be recorded once reachable (GPU, CUDA, torch, disk); repo at `/workspace/revision`, data at `/workspace/data/sanad/1`, HF cache `/workspace/hf` |
+
+The GPU sequence is `revision/run_all_gpu.sh` (idempotent: each step writes `results/markers/<step>.done`
+and is skipped on re-run; `STEP=<name> bash run_all_gpu.sh` runs one step). It is launched under
+`tmux` session `rev` so it survives SSH disconnects: `tmux attach -t rev` to watch, `tail -f logs/run_all.log` for the step list.
+
+## 7. How to turn results into the paper
+
+1. Run `python analysis.py --results-dir results --pairs "<dense pred.csv>,<best LLM jsonl>" ...` → `results/tables/`.
+2. Main table = `main_table.csv` rows: BERT-dense (mean ± std over seeds, len 150), BERT-svm, BERT-finetune, Qwen zero-shot, Qwen-LoRA, four API zero-shot (mean ± std over the 5 prompts) and few-shot rows; CIs from `acc_lo/acc_hi`.
+3. Learning-curve figure from `learning_curve.csv` (x = labelled articles per class, log scale; lines dense-150, dense-512, svm, finetune, LoRA points at 100/1000/all; horizontal bands for zero-shot and few-shot LLM means).
+4. Prompt robustness from `prompt_robustness.csv`; mapping audit from `mapping_audit.csv` (report exact / normalized / Arabic / contains / unmapped shares per model, with the raw examples).
+5. Significance: `pairwise_mcnemar.csv` (McNemar exact p and paired bootstrap CI of the accuracy difference) for dense vs best LLM, LoRA vs dense, few-shot vs zero-shot.
+6. Qualitative tables: sample disagreements from the `.pred.csv` / `.jsonl` files of the final runs only (join on `doc_id`).
+7. Text changes: `REVISION_PLAN.md` §5; response letter: `REVISION_PLAN.md` §1 (A1–A11) with the new numbers.
+
+## 8. Status log
+
+| Date (UTC) | Event |
+|---|---|
+| 2026-10-12 | Audit of the submitted pipeline; leakage analysis; canonical split built; scripts written and smoke-tested on CPU. |
+| 2026-10-14 | Live-API check of model availability; Claude Haiku 4.5 and DeepSeek V4 Flash verified; OpenAI keys invalid; Gemini account without credits. |
+| 2026-10-16 | W&B project `arabic-news-revision` created; opt-in W&B logging added to all scripts and tested offline; `run_all_gpu.sh` written; dataset packaged for the GPU box (`sanad_alkhaleej_v1.tar.gz`, 54 MB, sha1 `ae7dd22b…`). vast.ai host `38.64.63.43:21769` unreachable (port and ICMP time out); polling. |
+
+## 9. Open items
+
+See `STATUS_AND_TODO.md` §3 (author side: OpenAI key, Gemini credits, GPU box reachable, manuscript source) and §4 (my side).
