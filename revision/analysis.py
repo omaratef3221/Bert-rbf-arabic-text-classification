@@ -144,7 +144,7 @@ def mapping_audit(results_dir):
         rows.append(dict(run=os.path.basename(f).replace(".summary.json", ""), n=n, **{f"share_{k}": v / n for k, v in mm.items()},
                          unmapped_rate=r["unmapped_rate"], non_exact_rate=r["non_exact_rate"], api_error_rate=r["error_rate_api"],
                          strict_acc=r["strict"]["accuracy"], lenient_acc=r["lenient"]["accuracy"], finish=json.dumps(r["finish_reasons"]),
-                         examples=" | ".join(r["unmapped_examples"][:8])))
+                         examples=" | ".join(str(x) for x in r["unmapped_examples"][:8])))
     return pd.DataFrame(rows)
 
 
