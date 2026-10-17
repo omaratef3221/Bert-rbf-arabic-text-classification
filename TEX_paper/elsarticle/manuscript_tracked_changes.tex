@@ -1,7 +1,7 @@
 %DIF 1-17c1-3
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL old_flat.tex   Sat Oct 17 14:34:15 2026
-%DIF ADD new_flat.tex   Sat Oct 17 14:34:15 2026
+%DIF DEL old_flat.tex   Sat Oct 17 14:35:16 2026
+%DIF ADD new_flat.tex   Sat Oct 17 14:35:16 2026
 %DIF < %% Copyright 2007-2025 Elsevier Ltd
 %DIF < %% 
 %DIF < %% This file is part of the 'Elsarticle Bundle'.
@@ -1321,22 +1321,23 @@ Qwen2.5-7B-Instruct & 86.6 & 87.4$\pm$2.5 & 84.9--90.3 & 91.6 & 88.9 & -- & -- &
 %DIFDELCMD < %%%
 \DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
-\caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. Percentages of all outputs.}
+\caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. All shares are percentages of the outputs of the model; ``worst run'' is the highest share in any single run.}
 \label{tab:mapping}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\setlength{\tabcolsep}{4pt}%
 \begin{tabular}{@{}l r r r r r r r@{}}
 \toprule
-\textbf{Model} & \textbf{Runs} & \textbf{Outputs} & \textbf{Exact (\%)} & \textbf{Resolved (\%)} & \textbf{Resolved, worst run (\%)} & \textbf{Unmapped (\%)} & \textbf{Unmapped, worst run (\%)} \\
+\textbf{Model} & \textbf{Runs} & \textbf{Outputs} & \textbf{Exact} & \textbf{Resolved} & \textbf{Resolved, worst run} & \textbf{Unmapped} & \textbf{Unmapped, worst run} \\
 \midrule
 GPT-4.1 & 10 & 13,122 & 92.7 & 7.3 & 100.0 & 0.00 & 0.00 \\
 Claude Haiku 4.5 & 10 & 13,122 & 97.0 & 3.0 & 55.4 & 0.02 & 0.04 \\
 Gemini 3.8 Flash & 10 & 13,122 & 94.8 & 5.2 & 97.3 & 0.04 & 0.14 \\
 DeepSeek V4 Flash & 10 & 24,844 & 99.9 & 0.1 & 0.6 & 0.02 & 0.07 \\
 Qwen2.5-7B (zero-/few-shot) & 7 & 47,754 & 96.6 & 3.4 & 9.0 & 0.51 & 1.00 \\
-Qwen2.5-7B + QLoRA (100 / class) & 1 & 6,822 & 99.9 & 0.1 & 0.1 & 0.13 & 0.13 \\
-Qwen2.5-7B + QLoRA (1{,}000 / class) & 1 & 6,822 & 100.0 & 0.0 & 0.0 & 0.01 & 0.01 \\
-Qwen2.5-7B + QLoRA (all) & 1 & 6,822 & 100.0 & 0.0 & 0.0 & 0.00 & 0.00 \\
+Qwen2.5-7B + QLoRA, 100 / class & 1 & 6,822 & 99.9 & 0.1 & 0.1 & 0.13 & 0.13 \\
+Qwen2.5-7B + QLoRA, 1{,}000 / class & 1 & 6,822 & 100.0 & 0.0 & 0.0 & 0.01 & 0.01 \\
+Qwen2.5-7B + QLoRA, all & 1 & 6,822 & 100.0 & 0.0 & 0.0 & 0.00 & 0.00 \\
 \bottomrule
 \end{tabular}}
 \end{table}

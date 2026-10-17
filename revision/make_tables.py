@@ -117,20 +117,21 @@ w("tab_prompts.tex", r"""\begin{table}[!ht]
 
 # ---- mapping audit per model
 mb = pd.DataFrame(R["mapping_by_model"]).set_index("model")
-lab = {"openai_gpt-4.1": "GPT-4.1", "anthropic_claude-haiku-4.5": "Claude Haiku 4.5", "google_gemini-3.8-flash": "Gemini 3.8 Flash", "deepseek-ai_DeepSeek-V4-Flash-0731": "DeepSeek V4 Flash", "Qwen_Qwen2.5-7B-Instruct": "Qwen2.5-7B (zero-/few-shot)", "lora_n100": "Qwen2.5-7B + QLoRA (100 / class)", "lora_n1000": "Qwen2.5-7B + QLoRA (1{,}000 / class)", "lora_all": "Qwen2.5-7B + QLoRA (all)"}
+lab = {"openai_gpt-4.1": "GPT-4.1", "anthropic_claude-haiku-4.5": "Claude Haiku 4.5", "google_gemini-3.8-flash": "Gemini 3.8 Flash", "deepseek-ai_DeepSeek-V4-Flash-0731": "DeepSeek V4 Flash", "Qwen_Qwen2.5-7B-Instruct": "Qwen2.5-7B (zero-/few-shot)", "lora_n100": "Qwen2.5-7B + QLoRA, 100 / class", "lora_n1000": "Qwen2.5-7B + QLoRA, 1{,}000 / class", "lora_all": "Qwen2.5-7B + QLoRA, all"}
 body = ""
 for k, nm in lab.items():
     r = mb.loc[k]
     body += f"{nm} & {int(r['runs'])} & {int(r['n']):,} & {p(r['exact'])} & {p(1-r['exact'])} & {p(r['nonexact_max'])} & {100*r['unmapped']:.2f} & {100*r['unmapped_max']:.2f} \\\\\n"
 w("tab_mapping.tex", r"""\begin{table}[!ht]
 \centering
-\caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. Percentages of all outputs.}
+\caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. All shares are percentages of the outputs of the model; ``worst run'' is the highest share in any single run.}
 \label{tab:mapping}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\setlength{\tabcolsep}{4pt}%
 \begin{tabular}{@{}l r r r r r r r@{}}
 \toprule
-\textbf{Model} & \textbf{Runs} & \textbf{Outputs} & \textbf{Exact (\%)} & \textbf{Resolved (\%)} & \textbf{Resolved, worst run (\%)} & \textbf{Unmapped (\%)} & \textbf{Unmapped, worst run (\%)} \\
+\textbf{Model} & \textbf{Runs} & \textbf{Outputs} & \textbf{Exact} & \textbf{Resolved} & \textbf{Resolved, worst run} & \textbf{Unmapped} & \textbf{Unmapped, worst run} \\
 \midrule
 """ + body + r"""\bottomrule
 \end{tabular}}
