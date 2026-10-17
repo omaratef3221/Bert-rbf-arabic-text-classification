@@ -1,2 +1,13 @@
 system,model,control,acc_sub,acc_primary_sub,delta,recall_Religion_sub,file
+LLM-openrouter,anthropic/claude-haiku-4.5,nodateline,0.9371428571428572,0.9385714285714286,-0.0014285714285714457,0.84,openrouter__anthropic_claude-haiku-4.5__en_v2__k0__nodateline__sub700.summary.json
+LLM-openrouter,anthropic/claude-haiku-4.5,rep2,0.9385714285714286,0.9385714285714286,0.0,0.84,openrouter__anthropic_claude-haiku-4.5__en_v2__k0__sub700__rep2.summary.json
+LLM-openrouter,anthropic/claude-haiku-4.5,trunc=100,0.9328571428571428,0.9385714285714286,-0.005714285714285783,0.82,openrouter__anthropic_claude-haiku-4.5__en_v2__k0__trunc100__sub700.summary.json
+LLM-openrouter,google/gemini-3.8-flash,nodateline,0.9357142857142857,0.9342857142857143,0.0014285714285714457,0.81,openrouter__google_gemini-3.8-flash__en_v2__k0__nodateline__sub700.summary.json
+LLM-openrouter,google/gemini-3.8-flash,rep2,0.9342857142857143,0.9342857142857143,0.0,0.81,openrouter__google_gemini-3.8-flash__en_v2__k0__sub700__rep2.summary.json
+LLM-openrouter,google/gemini-3.8-flash,trunc=100,0.9242857142857143,0.9342857142857143,-0.010000000000000009,0.81,openrouter__google_gemini-3.8-flash__en_v2__k0__trunc100__sub700.summary.json
+LLM-openrouter,openai/gpt-4.1,nodateline,0.9542857142857143,0.9542857142857143,0.0,0.83,openrouter__openai_gpt-4.1__en_v2__k0__nodateline__sub700.summary.json
+LLM-openrouter,openai/gpt-4.1,rep2,0.9542857142857143,0.9542857142857143,0.0,0.83,openrouter__openai_gpt-4.1__en_v2__k0__sub700__rep2.summary.json
+LLM-openrouter,openai/gpt-4.1,trunc=100,0.9442857142857143,0.9542857142857143,-0.010000000000000009,0.81,openrouter__openai_gpt-4.1__en_v2__k0__trunc100__sub700.summary.json
+LLM-together,deepseek-ai/DeepSeek-V4-Flash-0731,nodateline,0.9285714285714286,0.9328571428571428,-0.004285714285714226,0.79,together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v2__k0__nodateline__sub1400.summary.json
+LLM-together,deepseek-ai/DeepSeek-V4-Flash-0731,rep2,0.9342857142857143,0.9328571428571428,0.0014285714285714457,0.82,together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v2__k0__sub1400__rep2.summary.json
 LLM-together,deepseek-ai/DeepSeek-V4-Flash-0731,trunc=100,0.9257142857142857,0.9328571428571428,-0.0071428571428571175,0.79,together__deepseek-ai_DeepSeek-V4-Flash-0731__en_v2__k0__trunc100__sub1400.summary.json

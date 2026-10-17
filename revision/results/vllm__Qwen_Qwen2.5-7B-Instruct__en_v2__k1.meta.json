@@ -1,0 +1,33 @@
+{
+  "run": "vllm__Qwen_Qwen2.5-7B-Instruct__en_v2__k1",
+  "provider": "vllm",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "prompt": "en_v2",
+  "shots": 1,
+  "fewshot_seed": 0,
+  "shot_words": 120,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "max_tokens": 16,
+  "seed": 42,
+  "split": "test",
+  "split_csv": "sanad_alkhaleej_split_v1.csv",
+  "n_docs": 6822,
+  "truncate_words": 0,
+  "subset": 0,
+  "started": "2026-10-16T21:06:52.781131+00:00",
+  "exemplar_ids": [
+    "Tech/3032.txt",
+    "Medical/4057.txt",
+    "Finance/2427.txt",
+    "Politics/3463.txt",
+    "Culture/2241.txt",
+    "Sports/1668.txt",
+    "Religion/3044.txt"
+  ],
+  "prompt_text": {
+    "lang": "en",
+    "system": "You are a precise news-topic classifier for Modern Standard Arabic.",
+    "user": "Classify the Arabic news article below into exactly one of these categories:\n{labels}\n\nRespond with the category name only, copied exactly from the list, with no explanation.\n{examples}Article:\n{text}\n\nCategory:"
+  }
+}

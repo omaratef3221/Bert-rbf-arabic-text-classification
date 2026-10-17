@@ -1,0 +1,30 @@
+{
+  "run": "lora__Qwen_Qwen2.5-7B-Instruct__n1000__s0__r16__ep2.0",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "n_train_examples": 7000,
+  "n_per_class": "1000",
+  "seed": 0,
+  "trainable_params": 40370176,
+  "total_params": 4931917312,
+  "trainable_pct": 0.8185493276980553,
+  "training_tokens_per_epoch": 4460001,
+  "epochs": 2.0,
+  "training_tokens_total": 8920002.0,
+  "train_wall_sec": 5340.006950378418,
+  "train_gpu_hours": 1.483335263994005,
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "peak_vram_gb": 9.284330496,
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+  },
+  "lr": 0.0002,
+  "batch_size": 16,
+  "max_seq_len": 1024,
+  "load_in_4bit": true,
+  "unsloth": true,
+  "prompt": "en_v2",
+  "max_words": 350,
+  "ts": "2026-10-16T23:46:55.104922+00:00"
+}

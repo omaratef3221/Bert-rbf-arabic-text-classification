@@ -1,0 +1,227 @@
+{
+  "strict": {
+    "accuracy": 0.9363822925828202,
+    "macro_f1": 0.9456213207412916,
+    "per_class": {
+      "Culture": {
+        "precision": 0.9197224975222993,
+        "recall": 0.9527720739219713,
+        "f1": 0.9359556227937469,
+        "support": 974
+      },
+      "Finance": {
+        "precision": 0.9642857142857143,
+        "recall": 0.9692307692307692,
+        "f1": 0.9667519181585678,
+        "support": 975
+      },
+      "Medical": {
+        "precision": 0.9593908629441624,
+        "recall": 0.9692307692307692,
+        "f1": 0.9642857142857143,
+        "support": 975
+      },
+      "Politics": {
+        "precision": 0.9502032520325203,
+        "recall": 0.958974358974359,
+        "f1": 0.9545686574783052,
+        "support": 975
+      },
+      "Religion": {
+        "precision": 0.9282115869017632,
+        "recall": 0.7574511819116135,
+        "f1": 0.8341822297679683,
+        "support": 973
+      },
+      "Sports": {
+        "precision": 0.9958847736625515,
+        "recall": 0.9928205128205129,
+        "f1": 0.9943502824858758,
+        "support": 975
+      },
+      "Tech": {
+        "precision": 0.9851694915254238,
+        "recall": 0.9538461538461539,
+        "f1": 0.969254820218864,
+        "support": 975
+      }
+    }
+  },
+  "lenient": {
+    "accuracy": 0.9363822925828202,
+    "macro_f1": 0.9456213207412916,
+    "per_class": {
+      "Culture": {
+        "precision": 0.9197224975222993,
+        "recall": 0.9527720739219713,
+        "f1": 0.9359556227937469,
+        "support": 974
+      },
+      "Finance": {
+        "precision": 0.9642857142857143,
+        "recall": 0.9692307692307692,
+        "f1": 0.9667519181585678,
+        "support": 975
+      },
+      "Medical": {
+        "precision": 0.9593908629441624,
+        "recall": 0.9692307692307692,
+        "f1": 0.9642857142857143,
+        "support": 975
+      },
+      "Politics": {
+        "precision": 0.9502032520325203,
+        "recall": 0.958974358974359,
+        "f1": 0.9545686574783052,
+        "support": 975
+      },
+      "Religion": {
+        "precision": 0.9282115869017632,
+        "recall": 0.7574511819116135,
+        "f1": 0.8341822297679683,
+        "support": 973
+      },
+      "Sports": {
+        "precision": 0.9958847736625515,
+        "recall": 0.9928205128205129,
+        "f1": 0.9943502824858758,
+        "support": 975
+      },
+      "Tech": {
+        "precision": 0.9851694915254238,
+        "recall": 0.9538461538461539,
+        "f1": 0.969254820218864,
+        "support": 975
+      }
+    }
+  },
+  "n": 6822,
+  "mapping_methods": {
+    "exact": 6661,
+    "UNMAPPED": 154,
+    "contains": 7
+  },
+  "unmapped_rate": 0.02257402521254764,
+  "non_exact_rate": 0.02360011726766344,
+  "error_rate_api": 0.0,
+  "finish_reasons": {
+    "stop": 6822
+  },
+  "served_models": {
+    "lora__Qwen_Qwen2.5-7B-Instruct__n100__s0__r16__ep3.0": 6822
+  },
+  "tokens": {
+    "input": 0,
+    "output": 0,
+    "cached_read": 0,
+    "cache_write": 0,
+    "cached_share": 0.0
+  },
+  "latency_s_median": null,
+  "unmapped_examples": [
+    " حدود لها» يوكي ك",
+    "أي أكفان تغطي",
+    "\n\nCategory:",
+    "ه ويحوله إلى مأس",
+    " من الألوان، ومن قصيد",
+    "1.12 درهم بتداول",
+    "1،100،00",
+    "طاع الخدمات العامة 700",
+    "5 درهم. وارتفع",
+    "، و«أبوظبي التج",
+    "ن مع ارتفاع إشراق",
+    "قل والخدمات اللوجستية",
+    "، و«داماك العقارية",
+    "0.7 درهم، ثم س",
+    " 1،100،0",
+    " .101 .10 س",
+    "منت» 1.52%",
+    "% ودريك آند سكل",
+    "62 درهم و«الخ",
+    "1% إلى 0.62",
+    "اء ثالثاً سهم",
+    ".1 درهم.وتصدر",
+    "جانب نحو شراء أسهم ش",
+    " على التداولات بقيمة 1",
+    "00 .1،000",
+    "0.60%، ومؤشر",
+    "100 سهم بقيمة",
+    " 22 مليون درهم من قبل",
+    "بي‮ ‬لا‮",
+    " سلبي على مكافحة م"
+  ],
+  "confusion_strict": {
+    "Culture": {
+      "Culture": 928,
+      "Finance": 0,
+      "Medical": 1,
+      "Politics": 3,
+      "Religion": 75,
+      "Sports": 1,
+      "Tech": 1
+    },
+    "Finance": {
+      "Culture": 1,
+      "Finance": 945,
+      "Medical": 1,
+      "Politics": 5,
+      "Religion": 6,
+      "Sports": 0,
+      "Tech": 22
+    },
+    "Medical": {
+      "Culture": 0,
+      "Finance": 1,
+      "Medical": 945,
+      "Politics": 9,
+      "Religion": 21,
+      "Sports": 0,
+      "Tech": 9
+    },
+    "Politics": {
+      "Culture": 13,
+      "Finance": 2,
+      "Medical": 14,
+      "Politics": 935,
+      "Religion": 15,
+      "Sports": 2,
+      "Tech": 3
+    },
+    "Religion": {
+      "Culture": 26,
+      "Finance": 0,
+      "Medical": 7,
+      "Politics": 23,
+      "Religion": 737,
+      "Sports": 1,
+      "Tech": 0
+    },
+    "Sports": {
+      "Culture": 1,
+      "Finance": 0,
+      "Medical": 0,
+      "Politics": 0,
+      "Religion": 0,
+      "Sports": 968,
+      "Tech": 3
+    },
+    "Tech": {
+      "Culture": 0,
+      "Finance": 4,
+      "Medical": 5,
+      "Politics": 0,
+      "Religion": 5,
+      "Sports": 0,
+      "Tech": 930
+    },
+    "UNMAPPED": {
+      "Culture": 5,
+      "Finance": 23,
+      "Medical": 2,
+      "Politics": 0,
+      "Religion": 114,
+      "Sports": 3,
+      "Tech": 7
+    }
+  }
+}
