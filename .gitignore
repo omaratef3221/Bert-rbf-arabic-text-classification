@@ -12,6 +12,10 @@ confusion_matrices.tar.gz
 final_df_*.csv
 result_sample_basic_model.csv
 paper v1.pdf
-*.png
+/*.png
 revision/results/lora/*/adapter/
 revision/logs/
+
+# LaTeX build directories (regenerated; final PDFs are copied to TEX_paper/revised/)
+TEX_paper/build_rev/
+TEX_paper/build_orig/

@@ -1,0 +1,21 @@
+\begin{table}[!ht]
+\centering
+\caption{LLM robustness and in-context conditions on the fixed 700-article evaluation subset (100 per class; identical articles for every model; accuracy in \%). ``Primary'' is the main prompt; the spread is over five semantically equivalent prompts (three English, two Arabic); $k$ exemplars per class are drawn from the training split; ``Repeat'' is a second identical pass of the primary prompt at temperature 0; ``No dateline'' removes the newspaper dateline from every article; ``100 words'' truncates each article to its first 100 words. Qwen2.5-7B zero-/few-shot runs used the full test set and are reported on the same 700 articles.}
+\label{tab:prompts}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l r r r rr r r r@{}}
+\toprule
+ & & \multicolumn{2}{c}{\textbf{5 prompts}} & \multicolumn{2}{c}{\textbf{Few-shot}} & \multicolumn{3}{c}{\textbf{Controls}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-9}
+\textbf{Model} & \textbf{Primary} & \textbf{mean$\pm$std} & \textbf{min--max} & $k=1$ & $k=2$ & \textbf{Repeat} & \textbf{No dateline} & \textbf{100 words} \\
+\midrule
+GPT-4.1 & 95.4 & 95.2$\pm$0.5 & 94.7--95.9 & 94.4 & 94.4 & 95.4 & 95.4 & 94.4 \\
+Claude Haiku 4.5 & 93.9 & 92.9$\pm$0.7 & 92.1--93.9 & 92.9 & 93.4 & 93.9 & 93.7 & 93.3 \\
+Gemini 3.8 Flash & 93.4 & 93.1$\pm$0.3 & 92.7--93.4 & 94.9 & 95.3 & 93.4 & 93.6 & 92.4 \\
+DeepSeek V4 Flash & 93.3 & 92.2$\pm$1.5 & 89.9--93.7 & 94.3 & 94.4 & 93.4 & 92.9 & 92.6 \\
+Qwen2.5-7B-Instruct & 86.6 & 87.4$\pm$2.5 & 84.9--90.3 & 91.6 & 88.9 & -- & -- & -- \\
+\bottomrule
+\end{tabular}}
+\end{table}

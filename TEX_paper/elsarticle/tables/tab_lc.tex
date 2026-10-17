@@ -1,0 +1,18 @@
+\begin{table}[!ht]
+\centering
+\caption{Learning curve: test accuracy (\%) as a function of the number of labelled training articles per class (mean $\pm$ standard deviation over three seeds; ``all'' = the full training split, about 4{,}545 per class). Nested subsets drawn with a fixed ranking of the training split. For reference, the best zero-shot LLM reaches 92.8\,\% and the best few-shot condition 95.3\,\% (Table~\ref{tab:prompts}).}
+\label{tab:lc}
+\small
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l rrrrrr@{}}
+\toprule
+\textbf{System} & \textbf{10} & \textbf{50} & \textbf{100} & \textbf{500} & \textbf{1{,}000} & \textbf{all} \\
+\midrule
+Dense head, 150 tokens & 82.5$\pm$0.9 & 90.9$\pm$0.4 & 92.9$\pm$0.3 & 95.0$\pm$0.1 & 95.4$\pm$0.1 & 96.4$\pm$0.2 \\
+RBF-SVM, 150 tokens & 81.5$\pm$0.8 & 90.4$\pm$0.4 & 92.4$\pm$0.3 & 95.3$\pm$0.2 & 96.0$\pm$0.1 & 97.1$\pm$0.0 \\
+Dense head, 512 tokens & 88.4$\pm$0.7 & 94.2$\pm$0.2 & 95.1$\pm$0.0 & 96.3$\pm$0.4 & 96.7$\pm$0.1 & 97.5$\pm$0.1 \\
+Fully fine-tuned CAMeLBERT & -- & -- & 96.6$\pm$0.4 & -- & 98.4$\pm$0.1 & 98.9 \\
+Qwen2.5-7B + QLoRA & -- & -- & 95.7 & -- & 98.4 & 98.5 \\
+\bottomrule
+\end{tabular}}
+\end{table}

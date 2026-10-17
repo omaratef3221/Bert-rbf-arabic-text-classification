@@ -1,0 +1,28 @@
+\begin{table}[!ht]
+\centering
+\caption{Main results on the shared, deduplicated test split (6{,}822 articles). Accuracy is the mean over training seeds ($\pm$ standard deviation where more than one seed was run) with the 95\,\% bootstrap confidence interval of a single run; precision, recall and F1 are macro-averaged over the seven classes, in percent. ``Trainable'' is the number of parameters updated on the SANAD training split. All LLMs use the primary prompt with deterministic decoding.}
+\label{tab:main}
+\small
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l r r l r r r@{}}
+\toprule
+\textbf{System} & \textbf{Trainable} & \textbf{Accuracy} & \textbf{95\,\% CI} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
+\midrule
+Frozen CAMeLBERT + dense head (150 tok.) & 0.30\,M & 96.4$\pm$0.2 & [95.9, 96.8] & 96.4 & 96.4 & 96.4 \\
+Frozen CAMeLBERT + RBF-SVM (150 tok.) & -- & 97.1$\pm$0.0 & [96.7, 97.5] & 97.1 & 97.1 & 97.1 \\
+Frozen CAMeLBERT + dense head (512 tok.) & 0.30\,M & 97.5$\pm$0.1 & [97.1, 97.8] & 97.6 & 97.5 & 97.5 \\
+Frozen CAMeLBERT + RBF-SVM (512 tok.) & -- & 98.1$\pm$0.0 & [97.8, 98.4] & 98.1 & 98.1 & 98.1 \\
+Fully fine-tuned CAMeLBERT (512 tok.) & 109.1\,M & 98.9 & [98.7, 99.1] & 98.9 & 98.9 & 98.9 \\
+\addlinespace
+Qwen2.5-7B-Instruct + QLoRA, all training data & 40.4\,M & 98.5 & [98.2, 98.8] & 98.5 & 98.5 & 98.5 \\
+Qwen2.5-7B-Instruct + QLoRA, 1{,}000 / class & 40.4\,M & 98.4 & [98.1, 98.7] & 98.4 & 98.4 & 98.4 \\
+Qwen2.5-7B-Instruct + QLoRA, 100 / class & 40.4\,M & 95.7 & [95.2, 96.2] & 95.8 & 95.7 & 95.7 \\
+\addlinespace
+GPT-4.1, zero-shot & 0 & 92.8 & [92.2, 93.4] & 93.2 & 92.8 & 92.7 \\
+Claude Haiku 4.5, zero-shot & 0 & 92.0 & [91.4, 92.7] & 92.5 & 92.0 & 91.9 \\
+Gemini 3.8 Flash, zero-shot & 0 & 91.5 & [90.8, 92.1] & 92.5 & 91.5 & 91.4 \\
+DeepSeek V4 Flash, zero-shot & 0 & 91.5 & [90.9, 92.1] & 92.3 & 91.5 & 91.4 \\
+Qwen2.5-7B-Instruct, zero-shot & 0 & 85.2 & [84.3, 86.0] & 87.9 & 85.2 & 84.9 \\
+\bottomrule
+\end{tabular}}
+\end{table}

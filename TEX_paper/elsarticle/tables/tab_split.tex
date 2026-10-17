@@ -1,0 +1,22 @@
+\begin{table}[!ht]
+\centering
+\caption{The canonical split used by every system: 45{,}477 articles after removing 23 exact duplicates, partitioned 70/15/15 per class so that no near-duplicate cluster (TF--IDF cosine $\geq 0.8$) is divided between partitions.}
+\label{tab:split}
+\small
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+\textbf{Class} & \textbf{Train} & \textbf{Validation} & \textbf{Test} \\
+\midrule
+Culture & 4,547 & 974 & 974 \\
+Finance & 4,548 & 975 & 975 \\
+Medical & 4,550 & 975 & 975 \\
+Politics & 4,549 & 975 & 975 \\
+Religion & 4,541 & 973 & 973 \\
+Sports & 4,549 & 975 & 975 \\
+Tech & 4,549 & 975 & 975 \\
+\midrule
+Total & 31,833 & 6,822 & 6,822 \\
+\bottomrule
+\end{tabular}}
+\end{table}

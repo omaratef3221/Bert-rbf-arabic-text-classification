@@ -1,0 +1,24 @@
+\begin{table}[!ht]
+\centering
+\caption{Per-class recall on the shared test split (975 articles per class, 973--977 after deduplication). Supervised systems: mean over seeds; LLMs: zero-shot, primary prompt. Religion is the weakest class for every zero-shot LLM and the only class where the gap to the supervised systems exceeds 20 points.}
+\label{tab:perclass}
+\small
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l rrrr rrrr@{}}
+\toprule
+ & \multicolumn{4}{c}{\textbf{Supervised / adapted}} & \multicolumn{4}{c}{\textbf{Zero-shot LLMs}} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+\textbf{Class} & Dense 150 & SVM 150 & Fine-tuned & QLoRA all & GPT-4.1 & Claude 4.5 & Gemini 3.8 & DeepSeek V4 \\
+\midrule
+Culture & 0.939 & 0.945 & 0.994 & 0.968 & 0.976 & 0.977 & 0.990 & 0.975 \\
+Finance & 0.977 & 0.974 & 0.977 & 0.990 & 0.990 & 0.992 & 0.998 & 0.993 \\
+Medical & 0.972 & 0.972 & 0.982 & 0.989 & 0.930 & 0.896 & 0.920 & 0.875 \\
+Politics & 0.970 & 0.985 & 0.993 & 0.993 & 0.916 & 0.939 & 0.949 & 0.974 \\
+Religion & 0.955 & 0.965 & 0.986 & 0.980 & 0.735 & 0.741 & 0.716 & 0.705 \\
+Sports & 0.992 & 0.992 & 0.998 & 0.998 & 0.994 & 0.991 & 0.992 & 0.984 \\
+Tech & 0.944 & 0.964 & 0.994 & 0.977 & 0.956 & 0.906 & 0.838 & 0.899 \\
+\midrule
+Macro F1 & 0.964 & 0.971 & 0.989 & 0.985 & 0.927 & 0.919 & 0.914 & 0.914 \\
+\bottomrule
+\end{tabular}}
+\end{table}
