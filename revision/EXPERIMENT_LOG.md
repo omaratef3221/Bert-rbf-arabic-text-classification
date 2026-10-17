@@ -130,7 +130,11 @@ LLMs, zero-shot primary prompt `en_v2`, full test set (n = 6,822; `results/*__en
 | Gemini 3.8 Flash (via OpenRouter → Google AI Studio flex, minimal reasoning) | **91.5** | 91.4 | 0.72 | 0.06 % |
 | DeepSeek V4 Flash 0731 (Together) | **91.5** | 91.4 | 0.71 | 0.01 % |
 | Qwen2.5-7B-Instruct, bf16, vLLM | **85.2** (89.2 with `en_v1`) | — | — | 0.6 % |
-| Qwen2.5-7B-Instruct + QLoRA on 100 / 1000 / all per class | see re-evaluation (status log 17 Oct) | | | |
+| Qwen2.5-7B-Instruct + QLoRA, 100 per class (0.29 GPU-h) | **95.7** | 95.7 | 0.89 | 0.13 % |
+| Qwen2.5-7B-Instruct + QLoRA, 1000 per class (1.48 GPU-h) | **98.4** | 98.4 | 0.97 | 0.01 % |
+| Qwen2.5-7B-Instruct + QLoRA, all 31,833 (3.27 GPU-h, 20.2 M tokens) | **98.5** | 98.5 | 0.98 | 0.00 % |
+
+(QLoRA rows: adapters evaluated through vLLM with a 16 k context, `results/vllm__lora_*__en_v2__k0.*`; Qwen zero-shot few-shot on the full set: k = 1 90.5 %, k = 2 87.8 % with 1.0 % unmapped.)
 
 Subset-700 sweeps (the same 700 articles for every model; `results/tables/prompt_robustness.csv`, `fewshot.csv`, `controls.csv`):
 
@@ -140,7 +144,7 @@ Subset-700 sweeps (the same 700 articles for every model; `results/tables/prompt
 | Claude Haiku 4.5 | 92.9 ± 0.7 (92.1–93.9) | 93.9 | 92.9 | 93.4 | 93.9 | 93.7 | 93.3 |
 | Gemini 3.8 Flash | 93.1 ± 0.3 (92.7–93.4) | 93.4 | 94.9 | 95.3 | 93.4 | 93.6 | 92.4 |
 | DeepSeek V4 Flash | 92.2 ± 1.5 (89.9–93.7) | 93.3 | 94.3 | 94.4 | 93.4 | 92.9 | 92.6 |
-| Qwen2.5-7B zero-shot | 87.4 ± 2.5 (84.9–90.3) | 86.6 | 91.6 | (k = 2 re-run 17 Oct) | | | |
+| Qwen2.5-7B zero-shot | 87.4 ± 2.5 (84.9–90.3) | 86.6 | 91.6 | 88.9 | | | |
 
 Reading: prompt wording moves the strong API models by 0.3–0.7 points std (DeepSeek 1.5, Qwen 2.5); the repeat run at temperature 0 reproduces the primary run to within 0.1 point for every model; removing the dateline changes accuracy by at most 0.4 points (so it is not a shortcut for LLMs either); truncating the article to its first 100 words costs 0.6–1.0 points; few-shot examples help the weaker models (Qwen +5.0, Gemini +1.9, DeepSeek +1.1 at k = 2) and do not help GPT-4.1 or Claude (−1.0 / −0.4). The subset is slightly easier than the full test set for every model (e.g. DeepSeek 93.3 vs 91.5), which is why the full-set primary numbers, not the subset numbers, go in the main table.
 
@@ -155,6 +159,7 @@ Reading: prompt wording moves the strong API models by 0.3–0.7 points std (Dee
 | 2026-10-16 19:05 UTC | **DeepSeek V4 Flash (Together) launched** (tmux `llm`, `run_llm_api.sh`, 8 workers). Full-set primary prompt `en_v2`: accuracy 91.5 %, macro-F1 91.4 %, Religion recall 0.71, 1 unmapped output in 6,822. Design changed at 19:30 to save cost: primary prompt (and `en_v1` as the subset-vs-full check) on the full set, all other runs on the fixed 1,400 subset; few-shot is k = 1 and k = 2 (author decision). |
 | 2026-10-16 19:41 UTC | **GPT-4.1 and Claude Haiku 4.5 launched via OpenRouter** (tmux `gpt`, `claude`; upstream pinned to OpenAI / Anthropic, fallbacks off; subset 700 for sweeps; 6 workers each). Cache pass-through verified (Claude k = 2: 71 % cached tokens). OpenRouter credit $55, key limit $50. |
 | 2026-10-16 21:05 UTC | **All API-LLM sequences finished** (DeepSeek 20:06, Claude 20:11, GPT-4.1 20:18, Gemini 20:58 UTC): 40 API runs + 4 Qwen zero-shot runs so far, no failed runs; single-article API errors in 4 runs (1 of 6,822 each, scored as errors). OpenRouter usage $50.13 (key limit $50 reached at the very end; the remaining $4.87 credit is unusable until the key limit is raised). Full-set primary zero-shot: GPT-4.1 92.8 %, Claude Haiku 4.5 92.0 %, Gemini 3.8 Flash 91.5 %, DeepSeek V4 Flash 91.5 %, Qwen2.5-7B 85.2 % (en_v2; 89.2 % with en_v1). Subset-700 sweeps complete for all four API models (see `results/tables/`). |
+| 2026-10-17 05:27 UTC | **All experiments complete; vast.ai instance 56283733 destroyed** after the final sync was verified against the box (83 supervised runs, 50 LLM runs, 3 QLoRA budgets and adapters; results, logs, wandb run folders and adapters are on OneDrive under `revision/`, everything except adapters/logs/wandb also in git). Final QLoRA accuracies (vLLM evaluation): 95.7 / 98.4 / 98.5 % at 100 / 1000 / all per class; Qwen k = 2: 87.8 %. GPU rental ≈ 11 h ≈ $8.5; API spend ≈ $53 (OpenRouter $50.13 + Together ≈ $3). Next: tables → figures → manuscript text and response letter (`REVISION_PLAN.md` §5). |
 | 2026-10-17 03:52 UTC | **GPU sequence finished** (`run_all_gpu.sh`: 28 of 29 steps done; the `tables` step failed only because the box had a stale `analysis.py`, tables are built on the Mac). Timings: full CAMeLBERT fine-tuning 100 / 1000 / all per class in 7 / 12 / 13 min; Qwen2.5-7B zero-shot (5 prompts + few-shot) 1 h 53 min via vLLM; QLoRA (r = 16, all linear layers, 40.4 M trainable params = 0.82 %, 4-bit, Unsloth) 0.29 / 1.48 / 3.27 GPU-hours for 100 / 1000 / all per class (1.3 / 8.9 / 20.2 M training tokens, 9.3 GB peak VRAM). The Qwen few-shot step used the pre-decision k = 3 (4.6 % context overflows at 8 k tokens): moved to `results/superseded/`; k = 2 re-run with a 16 k context at 04:02. The direct Hugging Face evaluation of the three adapters right-truncated long prompts (2.2 % unmapped outputs = article continuations, mostly Religion): moved to `results/superseded/`; adapters re-evaluated through vLLM (16 k context, no truncation) as `vllm__lora_n100 / lora_n1000 / lora_all`. |
 | 2026-10-16 19:45 UTC | **Gemini 3.8 Flash launched via OpenRouter** (tmux `gemini`; provider `google-ai-studio/flex`, half price; reasoning cannot be disabled on this endpoint, so `reasoning.effort = minimal` with a 256-token output budget, thinking tokens logged per request). Watcher on the Mac polls the four LLM logs and the OpenRouter spend every 10 minutes. |
 

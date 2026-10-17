@@ -69,6 +69,13 @@ the regimes cross.*
 | P5 | Confirm the manuscript source (LaTeX?) location so the text changes in `REVISION_PLAN.md` §5 can be drafted directly. | writing | open |
 | P6 | Decide who writes the response letter; I can draft it from `REVISION_PLAN.md` §1–§2 once numbers are in. | submission | open |
 
+## 3b. Update 17 Oct 2026
+
+All experiments are complete and the GPU instance is destroyed. Author-side items still open: P3 (rotate the
+keys that sit in plaintext in the old notebooks), P5 (manuscript source), P6 (who writes the response letter).
+My side: M1–M5 done; M6 (tables/figures/CIs/McNemar) partly done (`results/tables/`), figures and the
+manuscript/response-letter drafts remain (M6–M7). Final numbers: `EXPERIMENT_LOG.md` §7b.
+
 ## 4. Pending from my side
 
 | # | Item | Depends on |
