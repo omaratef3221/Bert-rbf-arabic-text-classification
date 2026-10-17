@@ -1,0 +1,146 @@
+# Response to Reviewers — NLP-D-26-00114
+
+Draft of 17 Oct 2026 (shared, editable copy: https://claude.ai/code/artifact/e75df70c-f811-45b4-86f5-c58177979fa0).
+Section numbers of the revised manuscript are provisional and must be aligned when the text is final.
+
+## Cover letter to the Editor-in-Chief
+
+Dear Prof. Xie,
+
+Thank you and the two reviewers for the careful reading of our manuscript NLP-D-26-00114, *Arabic News Classification: Lightweight Supervised Models vs. Zero-Shot Large Language Models*. We are resubmitting a substantially revised version. Every quantitative result in the paper has been recomputed, and the experimental design was changed to answer the reviewers' main objection: the original comparison was not paired and the zero-shot evaluation was too fragile to carry the conclusions drawn from it.
+
+In short, the revision (1) evaluates every system on one deduplicated, near-duplicate-aware split of the AlKhaleej subset, so that all models are scored on the same 6,822 test articles; (2) adds a full fine-tuning baseline for CAMeLBERT, a QLoRA-adapted open-weight LLM (Qwen2.5-7B-Instruct) trained on the same labelled data, few-shot conditions for every LLM, and a supervised learning curve from 10 to 4,500 labelled articles per class; (3) re-runs all large language models with deterministic decoding on pinned snapshots, with five semantically equivalent prompts in English and Arabic, a deterministic and audited label-mapping procedure, and reported rates of non-compliant outputs; and (4) replaces the interpretive discussion with two controlled interventions (input length and the newspaper dateline) and with the learning-curve evidence.
+
+We also want to be transparent about three defects we found in the submitted experiments while re-implementing them (Section "Corrections" below): the Claude 3.5 Haiku result was a parsing artefact, the systems had been scored on different random test samples, and one LLM run used a smaller model than stated. All three are corrected in the revision and none of the paper's claims now rests on the affected numbers. The main finding survives in a more defensible form: with in-domain labels, a frozen Arabic encoder with a small head reaches 96 to 98 percent accuracy and fully fine-tuned or LoRA-adapted models reach 98.5 to 98.9 percent, whereas zero-shot LLMs reach 91.5 to 92.8 percent on the same articles, with a consistent weakness on the Religion class; about 100 labelled articles per class are enough for the supervised head to overtake every zero-shot LLM.
+
+We believe the revised manuscript addresses all comments and we look forward to the reviewers' assessment.
+
+Sincerely,
+
+Omar Elgendy, Ali Bou Nassif and Ashraf Elnagar (corresponding author)
+University of Sharjah
+
+## Summary of changes
+
+All experiments were re-run between 16 and 17 October 2026 on one canonical split; nothing in the result tables is carried over from the submitted version.
+
+**Data and evaluation protocol**
+- One deduplicated, near-duplicate-aware split of the AlKhaleej subset (45,477 articles after removing 23 exact duplicates; 183 near-duplicate clusters at TF-IDF cosine ≥ 0.8 never straddle train, validation and test; 31,833 / 6,822 / 6,822 articles). Every system is evaluated on the same 6,822 test articles, so comparisons are paired.
+- Deterministic decoding for every LLM (temperature 0, top-p 1, fixed output budget, seed where supported), pinned model snapshots with the served model identifier logged per request, evaluation dates, retry policy, and rates of non-compliant outputs reported.
+- Five semantically equivalent prompts per LLM (three English, two Arabic); robustness reported as mean ± standard deviation and min–max; one replicate pass per model to document residual non-determinism; 95 % bootstrap confidence intervals on every reported number; McNemar tests on the headline comparisons.
+- A deterministic, audited label-mapping procedure with no random fallback; unmapped or ambiguous outputs are counted as errors, and the share of outputs resolved by each rule is tabulated per model and prompt.
+
+**New systems and conditions**
+- Full fine-tuning of CAMeLBERT (109 M parameters), reported next to the frozen-encoder heads.
+- QLoRA adaptation of an open-weight LLM (Qwen2.5-7B-Instruct, 4-bit, rank 16, 40.4 M trainable parameters) on the same training split at 100, 1,000 and all labelled articles per class, with GPU-hours, parameters and tokens reported; the same model is also evaluated zero-shot and few-shot.
+- Few-shot (1 and 2 exemplars per class, exemplars drawn from the training split) for every LLM.
+- Supervised learning curve at 10, 50, 100, 500, 1,000 and all labelled articles per class, three seeds, at 150 and 512 input tokens, for the dense head, the SVM head and full fine-tuning.
+- Two controlled interventions replacing the former mechanistic discussion: input truncation (150 vs 512 tokens for the encoder; first 100 words vs full article for the LLMs) and removal of the newspaper dateline from the articles.
+- Replication on the paper's original random split to quantify the leakage effect.
+
+**Text**
+- Title keywords and text: "multi-class (single-label)" throughout; the SVM is described as RBF (the unused degree parameter is removed).
+- Section 3.2 states exactly what is trained for each system; Sections 4.4 and 5 are rewritten around the measured evidence, and the Claude-specific cultural and alignment interpretation, the "knowledge graph" and "surface-level heuristics" claims are removed.
+- Sections 3.3 and 3.5 give the full inference protocol (prompts verbatim, mapping rules with examples, snapshot ids, dates, decoding and retry settings).
+- A new subsection reports the three corrections to the originally submitted experiments.
+
+## Corrections to the originally reported experiments
+
+While re-implementing the evaluation pipeline for this revision we found three defects in the submitted experiments. We report them here because two of them bear directly on reviewer concerns (Reviewer 1, major 2; Reviewer 2, concerns 2, 4, 5 and 6), and all affected numbers have been replaced.
+
+1. **The Claude 3.5 Haiku result (75 % accuracy, Religion recall 0) was a parsing artefact.** The original run requested a maximum of one output token; Claude often answered in Arabic, and the single token returned was a word prefix ("ال", "الس") that carried no label. The post-processing code then contained no rule for the Religion class and assigned a random label among the other six to any unrecognised output. Religion could therefore never be predicted. A re-run with the same prompt and an adequate output budget gives Claude 3.5 Haiku 92 to 93 % accuracy and Religion recall 0.76, in line with the other LLMs. Every sentence in the submitted manuscript that interpreted the Claude result as a cultural, alignment or safety-filter limitation has been removed, and we thank Reviewer 2 for insisting on verification before interpretation.
+
+2. **The systems were not scored on the same test sample.** The random train/validation/test split was drawn without a fixed seed in each evaluation notebook and in one branch of the training script, so the dense head, the SVM head and each LLM were evaluated on different 15 % samples (the dense and SVM test sets shared only 3,444 of 6,825 articles), and the LLM runs used 1,000-article samples. The revision uses one split, written to disk with its checksum, for every system.
+
+3. **Model and decoding mismatches.** One LLM run reported as GPT-4.1 had been executed with gpt-4o-mini, and the Gemini, Claude and DeepSeek runs used default (non-zero) sampling temperatures. The revision uses pinned snapshots and deterministic decoding throughout, and the served model identifier is logged for every request.
+
+Three of the four LLM snapshots used in the submission (claude-3-5-haiku-20241022, gemini-2.0-flash, DeepSeek-V3 on Together AI) have since been retired by their vendors. The revision uses the original GPT-4.1 snapshot and the closest same-tier successors for the others (Claude Haiku 4.5, Gemini 3.8 Flash, DeepSeek V4 Flash); the exact identifiers, providers and evaluation dates are in the reproducibility statement below.
+
+## Response to Reviewer 1
+
+We thank the reviewer for the precise and constructive comments. Reviewer text is paraphrased in italics; our response follows.
+
+**Minor 1. Terminology: "multi-label" versus multi-class.** *The task is 7-way single-label; align title, keywords and text.*
+Done. The keywords now read "multi-class text classification"; every occurrence of "multi-label" in the text has been replaced by "multi-class (single-label)" and no multi-label experiment is claimed. We also corrected two related inconsistencies: the abstract and contributions said "linear SVM" while the method used an RBF kernel (it is RBF throughout now), and the unused "degree" parameter has been removed from the SVM tables.
+
+**Major 1. Frozen versus fine-tuned encoder.** *(i) State what is trained for each system; (ii) update the discussion; (iii) if fine-tuning was done, report the protocol.*
+The reviewer is right that the submitted text was contradictory. In the submitted experiments CAMeLBERT was frozen for both heads; only the dense head (297,991 parameters) or the SVM was trained, and the SVM was fit on pre-computed [CLS] embeddings. (i) Section 3.2 now contains a table with one row per system stating the trainable components and parameter counts: frozen encoder + dense head (0.30 M trainable), frozen encoder + RBF-SVM (no gradient training; cuML SVC, C = 9, gamma = scale), full fine-tuning of CAMeLBERT (109.1 M trainable), QLoRA on Qwen2.5-7B-Instruct (40.4 M trainable, 0.82 %), and the API LLMs (nothing trained). (ii) Sections 4.4 and 5 were rewritten; every statement that attributed the gains to "fine-tuning the entire model" or to "learned Arabic-news embeddings" is gone, and the result is now described as what it is: a frozen pretrained representation plus supervised decision-boundary learning. (iii) Because the question "would fine-tuning the encoder help?" is now testable, we added it: full fine-tuning (lr 2e-5, linear schedule with 6 % warm-up, early stopping on validation loss, max 3 epochs, 512 tokens, mixed precision) reaches 98.9 % accuracy versus 96.4 % for the frozen dense head and 97.1 % for the frozen SVM at 150 tokens (97.6 % and 98.1 % at 512 tokens), all on the same test set (McNemar p < 1e-30 for fine-tuned vs frozen dense). The embedding extraction for the SVM is described explicitly (CLS token of the last layer, batches of 32, 150 or 512 wordpieces).
+
+**Major 2. Not an apples-to-apples comparison.** *Add (i) a LoRA/QLoRA-adapted open-weight LLM with its adaptation budget; (ii) deterministic decoding with reported settings; (iii) non-compliant output rates; (iv) a precise label-mapping description with examples; (v) a robustness check with mean ± std/CI.*
+
+(i) We added Qwen2.5-7B-Instruct adapted with QLoRA (Unsloth; 4-bit NF4 base, LoRA rank 16, alpha 32, all linear projections, lr 2e-4, cosine schedule, 1 epoch on the full training split) on exactly the same training articles and prompt as the zero-shot evaluation. Budget on one A100-PCIE-40GB: 100 articles per class, 0.29 GPU-hours, 1.3 M training tokens; 1,000 per class, 1.48 GPU-hours, 8.9 M tokens; all 31,833 articles, 3.27 GPU-hours, 20.2 M tokens; 40.4 M parameters updated (0.82 %), 9.3 GB peak memory. Results on the full test set: 95.7 %, 98.4 % and 98.5 % respectively, versus 85.2 % for the same model zero-shot (89.2 % with the paper's original prompt wording) and 92.8 % for the best zero-shot API model. The adapted 7B model is 2.2 points above the frozen dense head (p < 1e-20) and 0.4 points below full fine-tuning of CAMeLBERT (p = 0.015).
+
+(ii) All LLM runs use temperature 0, top-p 1, a fixed output budget of 16 tokens (256 for Gemini 3.8 Flash, whose endpoint does not allow reasoning to be disabled; it runs at minimal reasoning effort and the reasoning tokens are logged), seed 42 where the API accepts one, a 60-second timeout, and retries only on rate-limit and server errors. These settings are in Section 3.3 and in the reproducibility statement. A second identical pass of the primary prompt for every model reproduced the first to within 0.1 accuracy points (0.0 for three of the four models).
+
+(iii) Non-compliant outputs are now counted as errors and reported per run. On the full test set the unmapped rate is 0.00 % for GPT-4.1, 0.04 % for Claude Haiku 4.5, 0.06 % for Gemini 3.8 Flash and 0.01 % for DeepSeek V4 Flash (at most 4 of 6,822 articles); Qwen2.5-7B zero-shot produces 0.3 to 0.7 % unmapped outputs depending on the prompt. Formatting variants that still contain exactly one label ("Class: Sports", a label followed by a period, a bold label, or the Arabic label name) are resolved by fixed rules and their frequency is tabulated: for example, with one prompt Claude wrapped the label in extra text in 55 % of answers and with the Arabic prompts GPT-4.1 answered with the Arabic label name in 8 to 12 % of cases; all of these were resolved and none affected accuracy by more than the unmapped rate.
+
+(iv) The mapping procedure is now specified as an ordered rule list with examples (Section 3.3): exact match to one of the seven labels; case- and punctuation-normalised match ("sports." → Sports); match to a fixed list of Arabic label names ("رياضة" → Sports); otherwise, if exactly one label (English or Arabic) occurs anywhere in the output, that label ("The class is Finance" → Finance); outputs mentioning two labels are scored as ambiguous, outputs mentioning none as unmapped, and both count as errors. There is no random fallback. A second, lenient tier that also accepts common synonyms (Economy → Finance, Health → Medical) is reported as a sensitivity analysis and changes accuracy by at most 0.2 points for any model. The code is released.
+
+(v) Each LLM was run with five semantically equivalent prompts (three English, two Arabic) on the same 700-article stratified test subset, and with the primary prompt on the full test set. Zero-shot accuracy across prompts (mean ± std, min–max): GPT-4.1 95.2 ± 0.5 (94.7–95.9), Claude Haiku 4.5 92.9 ± 0.7 (92.1–93.9), Gemini 3.8 Flash 93.1 ± 0.3 (92.7–93.4), DeepSeek V4 Flash 92.2 ± 1.5 (89.9–93.7), Qwen2.5-7B 87.4 ± 2.5 (84.9–90.3). Every accuracy in the paper carries a 95 % bootstrap confidence interval (about ± 0.6 points on the full test set), and the headline differences are tested with McNemar's test on paired predictions: frozen dense head vs GPT-4.1 +3.5 points (95 % CI +2.9 to +4.2, p = 9e-27); SVM vs GPT-4.1 +4.3 (p = 2e-37); GPT-4.1 vs Claude Haiku 4.5 +0.8 (p = 3e-4).
+
+## Response to Reviewer 2
+
+We thank the reviewer for a thorough and fair assessment; the summary of what the experiment can and cannot establish shaped the redesign. Reviewer text is paraphrased in italics.
+
+**Concern 1. The systems are described as fine-tuned BERT although the encoder is frozen; much of the Discussion rests on the wrong assumption.** The reviewer is correct, and we agree that this changes the scientific conclusion. Section 3.2 now states explicitly that CAMeLBERT is frozen for the two lightweight systems and that only the head is trained; all claims about an encoder that "learns Arabic-news-specific embeddings" or about gains "originating from the fine-tuned encoder" have been removed from Sections 4 and 5. The conclusion is now the one the reviewer formulates: a frozen Arabic pretrained representation combined with supervised decision-boundary learning performs strongly on an in-domain task. To make the frozen-versus-fine-tuned question an empirical one rather than a wording issue, we added full fine-tuning of CAMeLBERT: 98.9 % accuracy versus 96.4 % (dense head) and 97.1 % (SVM) with the frozen encoder at 150 tokens, and 97.6 % / 98.1 % at 512 tokens.
+
+**Concern 2. Architecture is confounded with supervision regime; add few-shot and adapted LLMs and a low-resource learning curve.** All three additions were made and they are now the backbone of the results section.
+- Few-shot: every LLM was evaluated with 1 and 2 exemplars per class drawn from the training split. On the shared 700-article subset few-shot helps the weaker models and not the stronger ones: Qwen2.5-7B +5.0 points (1 exemplar per class), Gemini 3.8 Flash +1.9, DeepSeek V4 Flash +1.1, Claude Haiku 4.5 −0.4 and GPT-4.1 −1.0 at 2 exemplars per class.
+- Adapted LLM: Qwen2.5-7B-Instruct with QLoRA on the same training articles reaches 95.7 %, 98.4 % and 98.5 % with 100, 1,000 and all labelled articles per class (0.29, 1.48 and 3.27 GPU-hours), compared with 85.2 % zero-shot for the same weights.
+- Learning curve (three seeds, same test set): the frozen dense head reaches 82.5 % with 10 labelled articles per class, 90.9 % with 50, 92.9 % with 100, 95.0 % with 500, 95.4 % with 1,000 and 96.4 % with all 4,500 (150 tokens); with 512 tokens 88.4 / 94.2 / 95.1 / 96.3 / 96.7 / 97.6 %. The best zero-shot LLM is at 92.8 % and the best few-shot condition at 95.3 % (Gemini, 2 per class, subset). So roughly 100 labelled articles per class are enough for a 0.3 M-parameter head on a frozen encoder to match the zero-shot LLMs, and 500 per class to pass every zero- and few-shot condition; fully fine-tuned or LoRA-adapted models with 1,000 per class exceed 98 %. The paper's claims are now stated in these terms ("under this amount of in-domain supervision") rather than as a general superiority of lightweight models.
+
+**Concern 3. Zero-shot evaluation rests on a single English prompt.** We evaluated five semantically equivalent prompts per model, three in English (including the submitted wording) and two in Arabic, and report the mean, standard deviation and range (see the response to Reviewer 1, major 2(v), for the numbers). The spread is 0.3 to 0.7 accuracy points for the three strongest API models, 1.5 for DeepSeek and 2.5 for Qwen2.5-7B; the Arabic prompts are neither systematically better nor worse than the English ones (for DeepSeek the two Arabic prompts are the best two; for Claude they are the two lowest). The large gap to the Claude 3.5 Haiku result of the submission is explained by the parsing defect described in the Corrections section, not by prompt compatibility: with a working pipeline the four API models lie within 1.3 points of each other.
+
+**Concern 4. Missing inference details.** Section 3.3 and a new reproducibility statement give, for every model: the exact snapshot identifier and provider route, the identifier returned by the API for each request, evaluation dates (16 October 2026), temperature, top-p, output budget, seed, timeout, retry policy, prompt-caching settings, and the invalid-output rate. Because three of the four submitted snapshots have been retired by their vendors, the revision uses the original GPT-4.1 snapshot and the closest same-tier successors for the others, and says so.
+
+**Concern 5. The rule-based post-processing is part of the classifier and should be evaluated.** Agreed. The mapping is now a fixed ordered rule list with no random component (described with examples in Section 3.3), and for every run we report the share of outputs resolved by each rule and the share that remained unmapped or ambiguous, which count as errors. Unmapped rates on the full test set are 0.00–0.06 % for the four API models and 0.3–0.7 % for Qwen2.5-7B zero-shot. A lenient tier that also maps common synonyms changes no accuracy by more than 0.2 points. The audit also shows which models deviate from the requested format and how: for example Claude adds surrounding text to 55 % of its answers under one prompt and GPT-4.1 answers in Arabic under the Arabic prompts in 8–12 % of cases; both are resolved deterministically.
+
+**Concern 6. The Claude Religion result deserves verification before interpretation.** The reviewer's suspicion was correct. The result was produced by a one-token output limit combined with a label mapper that lacked a rule for the Religion class and assigned a random other label to unrecognised outputs (Corrections, item 1). With deterministic decoding and a working mapper, Claude Haiku 4.5 reaches 92.0 % accuracy and Religion recall 0.74 on the full test set, and all four API models show the same pattern (Religion recall 0.71–0.76 against 0.95–0.99 for the supervised systems). The causal discussion about cultural exposure, alignment and safety filters has been removed entirely. What remains is the measured, model-independent observation that Religion and Culture are the classes LLMs confuse most, reported without a mechanistic explanation.
+
+**Concern 7. Unsupported mechanistic claims.** We removed the claims about "surface-level heuristics", "deeper semantic boundaries" and a learned "knowledge graph". In their place the revised Section 4.4 reports two controlled interventions and the learning curve: (a) input length, where the frozen encoder gains 1.1 points from 150 to 512 tokens (p = 3e-7) and the LLMs lose 0.6–1.0 points when restricted to the first 100 words of an article, so neither family relies on the opening words alone; and (b) the newspaper dateline ("دبي: «الخليج»"), which is strongly class-skewed in the corpus (present in 40 % of Medical and 0.1 % of Sports articles) and could have acted as a shortcut; removing it from the test set, or from training and test, changes supervised accuracy by at most 0.1 points and LLM accuracy by at most 0.4 points, so it is not a shortcut for either family.
+
+**Concern 8. Near-duplicate and event-level leakage.** We measured it and then removed it by construction. The corpus contains 23 exact duplicates and 183 clusters of near-duplicates at TF-IDF cosine ≥ 0.8 (1,403 articles; the largest clusters are templated daily market reports in Finance with 376, 259 and 188 near-identical articles). Under the paper's original random split, 10.6 % of test articles had a near-duplicate (cosine ≥ 0.5) outside the test set and the supervised models were essentially perfect on them; removing those articles lowered the dense head from 96.8 % to 96.5 % and the SVM from 97.2 % to 96.9 %. The revised split assigns whole near-duplicate clusters to a single partition, so no test article has a near-duplicate in training or validation (212 did under the original split). On this split the frozen heads reach 96.4 % and 97.1 %, versus 96.8 % and 97.2 % when the same systems are trained and tested on the original random split, which we report side by side. A temporal split is not possible because the dataset carries no publication dates; the cluster-aware split is the event-level approximation the reviewer suggested.
+
+## Reproducibility statement (to appear as Section 3.5 and an appendix)
+
+All LLM evaluations were run on 16 October 2026 with the settings below; the supervised models on 16–17 October 2026 on one NVIDIA A100-PCIE-40GB (CUDA 13.2, PyTorch 2.14, Transformers 5.20, cuML for the GPU SVM, Unsloth and PEFT for QLoRA, vLLM for open-weight inference).
+
+| Role | Snapshot identifier | Route | Notes |
+| --- | --- | --- | --- |
+| GPT-4.1 | openai/gpt-4.1 (served as gpt-4.1 by OpenAI) | OpenRouter, provider pinned to OpenAI, fallbacks disabled | same snapshot family as the submission |
+| Claude | anthropic/claude-haiku-4.5 (claude-haiku-4-5-20251001, served by Anthropic) | OpenRouter, pinned to Anthropic | replaces claude-3-5-haiku-20241022, retired 19 Feb 2026 |
+| Gemini | google/gemini-3.8-flash (served by Google AI Studio, flex tier) | OpenRouter, pinned to Google AI Studio | replaces gemini-2.0-flash, retired; reasoning cannot be disabled on this endpoint, run at minimal effort with reasoning tokens logged |
+| DeepSeek | deepseek-ai/DeepSeek-V4-Flash-0731 | Together AI serverless | replaces DeepSeek-V3, no longer served; reasoning disabled via the chat template |
+| Open-weight | Qwen/Qwen2.5-7B-Instruct, bf16 | local vLLM | zero-shot, few-shot and as the QLoRA base |
+
+Decoding: temperature 0, top-p 1, maximum 16 output tokens (256 for Gemini 3.8 Flash), seed 42 where accepted, 60-second timeout, up to six retries with exponential back-off on rate-limit and server errors only; client-side and 4xx errors are recorded as errors, never retried. A second identical pass of the primary prompt reproduced every model's accuracy to within 0.1 points. Prompt caching was enabled wherever the provider offers it; it changes cost, not outputs. The identifier returned by the API, the raw output, finish reason, token counts and latency are stored for every one of the 6,822 × 50 requests.
+
+Prompts: five variants (en_v1 = the submitted wording, en_v2 = primary, en_v3, ar_v1, ar_v2), given verbatim in the appendix. Few-shot exemplars: the first k articles per class of a fixed random ranking of the training split (k = 1, 2), truncated to 120 words, in a fixed shuffled order, identical for all models.
+
+Label mapping: ordered rules (exact label; normalised label; Arabic label name; unique label mention anywhere in the output); outputs with two labels or no label are errors. Rates per run are tabulated.
+
+Evaluation sets: the full 6,822-article test split for every model's primary prompt; a fixed stratified subset of 700 test articles (100 per class, listed in the repository) for prompt variants, few-shot, controls and replicate runs. DeepSeek V4 Flash was additionally run with a second prompt on the full set, where the subset estimate agreed with the full-set estimate within sampling error (subset 92.0 % vs full 91.4 %, bootstrap 95 % CI ± 1.9 points at n = 700).
+
+Data: SANAD AlKhaleej as distributed on Kaggle (haithemhermessi/sanad-dataset, 45,500 files); the split file with per-article checksums, the deduplication clusters, the subset list, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the code are released at github.com/omaratef3221/Bert-arabic-fake-news-rbf (folder revision/). Training runs are also logged publicly on Weights & Biases (project arabic-news-revision).
+
+## List of changes by manuscript section
+
+| Section (revised numbering) | Change |
+| --- | --- |
+| Title, abstract, keywords | "multi-class (single-label)" instead of "multi-label"; "RBF-SVM" instead of "linear SVM"; abstract numbers replaced (frozen heads 96.4 / 97.1 %, fine-tuned 98.9 %, QLoRA 98.5 %, zero-shot LLMs 91.5–92.8 %); the Claude-specific sentence removed. |
+| 1 Introduction | Contributions restated: paired evaluation on a deduplicated split, learning curve, adapted-LLM baseline, robustness protocol; the claim of general superiority of lightweight models replaced by the supervision-dependent statement. |
+| 2 Related work | Unchanged apart from two added references on few-shot/LoRA adaptation of LLMs for classification (to be inserted by the authors). |
+| 3.1 Dataset | New paragraph on deduplication (23 exact, 183 near-duplicate clusters) and the cluster-aware stratified split; table of split sizes; leakage measurement. |
+| 3.2 Models | New table: trainable components and parameter counts per system; full fine-tuning and QLoRA added; wording about the frozen encoder made unambiguous; SVM degree removed. |
+| 3.3 Prompting and inference | Five prompts verbatim (appendix), few-shot format, deterministic decoding settings, snapshot identifiers and routes, retry policy, label-mapping rules with examples, definition of non-compliant outputs; the paragraph speculating about Claude removed. |
+| 3.4 Training configuration | Early stopping as implemented (validation loss, patience 5); learning rates for head, fine-tuning and QLoRA; embedding extraction stated; timing now includes the encoder forward pass. |
+| 3.5 Infrastructure and reproducibility | New: hardware, library versions, dates, released artefacts. |
+| 4.1 Main results | Table 4 replaced: all systems on the same test set with 95 % CIs; McNemar results for headline pairs; per-class table updated. |
+| 4.2 Learning curve (new) | Figure: accuracy vs labelled articles per class for dense head (150/512 tokens), SVM, full fine-tuning and QLoRA, with zero-shot and few-shot LLM levels as reference lines. |
+| 4.3 LLM robustness (new) | Prompt-variant table (mean ± std, min–max), few-shot table, replicate agreement, mapping-audit table with non-compliance rates. |
+| 4.4 Controlled analyses (rewritten) | Input-length intervention and dateline intervention replace the former mechanistic subsections 4.4.1–4.4.5. |
+| 4.5 Error analysis | Qualitative examples regenerated from the final runs (previously drawn from an older, weaker run); Table 11 rebuilt from the confusion matrices of the new runs. |
+| 4.6 Efficiency | Training and inference times re-measured on the new runs, encoder pass included; QLoRA budget table. |
+| 5 Discussion | Rewritten around supervision regime and labelled-data budget; all cultural/alignment explanations of LLM errors and the "knowledge graph" / "surface heuristics" claims removed. |
+| 6 Conclusion | Restated accordingly. |
+| New subsection (3.6 or appendix) | Corrections to the originally reported experiments. |
