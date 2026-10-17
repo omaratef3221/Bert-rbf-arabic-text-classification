@@ -1,7 +1,7 @@
 %DIF 1-17c1-3
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL old_flat.tex   Sat Oct 17 13:59:09 2026
-%DIF ADD new_flat.tex   Sat Oct 17 13:59:09 2026
+%DIF DEL old_flat.tex   Sat Oct 17 14:00:50 2026
+%DIF ADD new_flat.tex   Sat Oct 17 14:00:50 2026
 %DIF < %% Copyright 2007-2025 Elsevier Ltd
 %DIF < %% 
 %DIF < %% This file is part of the 'Elsarticle Bundle'.
@@ -765,7 +765,7 @@ Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
 \subsection{\DIFadd{Infrastructure and Reproducibility}}
 \label{infrastructure}
 
-\DIFadd{Supervised training, full fine-tuning, QLoRA and the open-weight LLM inference ran on one NVIDIA A100-PCIE-40GB (cloud instance) }\DIFaddend with CUDA \DIFdelbegin \DIFdel{11.8, and the Hugging Face Transformers library (version 4.48). For the BERT–SVM model, GPU-accelerated SVM training was enabled using RAPIDS cuML, which significantly reduced training time compared to CPU-based implementations. Table~\ref{tab:infrastructure} provides a detailed summary of the experimental infrastructure}\DIFdelend \DIFaddbegin \DIFadd{13.2, Python 3.12, PyTorch 2.14, Transformers 5.20, RAPIDS cuML for the GPU SVM, Unsloth, PEFT and TRL for QLoRA, and vLLM for open-weight inference. API models were called through the routes in Table~\ref{tab:llm_snapshots}; all API runs took place on 16 October 2026 and all GPU runs on 16--17 October 2026, and every run is logged publicly on Weights \& Biases. The split file with per-article checksums, the deduplication clusters, the 700-article evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the complete code are released at }\url{https://github.com/omaratef3221/Bert-arabic-fake-news-rbf} \DIFadd{(folder }\texttt{\DIFadd{revision/}}\DIFadd{)}\DIFaddend .
+\DIFadd{Supervised training, full fine-tuning, QLoRA and the open-weight LLM inference ran on one NVIDIA A100-PCIE-40GB (cloud instance) }\DIFaddend with CUDA \DIFdelbegin \DIFdel{11.8, and the Hugging Face Transformers library (version 4.48). For the BERT–SVM model, GPU-accelerated SVM training was enabled using RAPIDS cuML, which significantly reduced training time compared to CPU-based implementations. Table~\ref{tab:infrastructure} provides a detailed summary of the experimental infrastructure}\DIFdelend \DIFaddbegin \DIFadd{13.2, Python 3.12, PyTorch 2.14, Transformers 5.20, RAPIDS cuML for the GPU SVM, Unsloth, PEFT and TRL for QLoRA, and vLLM for open-weight inference. API models were called through the routes in Table~\ref{tab:llm_snapshots}; all API runs took place on 16 October 2026 and all GPU runs on 16--17 October 2026, and every run is logged publicly on Weights \& Biases. The split file with per-article checksums, the deduplication clusters, the 700-article evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the complete code are released at }\url{https://github.com/omaratef3221/Bert-rbf-arabic-text-classification} \DIFadd{(folder }\texttt{\DIFadd{revision/}}\DIFadd{)}\DIFaddend .
 
 \DIFdelbegin %DIFDELCMD < \begin{table}[!ht]
 %DIFDELCMD < \centering
@@ -1069,7 +1069,7 @@ Macro F1 & 0.964 & 0.971 & 0.989 & 0.985 & 0.927 & 0.919 & 0.914 & 0.914 \\
 
 \DIFdelbegin \DIFdel{Table~\ref{tab:correct-examples} presents representative examples where both BERT architectures and all zero-shot LLMs achieved correct classifications. These examples illustrate the characteristics of unambiguous news articles that models handle reliably. }\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
-\caption{Learning curve: test accuracy (\%) as a function of the number of labelled training articles per class (mean $\pm$ standard deviation over three seeds; ``all'' = the full training split, about 4{,}545 per class). Nested subsets drawn with a fixed ranking of the training split. For reference, the best zero-shot LLM reaches 92.8\,\% and the best few-shot condition 95.3\,\% (Table~\ref{tab:prompts}).}
+\caption{Learning curve: test accuracy (\%) as a function of the number of labelled training articles per class (mean $\pm$ standard deviation over three seeds; ``all'' = the full training split, about 4{,}545 per class). Nested subsets drawn with a fixed ranking of the training split. For reference, the best zero-shot LLM reaches 92.8\,\% on the full test set; the best few-shot condition, 95.3\,\% (Table~\ref{tab:prompts}), was measured on the 700-article subset and is compared with the supervised systems on that subset in the text.}
 \label{tab:lc}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
@@ -1613,7 +1613,7 @@ This \DIFdelbegin \DIFdel{study benchmarked lightweight supervised models agains
 \DIFdelbegin \DIFdel{Efficiency evaluation showed that the SVM Head trains faster, while the Dense Head offers slightly better inference speed. In contrast}\DIFdelend \DIFaddbegin \DIFadd{The practical recommendation is therefore conditional on labels. With a few hundred labelled articles per class, a frozen Arabic encoder and a small head give the best accuracy per unit of cost, and fine-tuning or parameter-efficient adaptation of a larger model buys the last two to three points; without labels}\DIFaddend , zero-shot LLMs \DIFdelbegin \DIFdel{, though capable of generalization, exhibited variable latency and reduced reliability in culturally specific contexts without task adaptation}\DIFdelend \DIFaddbegin \DIFadd{are a reasonable option at 91--93\% whose main failure mode is predictable and class-specific. Future work should extend the protocol to dialectal and multi-publisher corpora, where editorial conventions are less uniform, and examine whether the label conventions that separate the two families can be conveyed to LLMs through instructions rather than examples}\DIFaddend .
 
 \DIFdelbegin \DIFdel{In conclusion, domain-specific fine-tuned models remain the most reliable and efficient option for Arabic text classification in practical settings. They offer strong performance, consistent behavior, and operational flexibility. Future research should investigate hybrid approaches—such as prompt-tuning or model distillation—that combine the generalization strengths of LLMs with the efficiency and controllability of supervised architectures, particularly for deployment inlow-resource or latency-sensitive environments. }\DIFdelend \DIFaddbegin \section*{\DIFadd{Data and code availability}}
-\DIFadd{The split file with per-article checksums, the deduplication clusters, the evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA adaptation budgets and the complete code are available at }\url{https://github.com/omaratef3221/Bert-arabic-fake-news-rbf} \DIFadd{(folder }\texttt{\DIFadd{revision/}}\DIFadd{). The SANAD corpus is available from its authors \mbox{%DIFAUXCMD
+\DIFadd{The split file with per-article checksums, the deduplication clusters, the evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA adaptation budgets and the complete code are available at }\url{https://github.com/omaratef3221/Bert-rbf-arabic-text-classification} \DIFadd{(folder }\texttt{\DIFadd{revision/}}\DIFadd{). The SANAD corpus is available from its authors \mbox{%DIFAUXCMD
 \cite{elnagar2020arabic}}\hskip0pt%DIFAUXCMD
 .
 }\DIFaddend 

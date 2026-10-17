@@ -70,7 +70,7 @@ body = lcrow("Dense head, 150 tokens", LC["dense150"]) + lcrow("RBF-SVM, 150 tok
 body += "Qwen2.5-7B + QLoRA & -- & -- & " + " & ".join(p(lora[n]["acc"]) for n in ["100"]) + " & -- & " + " & ".join(p(lora[n]["acc"]) for n in ["1000", "all"]) + " \\\\\n"
 w("tab_lc.tex", r"""\begin{table}[!ht]
 \centering
-\caption{Learning curve: test accuracy (\%) as a function of the number of labelled training articles per class (mean $\pm$ standard deviation over three seeds; ``all'' = the full training split, about 4{,}545 per class). Nested subsets drawn with a fixed ranking of the training split. For reference, the best zero-shot LLM reaches 92.8\,\% and the best few-shot condition 95.3\,\% (Table~\ref{tab:prompts}).}
+\caption{Learning curve: test accuracy (\%) as a function of the number of labelled training articles per class (mean $\pm$ standard deviation over three seeds; ``all'' = the full training split, about 4{,}545 per class). Nested subsets drawn with a fixed ranking of the training split. For reference, the best zero-shot LLM reaches 92.8\,\% on the full test set; the best few-shot condition, 95.3\,\% (Table~\ref{tab:prompts}), was measured on the 700-article subset and is compared with the supervised systems on that subset in the text.}
 \label{tab:lc}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%

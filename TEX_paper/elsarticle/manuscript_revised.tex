@@ -234,7 +234,7 @@ We report accuracy and macro-averaged precision, recall and F1 on the test split
 \subsection{Infrastructure and Reproducibility}
 \label{infrastructure}
 
-Supervised training, full fine-tuning, QLoRA and the open-weight LLM inference ran on one NVIDIA A100-PCIE-40GB (cloud instance) with CUDA 13.2, Python 3.12, PyTorch 2.14, Transformers 5.20, RAPIDS cuML for the GPU SVM, Unsloth, PEFT and TRL for QLoRA, and vLLM for open-weight inference. API models were called through the routes in Table~\ref{tab:llm_snapshots}; all API runs took place on 16 October 2026 and all GPU runs on 16--17 October 2026, and every run is logged publicly on Weights \& Biases. The split file with per-article checksums, the deduplication clusters, the 700-article evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the complete code are released at \url{https://github.com/omaratef3221/Bert-arabic-fake-news-rbf} (folder \texttt{revision/}).
+Supervised training, full fine-tuning, QLoRA and the open-weight LLM inference ran on one NVIDIA A100-PCIE-40GB (cloud instance) with CUDA 13.2, Python 3.12, PyTorch 2.14, Transformers 5.20, RAPIDS cuML for the GPU SVM, Unsloth, PEFT and TRL for QLoRA, and vLLM for open-weight inference. API models were called through the routes in Table~\ref{tab:llm_snapshots}; all API runs took place on 16 October 2026 and all GPU runs on 16--17 October 2026, and every run is logged publicly on Weights \& Biases. The split file with per-article checksums, the deduplication clusters, the 700-article evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the complete code are released at \url{https://github.com/omaratef3221/Bert-rbf-arabic-text-classification} (folder \texttt{revision/}).
 
 \subsection{Corrections to the Originally Reported Experiments}
 \label{corrections}
@@ -425,7 +425,7 @@ This paper compared lightweight supervised classifiers built on a frozen CAMeLBE
 The practical recommendation is therefore conditional on labels. With a few hundred labelled articles per class, a frozen Arabic encoder and a small head give the best accuracy per unit of cost, and fine-tuning or parameter-efficient adaptation of a larger model buys the last two to three points; without labels, zero-shot LLMs are a reasonable option at 91--93\% whose main failure mode is predictable and class-specific. Future work should extend the protocol to dialectal and multi-publisher corpora, where editorial conventions are less uniform, and examine whether the label conventions that separate the two families can be conveyed to LLMs through instructions rather than examples.
 
 \section*{Data and code availability}
-The split file with per-article checksums, the deduplication clusters, the evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA adaptation budgets and the complete code are available at \url{https://github.com/omaratef3221/Bert-arabic-fake-news-rbf} (folder \texttt{revision/}). The SANAD corpus is available from its authors \cite{elnagar2020arabic}.
+The split file with per-article checksums, the deduplication clusters, the evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA adaptation budgets and the complete code are available at \url{https://github.com/omaratef3221/Bert-rbf-arabic-text-classification} (folder \texttt{revision/}). The SANAD corpus is available from its authors \cite{elnagar2020arabic}.
 
 \appendix
 \section{Prompt variants}
