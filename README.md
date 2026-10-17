@@ -1,6 +1,6 @@
-# Bert-arabic-fake-news-rbf
+# Bert-rbf-arabic-text-classification
 ## Overview
-Bert-arabic-fake-news-rbf is a project aimed at detecting fake news in Arabic using BERT embeddings combined with two different classification approaches: a basic dense neural network head and an SVM with RBF kernel. This project leverages the power of BERT (CAMeL-Lab/bert-base-arabic-camelbert-msa) for natural language understanding and compares two classification approaches.
+Bert-rbf-arabic-text-classification is a project aimed at detecting fake news in Arabic using BERT embeddings combined with two different classification approaches: a basic dense neural network head and an SVM with RBF kernel. This project leverages the power of BERT (CAMeL-Lab/bert-base-arabic-camelbert-msa) for natural language understanding and compares two classification approaches.
 
 ## Table of Contents
 - [Installation](#installation)
