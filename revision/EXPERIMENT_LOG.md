@@ -105,6 +105,45 @@ and is skipped on re-run; `STEP=<name> bash run_all_gpu.sh` runs one step). It i
 6. Qualitative tables: sample disagreements from the `.pred.csv` / `.jsonl` files of the final runs only (join on `doc_id`).
 7. Text changes: `REVISION_PLAN.md` §5; response letter: `REVISION_PLAN.md` §1 (A1–A11) with the new numbers.
 
+## 7b. Final numbers (16–17 Oct 2026 runs; new deduplicated split; accuracy, mean over seeds)
+
+Supervised (test n = 6,822; 3 seeds unless noted; `results/supervised/runs.jsonl`):
+
+| System | 10 / class | 50 | 100 | 500 | 1000 | all (31,833) |
+|---|---|---|---|---|---|---|
+| Frozen CAMeLBERT + dense head, 150 tokens | 82.5 | 90.9 | 92.9 | 95.0 | 95.4 | **96.4** (paper config lr 5e-5: 96.8) |
+| Frozen CAMeLBERT + RBF-SVM, 150 tokens | 81.5 | 90.4 | 92.4 | 95.3 | 96.0 | **97.1** |
+| Frozen CAMeLBERT + dense head, 512 tokens | 88.4 | 94.2 | 95.1 | 96.3 | 96.7 | **97.6** |
+| Frozen CAMeLBERT + RBF-SVM, 512 tokens | | | | | | **98.1** |
+| Full fine-tuning of CAMeLBERT, 512 tokens (109 M params) | | | 96.6 | | 98.4 | **98.9** (1 seed) |
+
+Paper-style random split: dense 96.8, SVM 97.2 (vs 96.4 / 97.1 deduplicated: leakage worth ≈ 0.1–0.4 points).
+Dateline intervention (dense, 150): 96.4 → 96.5 with datelines removed from test only, 96.4 removed from train and test: the dateline is not a shortcut.
+Religion recall: dense 0.95, SVM 0.97, fine-tuned 0.99.
+
+LLMs, zero-shot primary prompt `en_v2`, full test set (n = 6,822; `results/*__en_v2__k0.summary.json`):
+
+| Model | Accuracy | Macro-F1 | Religion recall | Unmapped |
+|---|---|---|---|---|
+| GPT-4.1 (`openai/gpt-4.1` via OpenRouter → OpenAI) | **92.8** | 92.7 | 0.76 | 0.00 % |
+| Claude Haiku 4.5 (via OpenRouter → Anthropic) | **92.0** | 91.9 | 0.74 | 0.04 % |
+| Gemini 3.8 Flash (via OpenRouter → Google AI Studio flex, minimal reasoning) | **91.5** | 91.4 | 0.72 | 0.06 % |
+| DeepSeek V4 Flash 0731 (Together) | **91.5** | 91.4 | 0.71 | 0.01 % |
+| Qwen2.5-7B-Instruct, bf16, vLLM | **85.2** (89.2 with `en_v1`) | — | — | 0.6 % |
+| Qwen2.5-7B-Instruct + QLoRA on 100 / 1000 / all per class | see re-evaluation (status log 17 Oct) | | | |
+
+Subset-700 sweeps (the same 700 articles for every model; `results/tables/prompt_robustness.csv`, `fewshot.csv`, `controls.csv`):
+
+| Model | 5 prompts, zero-shot: mean ± std (min–max) | Primary prompt | k = 1 | k = 2 | Repeat run | No dateline | First 100 words |
+|---|---|---|---|---|---|---|---|
+| GPT-4.1 | 95.2 ± 0.5 (94.7–95.9) | 95.4 | 94.4 | 94.4 | 95.4 | 95.4 | 94.4 |
+| Claude Haiku 4.5 | 92.9 ± 0.7 (92.1–93.9) | 93.9 | 92.9 | 93.4 | 93.9 | 93.7 | 93.3 |
+| Gemini 3.8 Flash | 93.1 ± 0.3 (92.7–93.4) | 93.4 | 94.9 | 95.3 | 93.4 | 93.6 | 92.4 |
+| DeepSeek V4 Flash | 92.2 ± 1.5 (89.9–93.7) | 93.3 | 94.3 | 94.4 | 93.4 | 92.9 | 92.6 |
+| Qwen2.5-7B zero-shot | 87.4 ± 2.5 (84.9–90.3) | 86.6 | 91.6 | (k = 2 re-run 17 Oct) | | | |
+
+Reading: prompt wording moves the strong API models by 0.3–0.7 points std (DeepSeek 1.5, Qwen 2.5); the repeat run at temperature 0 reproduces the primary run to within 0.1 point for every model; removing the dateline changes accuracy by at most 0.4 points (so it is not a shortcut for LLMs either); truncating the article to its first 100 words costs 0.6–1.0 points; few-shot examples help the weaker models (Qwen +5.0, Gemini +1.9, DeepSeek +1.1 at k = 2) and do not help GPT-4.1 or Claude (−1.0 / −0.4). The subset is slightly easier than the full test set for every model (e.g. DeepSeek 93.3 vs 91.5), which is why the full-set primary numbers, not the subset numbers, go in the main table.
+
 ## 8. Status log
 
 | Date (UTC) | Event |
@@ -116,6 +155,7 @@ and is skipped on re-run; `STEP=<name> bash run_all_gpu.sh` runs one step). It i
 | 2026-10-16 19:05 UTC | **DeepSeek V4 Flash (Together) launched** (tmux `llm`, `run_llm_api.sh`, 8 workers). Full-set primary prompt `en_v2`: accuracy 91.5 %, macro-F1 91.4 %, Religion recall 0.71, 1 unmapped output in 6,822. Design changed at 19:30 to save cost: primary prompt (and `en_v1` as the subset-vs-full check) on the full set, all other runs on the fixed 1,400 subset; few-shot is k = 1 and k = 2 (author decision). |
 | 2026-10-16 19:41 UTC | **GPT-4.1 and Claude Haiku 4.5 launched via OpenRouter** (tmux `gpt`, `claude`; upstream pinned to OpenAI / Anthropic, fallbacks off; subset 700 for sweeps; 6 workers each). Cache pass-through verified (Claude k = 2: 71 % cached tokens). OpenRouter credit $55, key limit $50. |
 | 2026-10-16 21:05 UTC | **All API-LLM sequences finished** (DeepSeek 20:06, Claude 20:11, GPT-4.1 20:18, Gemini 20:58 UTC): 40 API runs + 4 Qwen zero-shot runs so far, no failed runs; single-article API errors in 4 runs (1 of 6,822 each, scored as errors). OpenRouter usage $50.13 (key limit $50 reached at the very end; the remaining $4.87 credit is unusable until the key limit is raised). Full-set primary zero-shot: GPT-4.1 92.8 %, Claude Haiku 4.5 92.0 %, Gemini 3.8 Flash 91.5 %, DeepSeek V4 Flash 91.5 %, Qwen2.5-7B 85.2 % (en_v2; 89.2 % with en_v1). Subset-700 sweeps complete for all four API models (see `results/tables/`). |
+| 2026-10-17 03:52 UTC | **GPU sequence finished** (`run_all_gpu.sh`: 28 of 29 steps done; the `tables` step failed only because the box had a stale `analysis.py`, tables are built on the Mac). Timings: full CAMeLBERT fine-tuning 100 / 1000 / all per class in 7 / 12 / 13 min; Qwen2.5-7B zero-shot (5 prompts + few-shot) 1 h 53 min via vLLM; QLoRA (r = 16, all linear layers, 40.4 M trainable params = 0.82 %, 4-bit, Unsloth) 0.29 / 1.48 / 3.27 GPU-hours for 100 / 1000 / all per class (1.3 / 8.9 / 20.2 M training tokens, 9.3 GB peak VRAM). The Qwen few-shot step used the pre-decision k = 3 (4.6 % context overflows at 8 k tokens): moved to `results/superseded/`; k = 2 re-run with a 16 k context at 04:02. The direct Hugging Face evaluation of the three adapters right-truncated long prompts (2.2 % unmapped outputs = article continuations, mostly Religion): moved to `results/superseded/`; adapters re-evaluated through vLLM (16 k context, no truncation) as `vllm__lora_n100 / lora_n1000 / lora_all`. |
 | 2026-10-16 19:45 UTC | **Gemini 3.8 Flash launched via OpenRouter** (tmux `gemini`; provider `google-ai-studio/flex`, half price; reasoning cannot be disabled on this endpoint, so `reasoning.effort = minimal` with a 256-token output budget, thinking tokens logged per request). Watcher on the Mac polls the four LLM logs and the OpenRouter spend every 10 minutes. |
 
 ## 9. Open items
