@@ -10,7 +10,8 @@ def ci(v): return f"[{p(v[0])}, {p(v[1])}]"
 def w(name, s): open(os.path.join(OUT, name), "w").write(s); print("wrote", name)
 
 # ---- main table
-rows = [("Frozen CAMeLBERT + dense head (150 tok.)", "0.30\\,M", S["dense150"]), ("Frozen CAMeLBERT + RBF-SVM (150 tok.)", "--", S["svm150"]),
+rows = [("Frozen CAMeLBERT + dense head (150 tok.)", "0.30\\,M", S["dense150"]), ("Frozen CAMeLBERT + dense head (150 tok., original recipe, 1 seed)", "0.30\\,M", S["dense150_paperlr"]),
+        ("Frozen CAMeLBERT + RBF-SVM (150 tok.)", "--", S["svm150"]),
         ("Frozen CAMeLBERT + dense head (512 tok.)", "0.30\\,M", S["dense512"]), ("Frozen CAMeLBERT + RBF-SVM (512 tok.)", "--", S["svm512"]),
         ("Fully fine-tuned CAMeLBERT (512 tok.)", "109.1\\,M", S["ft512"]),
         ("Qwen2.5-7B-Instruct + QLoRA, all training data", "40.4\\,M", L["lora_all"]), ("Qwen2.5-7B-Instruct + QLoRA, 1{,}000 / class", "40.4\\,M", L["lora1000"]),
@@ -21,7 +22,7 @@ body = ""
 for i, (name, params, v) in enumerate(rows):
     acc = p(v["acc"]) + (f"$\\pm${p(v['acc_std'])}" if v.get("n_runs", 1) > 1 else "")
     body += f"{name} & {params} & {acc} & {ci(v['acc_ci'])} & {p(v['macro_p'])} & {p(v['macro_r'])} & {p(v['macro_f1'])} \\\\\n"
-    if i in (4, 7): body += "\\addlinespace\n"
+    if i in (5, 8): body += "\\addlinespace\n"
 w("tab_main.tex", r"""\begin{table}[!ht]
 \centering
 \caption{Main results on the shared, deduplicated test split (6{,}822 articles). Accuracy is the mean over training seeds ($\pm$ standard deviation where more than one seed was run) with the 95\,\% bootstrap confidence interval of a single run; precision, recall and F1 are macro-averaged over the seven classes, in percent. ``Trainable'' is the number of parameters updated on the SANAD training split. All LLMs use the primary prompt with deterministic decoding.}
@@ -143,7 +144,7 @@ for b, acc in zip(order, [L["lora100"], L["lora1000"], L["lora_all"]]):
     body += f"{b['n_per_class']} & {b['n_train_examples']:,} & {b['epochs']:.0f} & {b['training_tokens_total']/1e6:.1f}\\,M & {b['train_gpu_hours']:.2f} & {b['peak_vram_gb']:.1f} & {p(acc['acc'])} \\\\\n"
 w("tab_lora.tex", r"""\begin{table}[!ht]
 \centering
-\caption{Adaptation budget of the QLoRA baseline (Qwen2.5-7B-Instruct, 4-bit NF4 base, LoRA rank 16, $\alpha=32$, all linear projections, 40.4\,M trainable parameters = 0.82\,\%; one NVIDIA A100-PCIE-40GB). Accuracy on the full test set.}
+\caption{Adaptation budget of the QLoRA baseline (Qwen2.5-7B-Instruct, 4-bit NF4 base, LoRA rank 16, $\alpha=32$, all linear projections, 40.4\,M trainable parameters, 0.53\,\% of the 7.62\,B parameters of the base model; one NVIDIA A100-PCIE-40GB). Accuracy on the full test set.}
 \label{tab:lora}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%

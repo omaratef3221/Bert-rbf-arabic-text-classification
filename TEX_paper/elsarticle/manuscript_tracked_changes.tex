@@ -1,7 +1,7 @@
 %DIF 1-17c1-3
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL old_flat.tex   Sat Oct 17 13:15:57 2026
-%DIF ADD new_flat.tex   Sat Oct 17 13:15:57 2026
+%DIF DEL old_flat.tex   Sat Oct 17 13:59:09 2026
+%DIF ADD new_flat.tex   Sat Oct 17 13:59:09 2026
 %DIF < %% Copyright 2007-2025 Elsevier Ltd
 %DIF < %% 
 %DIF < %% This file is part of the 'Elsarticle Bundle'.
@@ -202,7 +202,7 @@ Email: ashraf@sharjah.ac.ae
 \title{Arabic News Classification: Lightweight Supervised Models vs. Zero-Shot Large Language Models}
 
 \begin{abstract}
-This paper \DIFdelbegin \DIFdel{presents a comparative analysis of lightweight supervised models and zero-shot }\DIFdelend \DIFaddbegin \DIFadd{compares lightweight supervised classifiers with }\DIFaddend large language models (LLMs) \DIFdelbegin \DIFdel{for Arabic text classification . We use the }\DIFdelend \DIFaddbegin \DIFadd{on seven-way, single-label Arabic news classification using the balanced }\DIFaddend AlKhaleej subset of the SANAD \DIFdelbegin \DIFdel{dataset, a clean and balanced corpusclassifying seven news categories. For the supervised models, we leverage CAMeLBERT pre-trained embeddings with two classification heads: a dense neural layer and a linear SVM. For the LLMs, we evaluate four state-of-the-art zero-shot models: }\DIFdelend \DIFaddbegin \DIFadd{corpus. The supervised systems use a frozen CAMeLBERT encoder with either a dense classification head or an RBF-kernel SVM; we additionally report full fine-tuning of the encoder and a QLoRA-adapted open-weight LLM (Qwen2.5-7B-Instruct) trained on the same labelled data. The LLMs (}\DIFaddend GPT-4.1, \DIFaddbegin \DIFadd{Claude Haiku 4.5, Gemini 3.8 Flash, }\DIFaddend DeepSeek \DIFdelbegin \DIFdel{V3, Gemini 2.0-Flash, }\DIFdelend \DIFaddbegin \DIFadd{V4 Flash and Qwen2.5-7B-Instruct) are evaluated zero-shot }\DIFaddend and \DIFdelbegin \DIFdel{Claude 3.5-Haiku, using a unified prompt-based setup. Results show that }\DIFdelend \DIFaddbegin \DIFadd{few-shot with deterministic decoding, five semantically equivalent prompts in English and Arabic, and a deterministic, audited label-mapping procedure. All systems are scored on the same deduplicated test split of 6,822 articles, so that comparisons are paired, and every number carries a bootstrap confidence interval. With the full training split, }\DIFaddend the \DIFdelbegin \DIFdel{fine-tuned supervised models consistently outperform the }\DIFdelend \DIFaddbegin \DIFadd{frozen-encoder heads reach 96.4\% (dense) and 97.1\% (SVM) accuracy at 150 input tokens and 97.5\% and 98.1\% at 512 tokens; full fine-tuning reaches 98.9\% and the QLoRA-adapted LLM 98.5\%. Zero-shot LLMs reach 91.5--92.8\% with a shared weakness on the Religion class (recall 0.71--0.76 against 0.95--0.99 for the supervised systems); prompt wording moves them by 0.3--1.5 points, and few-shot examples help only the weaker models. A learning curve shows that about 100 labelled articles per class are enough for the 0.3\,M-parameter head on a frozen encoder to match the best }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs, with the dense-head model achieving 97\% accuracy compared to 93\% from the best-performing LLM . The SVM model trains 58\% faster, while the dense model offers slightly faster inference. Category-wise analysis reveals that supervised models maintain robust performance across all classes, whereas }\DIFdelend \DIFaddbegin \DIFadd{LLM, and 500 per class to surpass every zero- and few-shot condition. Two controlled interventions show that neither family relies on the newspaper dateline or on the opening words of an article. The results characterise when in-domain supervision, even in small amounts, is preferable to }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs exhibit notable degradation in semantically sensitive categories such as religion. These findings highlight the continued advantage of domain-adapted models for Arabic classification tasks and suggest promising directions for hybrid approaches that combine task-specific tuning with the generalization strengths of LLMs}\DIFdelend \DIFaddbegin \DIFadd{inference for Arabic text classification, and quantify the cost of each option}\DIFaddend .
+This paper \DIFdelbegin \DIFdel{presents a comparative analysis of lightweight supervised models and zero-shot }\DIFdelend \DIFaddbegin \DIFadd{compares lightweight supervised classifiers with }\DIFaddend large language models (LLMs) \DIFdelbegin \DIFdel{for Arabic text classification . We use the }\DIFdelend \DIFaddbegin \DIFadd{on seven-way, single-label Arabic news classification using the balanced }\DIFaddend AlKhaleej subset of the SANAD \DIFdelbegin \DIFdel{dataset, a clean and balanced corpusclassifying seven news categories. For the supervised models, we leverage CAMeLBERT pre-trained embeddings with two classification heads: a dense neural layer and a linear SVM. For the LLMs, we evaluate four state-of-the-art zero-shot models: }\DIFdelend \DIFaddbegin \DIFadd{corpus. The supervised systems use a frozen CAMeLBERT encoder with either a dense classification head or an RBF-kernel SVM; we additionally report full fine-tuning of the encoder and a QLoRA-adapted open-weight LLM (Qwen2.5-7B-Instruct) trained on the same labelled data. The LLMs (}\DIFaddend GPT-4.1, \DIFaddbegin \DIFadd{Claude Haiku 4.5, Gemini 3.8 Flash, }\DIFaddend DeepSeek \DIFdelbegin \DIFdel{V3, Gemini 2.0-Flash, }\DIFdelend \DIFaddbegin \DIFadd{V4 Flash and Qwen2.5-7B-Instruct) are evaluated zero-shot }\DIFaddend and \DIFdelbegin \DIFdel{Claude 3.5-Haiku, using a unified prompt-based setup. Results show that }\DIFdelend \DIFaddbegin \DIFadd{few-shot with deterministic decoding, five semantically equivalent prompts in English and Arabic, and a deterministic, audited label-mapping procedure. All systems are scored on the same deduplicated test split of 6,822 articles, so that comparisons are paired, and every number carries a bootstrap confidence interval. With the full training split, }\DIFaddend the \DIFdelbegin \DIFdel{fine-tuned supervised models consistently outperform the }\DIFdelend \DIFaddbegin \DIFadd{frozen-encoder heads reach 96.4\% (dense) and 97.1\% (SVM) accuracy at 150 input tokens and 97.5\% and 98.1\% at 512 tokens; full fine-tuning reaches 98.9\% and the QLoRA-adapted LLM 98.5\%. Zero-shot LLMs reach 91.5--92.8\% with a shared weakness on the Religion class (recall 0.71--0.76 against 0.95--0.99 for the supervised systems); prompt wording moves them by 0.3--1.5 points, and few-shot examples help only the weaker models. A learning curve shows that about 100 labelled articles per class are enough for the 0.3\,M-parameter head on a frozen encoder to match the best }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs, with the dense-head model achieving 97\% accuracy compared to 93\% from the best-performing LLM . The SVM model trains 58\% faster, while the dense model offers slightly faster inference. Category-wise analysis reveals that supervised models maintain robust performance across all classes, whereas }\DIFdelend \DIFaddbegin \DIFadd{LLM; with 500 per class the head reading 512 wordpieces also exceeds the best few-shot condition on the same articles, while the 150-wordpiece head needs the full training split to do so. Two controlled interventions show that neither family relies on the newspaper dateline or on the opening words of an article. The results characterise when in-domain supervision, even in small amounts, is preferable to }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs exhibit notable degradation in semantically sensitive categories such as religion. These findings highlight the continued advantage of domain-adapted models for Arabic classification tasks and suggest promising directions for hybrid approaches that combine task-specific tuning with the generalization strengths of LLMs}\DIFdelend \DIFaddbegin \DIFadd{inference for Arabic text classification, and quantify the cost of each option}\DIFaddend .
 \end{abstract}
 
 \begin{keyword}
@@ -425,16 +425,14 @@ The AlKhaleej subset maintains a uniform label distribution, allowing for fair e
 \DIFdel{,}\textbf{\DIFdel{validation}}%DIFAUXCMD
 \DIFdel{, }\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Deduplication and near-duplicate-aware split.}}
 \DIFadd{News corpora contain repeated and closely related stories, }\DIFaddend and \DIFdelbegin \textbf{\DIFdel{testing}}%DIFAUXCMD
-\DIFdel{. The splitting was performed using stratified sampling to maintain the original category distribution across all subsets. This prevents category imbalance in any subset, which could otherwise bias the training or evaluation process. The split ratios are as follows:
-}%DIFDELCMD < \begin{itemize}
+\DIFdel{. The splitting was performed using stratified sampling to maintain the original category distribution across all subsets. This prevents category imbalance in any subset, which could otherwise bias the training or evaluation process. The splitratios are as follows: }%DIFDELCMD < \begin{itemize}
 %DIFDELCMD <     \item %%%
-\DIFdelend \DIFaddbegin \DIFadd{a random split can place near-identical articles in training and test, which inflates the accuracy of any system trained on the corpus. We therefore measured and removed this effect. Exact duplicates (identical after removing everything but Arabic letters) number 23 and were dropped. Near-duplicates were identified by TF--IDF cosine similarity over word unigrams and bigrams, with pairs at cosine $\geq 0.8$ joined into clusters by union--find; 183 clusters covering 1,403 articles result, the largest being templated daily stock-market reports in }\textit{\DIFadd{Finance}} \DIFadd{(376, 259 and 188 near-identical articles). The corpus was then split }\DIFaddend 70\DIFdelbegin \DIFdel{\% for training (\textasciitilde31,850 articles)
+\DIFdel{70\%for training }\DIFdelend \DIFaddbegin \DIFadd{a random split can place near-identical articles in training and test, which inflates the accuracy of any system trained on the corpus. We therefore measured and removed this effect. Exact duplicates (identical after removing everything but Arabic letters) number 23 and were dropped. Near-duplicates were identified by TF--IDF cosine similarity over word unigrams and bigrams, with pairs at cosine $\geq 0.8$ joined into clusters by union--find; 183 clusters covering 1,403 articles result, the largest being templated daily stock-market reports in }\textit{\DIFadd{Finance}} \DIFaddend (\DIFdelbegin \DIFdel{\textasciitilde31, 850 articles)}%DIFDELCMD < \item %%%
+\DIFdelend \DIFaddbegin \DIFadd{376, 259 and 188 near-identical articles). The corpus was then split 70/}\DIFaddend 15\DIFdelbegin \DIFdel{\% for validation (\textasciitilde6, 825 articles)
     }%DIFDELCMD < \item %%%
-\DIFdelend \DIFaddbegin \DIFadd{/}\DIFaddend 15\DIFdelbegin \DIFdel{\% for validation (\textasciitilde6,825 articles)
-    }%DIFDELCMD < \item %%%
-\DIFdelend \DIFaddbegin \DIFadd{/}\DIFaddend 15 \DIFdelbegin \DIFdel{\% for testing (\textasciitilde6, 825 articles)}%DIFDELCMD < \end{itemize}
+\DIFdelend \DIFaddbegin \DIFadd{/}\DIFaddend 15 \DIFdelbegin \DIFdel{\% for testing (\textasciitilde6,825 articles) }%DIFDELCMD < \end{itemize}
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{per class with every cluster assigned to a single partition (largest clusters first, each to the partition most below its target size), so that no near-duplicate pair straddles training, validation and test. Table~\ref{tab:split} gives the resulting sizes; no test article has a neighbour at cosine $\geq 0.8$ outside the test set (212 did under a plain random split). To quantify what the original random split had been worth, we also trained the frozen-encoder systems on a paper-style random stratified split of the same data: on that split, 10.6\% of test articles have a neighbour at cosine $\geq 0.5$ in the rest of the corpus and the supervised systems are essentially perfect on them, and removing those articles lowers accuracy by 0.3 points. All numbers in this paper use the deduplicated split unless stated otherwise; the split file with per-article checksums is released.
+\DIFdelend \DIFaddbegin \DIFadd{per class with every cluster assigned to a single partition (largest clusters first, each to the partition most below its target size), so that no near-duplicate pair straddles training, validation and test. Table~\ref{tab:split} gives the resulting sizes; no test article has a neighbour at cosine $\geq 0.8$ outside the test set (212 did under a plain random split). Below that threshold some lexical overlap remains by design: 517 test articles (7.6\%) have a neighbour at cosine $\geq 0.5$ in training or validation (307 at $\geq 0.6$, 163 at $\geq 0.7$). These are easy articles for every system, not only for the trained ones: on them the frozen dense head (seed 0) scores 99.8\%, the SVM 99.4\%, full fine-tuning and QLoRA 100\%, and zero-shot GPT-4.1, which has seen no training article, 99.6\%; on the remaining 6,305 articles the same systems score 96.0, 96.9, 98.8, 98.4 and 92.3\%. Excluding them therefore moves every accuracy by 0.1--0.5 points and widens rather than narrows the gap between the dense head and GPT-4.1 (3.8 against 3.5 points); the per-article maximum similarities are released with the split. To quantify what the original random split had been worth, we also trained the frozen-encoder systems on a paper-style random stratified split of the same data: on that split, 10.6\% of test articles have a neighbour at cosine $\geq 0.5$ in the rest of the corpus and the supervised systems are essentially perfect on them, and removing those articles lowers accuracy by 0.3 points. All numbers in this paper use the deduplicated split unless stated otherwise; the split file with per-article checksums is released.
 }\DIFaddend 
 
 \DIFdelbegin \subsection{\DIFdel{Models}}
@@ -465,17 +463,17 @@ Total & 31,833 & 6,822 & 6,822 \\
 \DIFaddend 
 
 
-\DIFdelbegin \DIFdel{This study implements and compares three classifier systems for Arabic text classification, evaluating their performance across accuracy, precision, recall, F1-score, and , where applicable, training and inference time. }\DIFdelend \DIFaddbegin \subsection{\DIFadd{Systems}}
+\DIFdelbegin \DIFdel{This study implements and compares three classifier systems for Arabic text classification, evaluating their performance across accuracy, precision, recall, F1-score, and , where applicable, training and inference time.
+}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Systems}}
 \label{models}
 \DIFaddend 
 
 \DIFdelbegin \DIFdel{Two models rely on CAMeLBERT for Modern Standard Arabic \mbox{%DIFAUXCMD
 \cite{DBLP:journals/corr/abs-2103-06678}}\hskip0pt%DIFAUXCMD
-, used as a frozen feature extractor that generates 768-dimensional contextual embeddings. The first model, }\textbf{\DIFdel{BERT–Dense}}%DIFAUXCMD
+,used as a frozen feature extractor that generates 768-dimensional contextual embeddings. The first model, }\textbf{\DIFdel{BERT–Dense}}%DIFAUXCMD
 \DIFdel{, integrates these embeddings with a lightweight neural classifier. The second model, }\textbf{\DIFdel{BERT–SVM}}%DIFAUXCMD
-\DIFdel{, applies a Support Vector Machine (SVM) using a radial basis function (RBF)kernel. The third approach employs }\textbf{\DIFdel{zero-shot inference}} %DIFAUXCMD
-\DIFdel{from large language models (LLMs) accessed through public APIs.
-}\DIFdelend \DIFaddbegin \DIFadd{We evaluate five families of systems. Table~\ref{tab:models_summary} states, for each, exactly which parameters are trained on the SANAD training split; this matters because the lightweight systems keep the encoder frozen.
+\DIFdel{, applies a Support Vector Machine (SVM) using a radial basis function (RBF) kernel. The third approach employs }\textbf{\DIFdel{zero-shot inference}} %DIFAUXCMD
+\DIFdel{from large language models (LLMs)accessed through public APIs. }\DIFdelend \DIFaddbegin \DIFadd{We evaluate five families of systems. Table~\ref{tab:models_summary} states, for each, exactly which parameters are trained on the SANAD training split; this matters because the lightweight systems keep the encoder frozen.
 }\DIFaddend 
 
 \DIFdelbegin %DIFDELCMD < \noindent %%%
@@ -632,7 +630,7 @@ Qwen2.5-7B-Instruct & \texttt{Qwen/\allowbreak Qwen2.5-7B-Instruct}, bf16 & loca
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Prompts.}} \DIFadd{Each model is evaluated with five semantically equivalent prompts: three in English (}\texttt{\DIFadd{en\_v1}}\DIFadd{, the wording of the original experiments; }\texttt{\DIFadd{en\_v2}}\DIFadd{, the primary prompt; }\texttt{\DIFadd{en\_v3}}\DIFadd{) and two in Arabic (}\texttt{\DIFadd{ar\_v1}}\DIFadd{, }\texttt{\DIFadd{ar\_v2}}\DIFadd{). All present the seven category names and ask for exactly one of them; the full texts are given in \ref{app:prompts}. The primary prompt is
+\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Prompts.}} \DIFadd{Each model is evaluated with five semantically equivalent prompts: three in English (}\texttt{\DIFadd{en\_v1}}\DIFadd{, the wording used by the code of the original experiments, which the submitted manuscript had paraphrased; }\texttt{\DIFadd{en\_v2}}\DIFadd{, the primary prompt; }\texttt{\DIFadd{en\_v3}}\DIFadd{) and two in Arabic (}\texttt{\DIFadd{ar\_v1}}\DIFadd{, }\texttt{\DIFadd{ar\_v2}}\DIFadd{). All present the seven category names and ask for exactly one of them; the full texts are given in \ref{app:prompts}. The primary prompt is
 }\DIFaddend \begin{quote}\DIFaddbegin \small
 \DIFaddend \textit{\DIFaddbegin \DIFadd{System: }\DIFaddend You are \DIFdelbegin \DIFdel{an Arabic text }\DIFdelend \DIFaddbegin \DIFadd{a precise news-topic }\DIFaddend classifier \DIFaddbegin \DIFadd{for Modern Standard Arabic}\DIFaddend .\DIFdelbegin \DIFdel{Classify the following sentence into one of the categories below:}%DIFDELCMD < \\
 %DIFDELCMD < %%%
@@ -681,7 +679,7 @@ Qwen2.5-7B-Instruct & \texttt{Qwen/\allowbreak Qwen2.5-7B-Instruct}, bf16 & loca
 \DIFdelbegin \subsection{\DIFdel{Hyperparameters and Training Configuration}}
 %DIFAUXCMD
 \addtocounter{subsection}{-1}%DIFAUXCMD
-\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Evaluation sets.}} \DIFadd{The primary prompt is run on the full test split of 6,822 articles for every model, and these are the numbers of the main table. The prompt variants, the few-shot conditions, the controls and a replicate run are evaluated on a fixed stratified subset of 700 test articles (100 per class; the list is released) to keep the API cost of the sweeps proportionate; at this size the standard error of an accuracy is about 0.7 points. DeepSeek V4 Flash, the cheapest API model, was additionally run with a second prompt on the full set, where the subset estimate agreed with the full-set estimate within sampling error (92.0\% vs 91.4\%; the subset is slightly easier than the full set for every model, which is why full-set numbers are used for the main comparison).
+\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Evaluation sets.}} \DIFadd{The primary prompt is run on the full test split of 6,822 articles for every model, and these are the numbers of the main table. The prompt variants, the few-shot conditions, the controls and a replicate run are evaluated on a fixed stratified subset of 700 test articles (100 per class; the list is released) to keep the API cost of the sweeps proportionate; at this size the standard error of an accuracy is about 0.7 points. The subset is easier for the LLMs than the full test set: with the primary prompt every model scores higher on it, by 1.4 (Qwen2.5-7B), 1.8 (Claude Haiku 4.5, DeepSeek V4 Flash), 2.0 (Gemini 3.8 Flash) and 2.6 points (GPT-4.1), whereas the supervised systems score within one point of their full-set accuracy on it, in both directions. Subset numbers are therefore only compared with other subset numbers: prompt-to-prompt, few-shot-to-zero-shot and control differences, and, where a cross-family comparison is made, the supervised systems re-scored on the same 700 articles. The main comparison and the learning curve use the full set.
 }\DIFaddend 
 
 \DIFdelbegin \DIFdel{To ensure reproducibility,we report all hyperparameters used for training the BERT-based classification models. Table~\ref{tab:hyperparameters} summarizes the complete training configuration for both the BERT–Dense and BERT–SVM models. }\DIFdelend \DIFaddbegin \subsection{\DIFadd{Training Configuration}}
@@ -726,16 +724,48 @@ Qwen2.5-7B-Instruct & \texttt{Qwen/\allowbreak Qwen2.5-7B-Instruct}, bf16 & loca
 %DIFDELCMD < \noindent
 %DIFDELCMD < %%%
 \DIFdel{The random seed was fixed across Python }\texttt{\DIFdel{random}} %DIFAUXCMD
-\DIFdel{module, NumPy, PyTorch, and the Transformers library to ensure deterministic behavior. For the BERT–Dense model, the AdamW optimizer was chosen for its effective handling of weight decay regularization, which helps prevent overfitting in the classification head.
-The learning rate of $5*10^{-5}$ follows established best practices for training lightweight heads in frozen transformer encodings. Training was conducted for 10 }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:hyperparameters} lists the training configuration of every trained system. The dense head is trained with AdamW (learning rate $10^{-3}$, weight decay 0.01, batch 32, cross-entropy loss) for at most 50 }\DIFaddend epochs with early stopping \DIFdelbegin \DIFdel{based }\DIFdelend on validation loss \DIFdelbegin \DIFdel{to prevent overfitting. For the BERT–SVM model, embeddings were extracted in batches of }\DIFdelend \DIFaddbegin \DIFadd{(patience 5, best checkpoint restored); the configuration of the original experiments (learning rate $5\times10^{-5}$, 10 epochs, no early stopping) is also reported for continuity and gives 96.8\% on the same split. The SVM is fit once on the pre-computed training embeddings. Full fine-tuning uses AdamW with learning rate $2\times10^{-5}$, a linear schedule with 6\% warm-up, batch }\DIFaddend 32\DIFdelbegin \DIFdel{samples, }\DIFdelend \DIFaddbegin \DIFadd{, mixed precision, 512 wordpieces, at most three epochs with early stopping on validation loss. QLoRA uses a 4-bit NF4 base with double quantization, LoRA rank 16, $\alpha=32$, dropout 0, on all attention and MLP projections, learning rate $2\times10^{-4}$ with a cosine schedule, batch 16, sequences up to 1,024 tokens (articles truncated to 350 words for training only), }\DIFaddend and \DIFdelbegin \DIFdel{the SVM was trained on the complete set of pre-computed embeddings using GPU-accelerated implementation via cuML. }%DIFDELCMD < 
+\DIFdel{module, NumPy, PyTorch, and the Transformers library to ensure deterministic behavior. For the BERT–Dense model }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:hyperparameters} lists the training configuration of every trained system. The dense head is trained with AdamW (learning rate $10^{-3}$, weight decay 0.01, batch 32}\DIFaddend , \DIFdelbegin \DIFdel{the AdamW optimizer was chosen for its effective handling of weight decay regularization, which helps prevent overfitting in the classification head. The learning rate of $5*10^{-5}$ follows established best practices for training lightweight heads in frozen transformer encodings. Training was conducted for 10 }\DIFdelend \DIFaddbegin \DIFadd{cross-entropy loss) for at most 50 }\DIFaddend epochs with early stopping \DIFdelbegin \DIFdel{based }\DIFdelend on validation loss \DIFdelbegin \DIFdel{to prevent overfitting. For the BERT–SVM model, embeddings were extracted in batches of 32 samples, and the SVM was trained on the complete set of }\DIFdelend \DIFaddbegin \DIFadd{(patience 5, best checkpoint restored); this recipe was fixed before any test evaluation because the learning curve needs one that works from 70 to 31,833 training articles. The configuration of the original experiments (learning rate $5\times10^{-5}$, 10 epochs, no early stopping, one seed) is reported next to it in Table~\ref{tab:main}: on the same split it reaches 96.8\% (validation accuracy 97.1\% against 96.9\% for the early-stopped recipe), 0.4 points above the headline configuration, so the headline numbers of the dense head are, if anything, conservative. The SVM is fit once on the }\DIFaddend pre-computed \DIFdelbegin \DIFdel{embeddings using GPU-accelerated implementation via cuML. }\DIFdelend \DIFaddbegin \DIFadd{training embeddings. Full fine-tuning uses AdamW with learning rate $2\times10^{-5}$, a linear schedule with 6\% warm-up, batch 32, mixed precision, 512 wordpieces, at most three epochs with early stopping on validation loss. QLoRA uses a 4-bit NF4 base with double quantization, LoRA rank 16, $\alpha=32$, dropout 0, on all attention and MLP projections, learning rate $2\times10^{-4}$ with a cosine schedule, batch 16, sequences up to 1,024 tokens (articles truncated to 350 words for training only), and one epoch on the full training split (two and three epochs at 1,000 and 100 articles per class), implemented with Unsloth \mbox{%DIFAUXCMD
+\cite{unsloth2024}}\hskip0pt%DIFAUXCMD
+. Every supervised configuration is trained with three seeds (which also select the nested learning-curve subsets) unless stated otherwise; full fine-tuning on the full split uses one seed.
+}\DIFaddend 
 
-%DIFDELCMD < %%%
-\subsection{\DIFdel{Infrastructure}}
+\DIFdelbegin \subsection{\DIFdel{Infrastructure}}
 %DIFAUXCMD
 \addtocounter{subsection}{-1}%DIFAUXCMD
-\DIFdel{All experiments were conducted on an NVIDIA A100 GPU with 40GB of VRAM, hosted on a cloud computing platform (vast.ai). The software environment consisted of Python 3.10, PyTorch 2.0 with CUDA 11.8, and the Hugging Face Transformers library (version 4.48). For the BERT–SVM model, GPU-accelerated SVM training was enabled using RAPIDS cuML, which significantly reduced training time compared to CPU-based implementations. Table~\ref{tab:infrastructure} provides a detailed summary of the experimental infrastructure}\DIFdelend \DIFaddbegin \DIFadd{one epoch on the full training split (two and three epochs at 1,000 and 100 articles per class), implemented with Unsloth \mbox{%DIFAUXCMD
-\cite{unsloth2024}}\hskip0pt%DIFAUXCMD
-. Every supervised configuration is trained with three seeds (which also select the nested learning-curve subsets) unless stated otherwise; full fine-tuning on the full split uses one seed}\DIFaddend .
+\DIFdel{All experiments were conducted on an NVIDIA A100 GPU with 40GB of VRAM, hosted on }\DIFdelend \DIFaddbegin \begin{table}[!ht]
+\centering
+\caption{Training configuration of the supervised and adapted systems.}
+\label{tab:hyperparameters}
+\small
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l l l l l@{}}
+\toprule
+\textbf{Setting} & \textbf{Dense head} & \textbf{RBF-SVM} & \textbf{Full fine-tuning} & \textbf{QLoRA (Qwen2.5-7B)} \\
+\midrule
+Encoder / base & CAMeLBERT-MSA, frozen & CAMeLBERT-MSA, frozen & CAMeLBERT-MSA, all layers & Qwen2.5-7B-Instruct, 4-bit NF4 \\
+Input length & 150 or 512 wordpieces & 150 or 512 wordpieces & 512 wordpieces & $\leq$1,024 tokens \\
+Trainable parameters & 297,991 & -- & 109.1\,M & 40.4\,M (rank 16, $\alpha$=32) \\
+Optimizer / LR & AdamW, $10^{-3}$ (orig.\ $5\times10^{-5}$) & -- & AdamW, $2\times10^{-5}$, linear, 6\% warm-up & AdamW (8-bit), $2\times10^{-4}$, cosine \\
+Batch size & 32 & 32 (embedding extraction) & 32 & 16 \\
+Epochs / stopping & $\leq$50, early stop (val.\ loss, patience 5) & single fit & $\leq$3, early stop (patience 1) & 1 (all), 2 (1,000/cls), 3 (100/cls) \\
+Regularization & dropout 0.25, weight decay 0.01 & $C=9$, $\gamma=$\,scale & weight decay 0.01, grad.\ clip 1.0 & -- \\
+Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{\DIFadd{Evaluation and Statistical Analysis}}
+\label{stats}
+
+\DIFadd{We report accuracy and macro-averaged precision, recall and F1 on the test split, per-class recall, and confusion matrices. Every accuracy carries a 95\% bootstrap confidence interval over test articles (2,000 resamples); supervised numbers are means over seeds with their standard deviation. Because all systems are scored on the same articles, headline differences are tested with McNemar's exact test on paired predictions \mbox{%DIFAUXCMD
+\cite{dietterich1998approximate}}\hskip0pt%DIFAUXCMD
+, and the paired bootstrap of the accuracy difference is reported alongside. Prompt sensitivity is reported as the mean, standard deviation and range over the five prompts; residual nondeterminism is measured by a second identical pass of the primary prompt. The learning curve uses nested training subsets of 10, 50, 100, 500, 1,000 and all articles per class, drawn by a fixed per-seed ranking of the training split so that smaller subsets are contained in larger ones. Two controlled interventions probe lexical shortcuts: (a) input length, by comparing 150 and 512 wordpieces for the frozen encoder and the first 100 words against the full article for the LLMs; and (b) the newspaper dateline (}\textit{\RTL{دبي: «الخليج»}}\DIFadd{), }\DIFaddend a \DIFdelbegin \DIFdel{cloud computing platform (vast.ai). The software environment consisted of Python 3.10, PyTorch 2.0 }\DIFdelend \DIFaddbegin \DIFadd{city-and-source prefix present in 12\% of articles and strongly class-skewed (40\% of }\textit{\DIFadd{Medical}} \DIFadd{and 0.1\% of }\textit{\DIFadd{Sports}} \DIFadd{articles), which we remove from the test articles, and additionally from the training articles for the dense head, to measure whether any system uses it as a cue.
+}
+
+\subsection{\DIFadd{Infrastructure and Reproducibility}}
+\label{infrastructure}
+
+\DIFadd{Supervised training, full fine-tuning, QLoRA and the open-weight LLM inference ran on one NVIDIA A100-PCIE-40GB (cloud instance) }\DIFaddend with CUDA \DIFdelbegin \DIFdel{11.8, and the Hugging Face Transformers library (version 4.48). For the BERT–SVM model, GPU-accelerated SVM training was enabled using RAPIDS cuML, which significantly reduced training time compared to CPU-based implementations. Table~\ref{tab:infrastructure} provides a detailed summary of the experimental infrastructure}\DIFdelend \DIFaddbegin \DIFadd{13.2, Python 3.12, PyTorch 2.14, Transformers 5.20, RAPIDS cuML for the GPU SVM, Unsloth, PEFT and TRL for QLoRA, and vLLM for open-weight inference. API models were called through the routes in Table~\ref{tab:llm_snapshots}; all API runs took place on 16 October 2026 and all GPU runs on 16--17 October 2026, and every run is logged publicly on Weights \& Biases. The split file with per-article checksums, the deduplication clusters, the 700-article evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the complete code are released at }\url{https://github.com/omaratef3221/Bert-arabic-fake-news-rbf} \DIFadd{(folder }\texttt{\DIFadd{revision/}}\DIFadd{)}\DIFaddend .
 
 \DIFdelbegin %DIFDELCMD < \begin{table}[!ht]
 %DIFDELCMD < \centering
@@ -757,45 +787,55 @@ The learning rate of $5*10^{-5}$ follows established best practices for training
 %DIFDELCMD < \end{tabular}
 %DIFDELCMD < \end{table}
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \begin{table}[!ht]
+\DIFdelend \DIFaddbegin \subsection{\DIFadd{Corrections to the Originally Reported Experiments}}
+\label{corrections}
+\DIFaddend 
+
+\DIFaddbegin \DIFadd{While re-implementing the evaluation pipeline for this version we found three defects in the experiments reported in an earlier version of this paper; we document them because the affected numbers were replaced. First, the result previously reported for Claude 3.5 Haiku (75\% accuracy, }\textit{\DIFadd{Religion}} \DIFadd{recall 0) was a parsing artefact: the run requested a single output token, the model often answered in Arabic, the returned token was a word prefix carrying no label, and the post-processing code had no rule for the }\textit{\DIFadd{Religion}} \DIFadd{class and assigned a random other label to unrecognised outputs. With an adequate output budget the same model reaches 92--93\% and }\textit{\DIFadd{Religion}} \DIFadd{recall 0.76; the interpretation of that result as a cultural or alignment limitation has been withdrawn. Second, the random split had been drawn without a fixed seed in each evaluation, so the systems had been scored on different test samples; the present version uses one split for all systems. Third, one run reported as GPT-4.1 had been executed with a smaller model, and the API models had been decoded at default (non-zero) temperature; all runs are now on pinned snapshots with deterministic decoding. In addition, the prompt printed in the submitted manuscript was a paraphrase of the one the code used; the exact wording is now given verbatim as }\texttt{\DIFadd{en\_v1}} \DIFadd{in \ref{app:prompts}.
+}
+
+\DIFaddend \section{Experimental Results}
+\label{results}
+
+\DIFdelbegin \DIFdel{This section evaluates all models across accuracy }\DIFdelend \DIFaddbegin \subsection{\DIFadd{Main Results}}
+\label{sec:main}
+
+\DIFadd{Table~\ref{tab:main} reports all systems on the shared test split. The frozen-encoder systems reach 96.4\% (dense head) and 97.1\% (RBF-SVM) at 150 wordpieces and 97.5\% and 98.1\% at 512, with narrow confidence intervals and near-identical macro precision}\DIFaddend , \DIFdelbegin \DIFdel{precision, }\DIFdelend recall \DIFaddbegin \DIFadd{and F1, as expected on a balanced test set. Adapting the parameters of a large model to the task gives the best results: full fine-tuning of CAMeLBERT reaches 98.9\%, and the QLoRA-adapted Qwen2.5-7B-Instruct 98.5\% with the full training split and 98.4\% with 1}\DIFaddend ,\DIFdelbegin \DIFdel{F1-score, training time, and inference time. Fine-tuned BERT architectures (Dense and SVM heads)are systematically compared against state-of-the-art }\DIFdelend \DIFaddbegin \DIFadd{000 articles per class. The }\DIFaddend zero-shot \DIFdelbegin \DIFdel{large language models (LLMs), including }\DIFdelend \DIFaddbegin \DIFadd{LLMs lie within 1.3 points of each other, from 92.8\% (}\DIFaddend GPT-4\DIFdelbegin \DIFdel{.1, DeepSeek V3, Gemini-2.0-Flash, and Claude-3.5-Haiku. Both quantitative results and qualitative error analyses are reported to highlight model strengths, limitations, and practical deployment considerations.
+}\DIFdelend \DIFaddbegin \DIFadd{.1) to 91.5\% (Gemini 3.8 Flash and DeepSeek V4 Flash); the 7B open-weight model is clearly weaker zero-shot (85.2\% with the primary prompt, 89.2\% with the original wording) but closes the gap once adapted.
+}\DIFaddend 
+
+\DIFdelbegin \DIFdel{Table~\ref{tab:all_models} presents the macro-averaged metrics. The fine-tuned CAMeLBERT variants reached 97\% accuracy with balanced precision and recall, clearly outperforming the zero-shot LLMs. Among external LLMs, }\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
-\caption{Training configuration of the supervised and adapted systems.}
-\label{tab:hyperparameters}
+\caption{Main results on the shared, deduplicated test split (6{,}822 articles). Accuracy is the mean over training seeds ($\pm$ standard deviation where more than one seed was run) with the 95\,\% bootstrap confidence interval of a single run; precision, recall and F1 are macro-averaged over the seven classes, in percent. ``Trainable'' is the number of parameters updated on the SANAD training split. All LLMs use the primary prompt with deterministic decoding.}
+\label{tab:main}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
-\begin{tabular}{@{}l l l l l@{}}
+\begin{tabular}{@{}l r r l r r r@{}}
 \toprule
-\textbf{Setting} & \textbf{Dense head} & \textbf{RBF-SVM} & \textbf{Full fine-tuning} & \textbf{QLoRA (Qwen2.5-7B)} \\
+\textbf{System} & \textbf{Trainable} & \textbf{Accuracy} & \textbf{95\,\% CI} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
 \midrule
-Encoder / base & CAMeLBERT-MSA, frozen & CAMeLBERT-MSA, frozen & CAMeLBERT-MSA, all layers & Qwen2.5-7B-Instruct, 4-bit NF4 \\
-Input length & 150 or 512 wordpieces & 150 or 512 wordpieces & 512 wordpieces & $\leq$1,024 tokens \\
-Trainable parameters & 297,991 & -- & 109.1\,M & 40.4\,M (rank 16, $\alpha$=32) \\
-Optimizer / LR & AdamW, $10^{-3}$ (orig.\ $5\times10^{-5}$) & -- & AdamW, $2\times10^{-5}$, linear, 6\% warm-up & AdamW (8-bit), $2\times10^{-4}$, cosine \\
-Batch size & 32 & 32 (embedding extraction) & 32 & 16 \\
-Epochs / stopping & $\leq$50, early stop (val.\ loss, patience 5) & single fit & $\leq$3, early stop (patience 1) & 1 (all), 2 (1,000/cls), 3 (100/cls) \\
-Regularization & dropout 0.25, weight decay 0.01 & $C=9$, $\gamma=$\,scale & weight decay 0.01, grad.\ clip 1.0 & -- \\
-Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
+Frozen CAMeLBERT + dense head (150 tok.) & 0.30\,M & 96.4$\pm$0.2 & [95.9, 96.8] & 96.4 & 96.4 & 96.4 \\
+Frozen CAMeLBERT + dense head (150 tok., original recipe, 1 seed) & 0.30\,M & 96.8 & [96.4, 97.2] & 96.8 & 96.8 & 96.8 \\
+Frozen CAMeLBERT + RBF-SVM (150 tok.) & -- & 97.1$\pm$0.0 & [96.7, 97.5] & 97.1 & 97.1 & 97.1 \\
+Frozen CAMeLBERT + dense head (512 tok.) & 0.30\,M & 97.5$\pm$0.1 & [97.1, 97.8] & 97.6 & 97.5 & 97.5 \\
+Frozen CAMeLBERT + RBF-SVM (512 tok.) & -- & 98.1$\pm$0.0 & [97.8, 98.4] & 98.1 & 98.1 & 98.1 \\
+Fully fine-tuned CAMeLBERT (512 tok.) & 109.1\,M & 98.9 & [98.7, 99.1] & 98.9 & 98.9 & 98.9 \\
+\addlinespace
+Qwen2.5-7B-Instruct + QLoRA, all training data & 40.4\,M & 98.5 & [98.2, 98.8] & 98.5 & 98.5 & 98.5 \\
+Qwen2.5-7B-Instruct + QLoRA, 1{,}000 / class & 40.4\,M & 98.4 & [98.1, 98.7] & 98.4 & 98.4 & 98.4 \\
+Qwen2.5-7B-Instruct + QLoRA, 100 / class & 40.4\,M & 95.7 & [95.2, 96.2] & 95.8 & 95.7 & 95.7 \\
+\addlinespace
+GPT-4.1, zero-shot & 0 & 92.8 & [92.2, 93.4] & 93.2 & 92.8 & 92.7 \\
+Claude Haiku 4.5, zero-shot & 0 & 92.0 & [91.4, 92.7] & 92.5 & 92.0 & 91.9 \\
+Gemini 3.8 Flash, zero-shot & 0 & 91.5 & [90.8, 92.1] & 92.5 & 91.5 & 91.4 \\
+DeepSeek V4 Flash, zero-shot & 0 & 91.5 & [90.9, 92.1] & 92.3 & 91.5 & 91.4 \\
+Qwen2.5-7B-Instruct, zero-shot & 0 & 85.2 & [84.3, 86.0] & 87.9 & 85.2 & 84.9 \\
 \bottomrule
 \end{tabular}}
 \end{table}
-\DIFaddend 
 
-\DIFdelbegin \section{\DIFdel{Experimental Results}}
-%DIFAUXCMD
-\addtocounter{section}{-1}%DIFAUXCMD
-%DIFDELCMD < \label{results}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \subsection{\DIFadd{Evaluation and Statistical Analysis}}
-\label{stats}
-\DIFaddend 
 
-\DIFdelbegin \DIFdel{This section evaluates all models across accuracy , }\DIFdelend \DIFaddbegin \DIFadd{We report accuracy and macro-averaged }\DIFaddend precision, recall \DIFaddbegin \DIFadd{and F1 on the test split, per-class recall, and confusion matrices. Every accuracy carries a 95\% bootstrap confidence interval over test articles (2}\DIFaddend ,\DIFdelbegin \DIFdel{F1-score, training time, and inference time. Fine-tuned BERT architectures (Dense and SVM heads)are systematically compared against state-of-the-art zero-shot large language models (LLMs), including GPT-4.1, DeepSeek V3}\DIFdelend \DIFaddbegin \DIFadd{000 resamples); supervised numbers are means over seeds with their standard deviation. Because all systems are scored on the same articles, headline differences are tested with McNemar's exact test on paired predictions \mbox{%DIFAUXCMD
-\cite{dietterich1998approximate}}\hskip0pt%DIFAUXCMD
-, and the paired bootstrap of the accuracy difference is reported alongside. Prompt sensitivity is reported as the mean, standard deviation and range over the five prompts; residual nondeterminism is measured by a second identical pass of the primary prompt. The learning curve uses nested training subsets of 10}\DIFaddend , \DIFdelbegin \DIFdel{Gemini-2.0-Flash, and Claude-3.5-Haiku. Both quantitative results and qualitative error analyses are reported to highlight model strengths, limitations, and practical deployment considerations.
-}%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{Table~\ref{tab:all_models} presents the macro-averaged metrics. The fine-tuned CAMeLBERT variants reached 97\% accuracy with balanced precision and recall, clearly outperforming the zero-shot LLMs. Among external LLMs, GPT-4.1 and DeepSeek V3 achieved competitive results (93\%) }\DIFdelend \DIFaddbegin \DIFadd{50}\DIFaddend , \DIFdelbegin \DIFdel{followed by Gemini-2.0-Flash (91\%) }\DIFdelend \DIFaddbegin \DIFadd{100, 500, 1,000 and all articles per class, drawn by a fixed per-seed ranking of the training split so that smaller subsets are contained in larger ones. Two controlled interventions probe lexical shortcuts: (a) input length, by comparing 150 and 512 wordpieces for the frozen encoder and the first 100 words against the full article for the LLMs; and (b) the newspaper dateline (}\textit{\RTL{دبي: «الخليج»}}\DIFadd{), a city-and-source prefix present in 12\% of articles and strongly class-skewed (40\% of }\textit{\DIFadd{Medical}} \DIFadd{and 0.1\% of }\textit{\DIFadd{Sports}} \DIFadd{articles), which we remove from the test articles, and additionally from the training articles for the dense head, to measure whether any system uses it as a cue}\DIFaddend .
+\DIFadd{The headline differences are all significant on paired predictions: the frozen dense head exceeds }\DIFaddend GPT-4.1 \DIFdelbegin \DIFdel{and DeepSeek V3 achieved competitive results (93\%) , followed by Gemini-2.0-Flash (91\%) }\DIFdelend \DIFaddbegin \DIFadd{by 3.5 points (95\% CI 2.9--4.2, McNemar $p=9\times10^{-27}$; 376 articles right only for the head, 137 right only for GPT-4.1), the SVM by 4.3 points ($p=2\times10^{-37}$), the QLoRA-adapted model by 5.7 points ($p<10^{-80}$); GPT-4.1 exceeds Claude Haiku 4.5 by 0.8 points ($p=3\times10^{-4}$); full fine-tuning exceeds the frozen dense head by 2.6 points ($p=8\times10^{-34}$) and the QLoRA model by 0.4 points ($p=0.015$); and 512 input tokens improve the dense head over 150 by 1.1 points ($p=3\times10^{-7}$). On the original random split the frozen systems score 96.8\% and 97.2\%, so deduplication cost 0.1--0.4 points, consistent with the leakage measurement in Section~\ref{dataset}}\DIFaddend .
 \DIFdelbegin \DIFdel{Claude-3.5-Haiku lagged substantially, reaching only 75\% accuracy, with marked precision drops.
 }\DIFdelend 
 
@@ -818,8 +858,8 @@ Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
 %DIFDELCMD < \end{tabular}
 %DIFDELCMD < \end{table}
 %DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \subsection{\DIFadd{Infrastructure and Reproducibility}}
-\label{infrastructure}
+\DIFdelend \DIFaddbegin \subsection{\DIFadd{Class-Level Analysis}}
+\label{sec:classes}
 \DIFaddend 
 
 \DIFdelbegin \subsection{\DIFdel{Class-Level Performance Analysis}}
@@ -828,20 +868,18 @@ Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{To understand the nuanced behavior of fine-tuned BERT models and explain why general-purpose LLMs underperform in certain categories, we present detailed per-class confusion matrices. Figures~\ref{fig:cm_dense_overall} and ~\ref{fig:cm_svm_overall} show the overall confusion matrices for both BERT architectures, revealing patterns of misclassifications across all seven news categories}\DIFdelend \DIFaddbegin \DIFadd{Supervised training, full fine-tuning, QLoRA and the open-weight LLM inference ran on one NVIDIA A100-PCIE-40GB (cloud instance) with CUDA 13.2, Python 3.12, PyTorch 2.14, Transformers 5.20, RAPIDS cuML for the GPU SVM, Unsloth, PEFT and TRL for QLoRA, and vLLM for open-weight inference. API models were called through the routes in Table~\ref{tab:llm_snapshots}; all API runs took place on 16 October 2026 and all GPU runs on 16--17 October 2026, and every run is logged publicly on Weights \& Biases. The split file with per-article checksums, the deduplication clusters, the 700-article evaluation subset, all per-article predictions and raw LLM outputs, the QLoRA budgets, and the complete code are released at }\url{https://github.com/omaratef3221/Bert-arabic-fake-news-rbf} \DIFadd{(folder }\texttt{\DIFadd{revision/}}\DIFadd{)}\DIFaddend .
+\DIFdel{To understand the nuanced behavior of fine-tuned BERT models and explain why general-purpose LLMs underperform in certain categories, we present detailed }\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:confusion} shows the confusion matrices of the frozen dense head and of GPT-4.1, and Table~\ref{tab:perclass} the }\DIFaddend per-class \DIFdelbegin \DIFdel{confusion matrices. Figures~\ref{fig:cm_dense_overall} and ~\ref{fig:cm_svm_overall} show the overall confusion matrices for both BERT architectures, revealing patterns of misclassifications across all seven news categories.
+}%DIFDELCMD < 
 
-\DIFdelbegin %DIFDELCMD < \begin{figure}[!ht]
+%DIFDELCMD < \begin{figure}[!ht]
 %DIFDELCMD < \centering
 %DIFDELCMD < \includegraphics[width=0.9\textwidth]{Figures/confusion_matrices_Basic_Model/overall_confusion_matrix.png}
 %DIFDELCMD < \caption{Overall confusion matrix for BERT Dense Head model across all seven news categories.}
 %DIFDELCMD < \label{fig:cm_dense_overall}
 %DIFDELCMD < \end{figure}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \subsection{\DIFadd{Corrections to the Originally Reported Experiments}}
-\label{corrections}
-\DIFaddend 
+%DIFDELCMD < 
 
-\DIFdelbegin %DIFDELCMD < \begin{figure}[!ht]
+%DIFDELCMD < \begin{figure}[!ht]
 %DIFDELCMD < \centering
 %DIFDELCMD < \includegraphics[width=0.9\textwidth]{Figures/confusion_matrices_RBF_SVM/overall_confusion_matrix.png}
 %DIFDELCMD < \caption{Overall confusion matrix for BERT SVM Head model across all seven news categories.}
@@ -851,42 +889,36 @@ Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
 
 %DIFDELCMD < %%%
 \DIFdel{The confusion matrices reveal several important insights. Both BERT models demonstrate exceptional performance on }\textit{\DIFdel{Sports}} %DIFAUXCMD
-\DIFdel{(967--968 correct out of 975 samples) and }\textit{\DIFdel{Finance}} %DIFAUXCMD
-\DIFdel{(947--952 correct out of 975 samples), achieving precision and recall above 0.97. In contrast, }\textit{\DIFdel{Culture}} %DIFAUXCMD
-\DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{While re-implementing the evaluation pipeline for this version we found three defects in the experiments reported in an earlier version of this paper; we document them because the affected numbers were replaced. First, the result previously reported for Claude 3.5 Haiku (75\% accuracy, }\DIFaddend \textit{Religion} \DIFdelbegin \DIFdel{exhibit higher confusion rates, with 37--49 misclassifications in the Dense Head and 22--40 in the SVM Head. This pattern directly relates to the challenge faced by zero-shot LLMs: categories with overlapping linguistic features and similar formal registers require domain-specific fine-tuning to distinguish effectively.
+\DIFdel{(967--968 correct out of 975 samples) }\DIFdelend \DIFaddbegin \DIFadd{recall of all systems. The two families err in different places. The supervised head's residual errors are spread thinly, with the two largest cells }\textit{\DIFadd{Religion}}\DIFadd{$\to$}\textit{\DIFadd{Culture}} \DIFadd{(44 of 973) }\DIFaddend and \DIFaddbegin \textit{\DIFadd{Tech}}\DIFadd{$\to$}\DIFaddend \textit{Finance} (\DIFdelbegin \DIFdel{947--952 correct out of }\DIFdelend \DIFaddbegin \DIFadd{28 of }\DIFaddend 975\DIFdelbegin \DIFdel{samples), achieving precision and recall above 0.97. In contrast, }\textit{\DIFdel{Culture}} %DIFAUXCMD
+\DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{); full fine-tuning removes most of them (}\DIFaddend \textit{Religion} \DIFdelbegin \DIFdel{exhibit higher confusion rates, with 37--49 misclassifications in the Dense Head and 22--40 in the SVM Head. This pattern directly relates to the challenge faced by }\DIFdelend \DIFaddbegin \DIFadd{recall 0.99). The }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs: categories with overlapping linguistic features and similar formal registers require domain-specific fine-tuning to distinguish effectively.
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{The per-class confusion matrices illuminate why general-purpose LLMs struggle with certain categories while excelling in others. }\textit{\DIFdel{Sports}} %DIFAUXCMD
-\DIFdel{maintains clear lexical boundaries (team names, player references, competition terminology) that even zero-shot models can identify reliably. However, categories like }\textit{\DIFdel{Religion}}%DIFAUXCMD
+\DIFdel{The per-class confusion matrices illuminate why general-purpose LLMs struggle with certain categories while excelling in others. }\DIFdelend \DIFaddbegin \DIFadd{LLMs are at or above the supervised systems on }\textit{\DIFadd{Culture}}\DIFadd{, }\textit{\DIFadd{Finance}} \DIFadd{and }\DIFaddend \textit{Sports} \DIFdelbegin \DIFdel{maintains clear lexical boundaries (team names, player references, competition terminology) that even zero-shot models can identify reliably. However, categories like }\textit{\DIFdel{Religion}}%DIFAUXCMD
 \DIFdel{, }\textit{\DIFdel{Culture}}%DIFAUXCMD
-\DIFdel{, and }\DIFdelend \DIFaddbegin \DIFadd{recall 0) was a parsing artefact: the run requested a single output token, the model often answered in Arabic, the returned token was a word prefix carrying no label, and the post-processing code had no rule for the }\DIFaddend \textit{\DIFdelbegin \DIFdel{Politics}\DIFdelend \DIFaddbegin \DIFadd{Religion}\DIFaddend } \DIFdelbegin \DIFdel{share overlapping vocabulary and similar syntactic structures in Gulf Arabic journalism. }%DIFDELCMD < 
+\DIFdel{, and }%DIFDELCMD < \textit{%%%
+\DIFdel{Politics}%DIFDELCMD < \MBLOCKRIGHTBRACE %%%
+\DIFdel{share overlapping vocabulary and similar syntactic structures in Gulf Arabic journalism. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{The BERT Dense Head confused 37 }\DIFdelend \DIFaddbegin \DIFadd{class and assigned a random other label to unrecognised outputs. With an adequate output budget the same model reaches 92--93\% and }\DIFaddend \textit{Religion} \DIFdelbegin \DIFdel{samples as }\textit{\DIFdel{Culture}} %DIFAUXCMD
+\DIFdel{The BERT Dense Head confused 37 }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{samples as }\textit{\DIFdel{Culture}} %DIFAUXCMD
 \DIFdel{and 36 }\textit{\DIFdel{Culture}} %DIFAUXCMD
 \DIFdel{samples as }\textit{\DIFdel{Religion}}%DIFAUXCMD
 \DIFdel{, revealing the fundamental challenge: both categories use formal MSA register, reference institutional authorities, and discuss social values. Without exposure to thousands of labeled examples distinguishing these categories, LLMs rely on surface-level heuristics that fail when contextual understanding is required. For instance, an article about a religious leader\'s comments on social issues could legitimately be classified as either }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{or }\textit{\DIFdel{Politics}} %DIFAUXCMD
-\DIFdel{depending on framing---a nuance that fine-tuned models learn through training data patterns but zero-shot LLMs must infer from ambiguous prompts. }%DIFDELCMD < 
+\DIFdel{or }\DIFdelend \DIFaddbegin \DIFadd{but lose 4--13 points on }\textit{\DIFadd{Medical}}\DIFadd{, }\DIFaddend \textit{Politics} \DIFdelbegin \DIFdel{depending on framing---a nuance that fine-tuned models learn through training data patterns but zero-shot LLMs must infer from ambiguous prompts. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{The confusion between }\textit{\DIFdel{Tech}} %DIFAUXCMD
-\DIFdel{and }\textit{\DIFdel{Finance}} %DIFAUXCMD
-\DIFdel{(29 misclassifications in Dense Head, 18 in SVM Head) reflects another common LLM failure mode. Technology companies in Gulf news are often discussed in economic contexts---investments, valuations, market strategies---creating lexical overlap that misleads models without domain-specific training. The SVM Head\'s improvement over Dense Head in this distinction (reducing Tech$\rightarrow$Finance errors from 29 to 18) suggests that linear decision boundaries in the embedding space can effectively separate these categories once the encoder is properly fine-tuned, whereas LLMs processing raw text struggle with this ambiguity}\DIFdelend \DIFaddbegin \DIFadd{recall 0.76; the interpretation of that result as a cultural or alignment limitation has been withdrawn. Second, the random split had been drawn without a fixed seed in each evaluation, so the systems had been scored on different test samples; the present version uses one split for all systems. Third, one run reported as GPT-4.1 had been executed with a smaller model, and the API models had been decoded at default (non-zero) temperature; all runs are now on pinned snapshots with deterministic decoding}\DIFaddend .
+\DIFdel{The confusion between }\DIFdelend \DIFaddbegin \DIFadd{and }\DIFaddend \textit{Tech}\DIFaddbegin \DIFadd{, and 20--25 points on }\textit{\DIFadd{Religion}}\DIFadd{, where GPT-4.1 routes 172 of 973 articles to }\textit{\DIFadd{Culture}} \DIFadd{and smaller numbers to }\textit{\DIFadd{Medical}} \DIFaddend and \DIFdelbegin \textit{\DIFdel{Finance}} %DIFAUXCMD
+\DIFdelend \DIFaddbegin \textit{\DIFadd{Politics}}\DIFadd{. The pattern is the same for all four API models }\DIFaddend (\DIFdelbegin \DIFdel{29 misclassifications in Dense Head, 18 in SVM Head) reflects another common LLM failure mode. Technology companies in Gulf news are often discussed in economic contexts---investments, valuations, market strategies---creating lexical overlap that misleads models without domain-specific training. The SVM Head\'s improvement over Dense Head in this distinction (reducing Tech$\rightarrow$Finance errors from 29 to 18) suggests that linear decision boundaries in the embedding space can effectively separate these categories once the encoder is properly fine-tuned, whereas LLMs processing raw text struggle with this ambiguity.
+}%DIFDELCMD < 
 
-\DIFdelbegin \DIFdel{Table~\ref{tab:per_class_performance} presents the detailed per-class metrics for both BERT models, computed from the confusion matrices. The }\textit{\DIFdel{Sports}} %DIFAUXCMD
-\DIFdel{category shows the most consistent results, with fine-tuned BERT models achieving near-perfect precision (0.99--1.00) and recall (0.99) . The }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{category, while still performing well in BERT models (precision0.94--0.96, recall 0.95--0.97), shows notably more confusion with }\textit{\DIFdel{Culture}} %DIFAUXCMD
+%DIFDELCMD < %%%
+\DIFdel{Table~\ref{tab:per_class_performance} presents the detailed per-class metrics for both BERT models, computed from the confusion matrices. The }\textit{\DIFdel{Sports}} %DIFAUXCMD
+\DIFdel{category shows the most consistent results, with fine-tuned BERT models achieving near-perfect precision (0.99--1.00) and recall (0.99) . The }\DIFdelend \textit{Religion} \DIFdelbegin \DIFdel{category, while still performing well in BERT models (precision0.94}\DIFdelend \DIFaddbegin \DIFadd{recall 0.71}\DIFaddend --0\DIFdelbegin \DIFdel{.96, recall 0.95--0.97), shows notably more confusion with }\textit{\DIFdel{Culture}} %DIFAUXCMD
 \DIFdel{and }\textit{\DIFdel{Politics}}%DIFAUXCMD
-\DIFdel{. This explains why Claude-3.5-Haiku completely failed on }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{(recall = 0): without }\DIFdelend \DIFaddbegin \section{\DIFadd{Experimental Results}}
-\label{results}
-
-\subsection{\DIFadd{Main Results}}
-\label{sec:main}
-
-\DIFadd{Table~\ref{tab:main} reports all systems on the shared test split. The frozen-encoder systems reach 96.4\% (dense head) and 97.1\% (RBF-SVM) at 150 wordpieces and 97.5\% and 98.1\% at 512, with narrow confidence intervals and near-identical macro precision, recall and F1, as expected on a balanced test set. Adapting the parameters of a large model to the task gives the best results: full }\DIFaddend fine-tuning \DIFaddbegin \DIFadd{of CAMeLBERT reaches 98.9\%, and the QLoRA-adapted Qwen2.5-7B-Instruct 98.5\% with the full training split and 98.4\% with 1}\DIFaddend ,\DIFdelbegin \DIFdel{the model cannot distinguish the subtle contextual cues that separate religious institutional announcements from cultural or political discourse with religious references. }%DIFDELCMD < 
+\DIFdel{. This explains why Claude-3}\DIFdelend \DIFaddbegin \DIFadd{.76) and more pronounced for Qwen2}\DIFaddend .5\DIFdelbegin \DIFdel{-Haiku completely failed on }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{(recall = 0): without fine-tuning, the model cannot distinguish the subtle contextual cues that separate religious institutional announcements from cultural or political discourse with religious references. }%DIFDELCMD < 
 
 %DIFDELCMD < \begin{table}[!ht]
 %DIFDELCMD < \centering
@@ -915,201 +947,17 @@ Seeds & 3 & 3 & 3 (1 on full split) & 1 \\
 \subsection{\DIFdel{Training and Inference Efficiency}}
 %DIFAUXCMD
 \addtocounter{subsection}{-1}%DIFAUXCMD
-\DIFdel{Figures~\ref{fig:train_time} and~\ref{fig:test_time} compare the supervised models. The BERT--SVM head trained in 4.38 seconds, 58.4\% faster than the Dense Head (10.54 seconds) . However, inference was slightly faster for the Dense Head, making it more suitable for latency-sensitive deployment. Both models produced sub-second inference times, validating their feasibility for real-time tasks. Timing data for zero-shot LLMs were excluded, as latency was dominated by provider-side variability.
-}%DIFDELCMD < 
+\DIFdel{Figures~\ref{fig:train_time} and~\ref{fig:test_time} compare the supervised models. The BERT--SVM head trained in 4.38 seconds, 58.4\% faster than the Dense Head (10.54 seconds) }\DIFdelend \DIFaddbegin \DIFadd{-7B (0.53), so it is a property of the task framing rather than of one model. The articles involved are typically historical or devotional pieces that the publisher files under }\textit{\DIFadd{Religion}} \DIFadd{and that a general-purpose model can defensibly read as cultural; the supervised systems learn this publisher-specific convention from the labels, which the LLMs cannot know}\DIFaddend .
+\DIFdelbegin \DIFdel{However, inference was slightly faster for the Dense Head, making it more suitable for latency-sensitive deployment. Both models produced sub-second inference times, validating their feasibility for real-time tasks. Timing data for zero-shot LLMs were excluded, as latency was dominated by provider-side variability.
+}\DIFdelend 
 
-%DIFDELCMD < \begin{figure}[H]
+\DIFdelbegin %DIFDELCMD < \begin{figure}[H]
 %DIFDELCMD < \centering
 %DIFDELCMD < \includegraphics[width=0.9\textwidth]{Figures/Train_time.png}
 %DIFDELCMD < \caption{Training time comparison between BERT Dense Head and BERT SVM Head models.}
 %DIFDELCMD < \label{fig:train_time}
 %DIFDELCMD < \end{figure}
-%DIFDELCMD < 
-
-%DIFDELCMD < \begin{figure}[H]
-%DIFDELCMD < \centering
-%DIFDELCMD < \includegraphics[width=0.9\textwidth]{Figures/Test_time.png}
-%DIFDELCMD < \caption{Inference time comparison between BERT Dense Head and BERT SVM Head models.}
-%DIFDELCMD < \label{fig:test_time}
-%DIFDELCMD < \end{figure}
-%DIFDELCMD < 
-
 %DIFDELCMD < %%%
-\subsection{\DIFdel{Qualitative Error Analysis}}
-%DIFAUXCMD
-\addtocounter{subsection}{-1}%DIFAUXCMD
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{Despite overall high performance, misclassifications provide insight into model limitations. Table~\ref{tab:model-evaluation} shows examples where the BERT Dense Head failed. Financial news with embedded numeric details was sometimes mislabeled as }\textit{\DIFdel{Sports}}%DIFAUXCMD
-\DIFdel{, likely due to superficial lexical overlap. Similarly, medical-sector content was mislabeled as }\textit{\DIFdel{Religion}}%DIFAUXCMD
-\DIFdel{, showing challenges in distinguishing domain-specific entities when contextual cues are weak.
-}%DIFDELCMD < 
-
-%DIFDELCMD < \begin{table}[h!]
-%DIFDELCMD <     \centering
-%DIFDELCMD <     \caption{Representative Misclassifications — BERT Dense Head}
-%DIFDELCMD <     \label{tab:model-evaluation}
-%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}X c c c}
-%DIFDELCMD <         \toprule
-%DIFDELCMD <         \textbf{Text} & \textbf{Model Output} & \textbf{Original Output} & \textbf{Result} \\
-%DIFDELCMD <         \midrule
-%DIFDELCMD <         \RTL{دبي "الخليج" : أعلنت شركة "غلفا للمياه المعدنية" أنها حققت أرباحاً بلغت مليون درهم في 2015 مقارنة مع 6.4 مليون درهم في 2014، بعد خصم أعباء حقوق حكومة عجمان البالغة مليوني درهم، وتراجعت المبيعات إلى 7 ملايين كرتونة في 2015 مقابل 7.9 مليون كرتونة في 2014.} &
-%DIFDELCMD <         Sports & Finance & miss \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         \RTL{دبي: "الخليج" استقبل خلف أحمد الحبتور، مؤسس ورئيس مجلس إدارة مجموعة الحبتور، الدكتور ستيفن فيكتور، الرئيس التنفيذي والمدير الطبي لدى "ريجين مديكال" في دبي.} &
-%DIFDELCMD <         Religion & Medical & miss \\
-%DIFDELCMD <         \bottomrule
-%DIFDELCMD <     \end{tabularx}
-%DIFDELCMD < \end{table}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \DIFadd{000 articles per class. }\DIFaddend The \DIFdelbegin \DIFdel{SVM-based model produced different error patterns (Table~\ref{tab:model-svm-evaluation}). It often mislabeled }\textit{\DIFdel{Technology}} %DIFAUXCMD
-\DIFdel{news as }\textit{\DIFdel{Finance}}%DIFAUXCMD
-\DIFdel{, suggesting an over-reliance on economic keywords. This points to a sensitivity to surface-level tokens without capturing deeper semantic relationships.
-}%DIFDELCMD < 
-
-%DIFDELCMD < \begin{table}[h!]
-%DIFDELCMD <     \centering
-%DIFDELCMD <     \caption{Representative Misclassifications — BERT SVM Head}
-%DIFDELCMD <     \label{tab:model-svm-evaluation}
-%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}X c c c}
-%DIFDELCMD <         \toprule
-%DIFDELCMD <         \textbf{Text} & \textbf{Model Output} & \textbf{Original Output} & \textbf{Result} \\
-%DIFDELCMD <         \midrule
-%DIFDELCMD <         \RTL{دبي: محمد إبراهيم أطلقت وزارة التربية والتعليم خلال مشاركتها في "أسبوع جيتكس للتقنية" خدمتين جديدتين تضافان إلى خدماتها الذكية الأخرى.} &
-%DIFDELCMD <         Finance & Tech & miss \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         \RTL{دبي: "الخليج" أعلنت شركة "إل جي" أنها ستوفر أحدث الحلول التفاعلية الرقمية في دبي باركس آند ريزورتس، أكبر منتجع سياحي وترفيهي في المنطقة.} &
-%DIFDELCMD <         Finance & Tech & miss \\
-%DIFDELCMD <         \bottomrule
-%DIFDELCMD <     \end{tabularx}
-%DIFDELCMD < \end{table}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{To provide a comprehensive understanding of model behavior, this section presents systematic qualitative analysis organized into three categories: (1)examples where all models correctly classify the text, (2) instances where the proposed BERT models succeed while }\DIFdelend zero-shot \DIFdelbegin \DIFdel{LLMs fail, and }\DIFdelend \DIFaddbegin \DIFadd{LLMs lie within 1.3 points of each other, from 92.8\% }\DIFaddend (\DIFdelbegin \DIFdel{3)cases where LLMs correctly predict the label while BERT models err. This analysis reveals the complementary strengths and distinct failure modes of supervised and }\DIFdelend \DIFaddbegin \DIFadd{GPT-4.1) to 91.5\% (Gemini 3.8 Flash and DeepSeek V4 Flash); the 7B open-weight model is clearly weaker }\DIFaddend zero-shot \DIFdelbegin \DIFdel{approaches}\DIFdelend \DIFaddbegin \DIFadd{(85.2\% with the primary prompt, 89.2\% with the original wording) but closes the gap once adapted}\DIFaddend .
-
-\DIFdelbegin \subsubsection{\DIFdel{Correctly Classified Examples}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
-\DIFdelend \DIFaddbegin \begin{table}[!ht]
-\centering
-\caption{Main results on the shared, deduplicated test split (6{,}822 articles). Accuracy is the mean over training seeds ($\pm$ standard deviation where more than one seed was run) with the 95\,\% bootstrap confidence interval of a single run; precision, recall and F1 are macro-averaged over the seven classes, in percent. ``Trainable'' is the number of parameters updated on the SANAD training split. All LLMs use the primary prompt with deterministic decoding.}
-\label{tab:main}
-\small
-\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
-\begin{tabular}{@{}l r r l r r r@{}}
-\toprule
-\textbf{System} & \textbf{Trainable} & \textbf{Accuracy} & \textbf{95\,\% CI} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
-\midrule
-Frozen CAMeLBERT + dense head (150 tok.) & 0.30\,M & 96.4$\pm$0.2 & [95.9, 96.8] & 96.4 & 96.4 & 96.4 \\
-Frozen CAMeLBERT + RBF-SVM (150 tok.) & -- & 97.1$\pm$0.0 & [96.7, 97.5] & 97.1 & 97.1 & 97.1 \\
-Frozen CAMeLBERT + dense head (512 tok.) & 0.30\,M & 97.5$\pm$0.1 & [97.1, 97.8] & 97.6 & 97.5 & 97.5 \\
-Frozen CAMeLBERT + RBF-SVM (512 tok.) & -- & 98.1$\pm$0.0 & [97.8, 98.4] & 98.1 & 98.1 & 98.1 \\
-Fully fine-tuned CAMeLBERT (512 tok.) & 109.1\,M & 98.9 & [98.7, 99.1] & 98.9 & 98.9 & 98.9 \\
-\addlinespace
-Qwen2.5-7B-Instruct + QLoRA, all training data & 40.4\,M & 98.5 & [98.2, 98.8] & 98.5 & 98.5 & 98.5 \\
-Qwen2.5-7B-Instruct + QLoRA, 1{,}000 / class & 40.4\,M & 98.4 & [98.1, 98.7] & 98.4 & 98.4 & 98.4 \\
-Qwen2.5-7B-Instruct + QLoRA, 100 / class & 40.4\,M & 95.7 & [95.2, 96.2] & 95.8 & 95.7 & 95.7 \\
-\addlinespace
-GPT-4.1, zero-shot & 0 & 92.8 & [92.2, 93.4] & 93.2 & 92.8 & 92.7 \\
-Claude Haiku 4.5, zero-shot & 0 & 92.0 & [91.4, 92.7] & 92.5 & 92.0 & 91.9 \\
-Gemini 3.8 Flash, zero-shot & 0 & 91.5 & [90.8, 92.1] & 92.5 & 91.5 & 91.4 \\
-DeepSeek V4 Flash, zero-shot & 0 & 91.5 & [90.9, 92.1] & 92.3 & 91.5 & 91.4 \\
-Qwen2.5-7B-Instruct, zero-shot & 0 & 85.2 & [84.3, 86.0] & 87.9 & 85.2 & 84.9 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-\DIFaddend 
-
-
-\DIFdelbegin \DIFdel{Table~\ref{tab:correct-examples} presents representative examples where both BERT architectures and all zero-shot LLMs achieved correct classifications. These examples illustrate the characteristics of unambiguous news articles that models handle reliably.
-}\DIFdelend \DIFaddbegin \DIFadd{The headline differences are all significant on paired predictions: the frozen dense head exceeds GPT-4.1 by 3.5 points (95\% CI 2.9--4.2, McNemar $p=9\times10^{-27}$; 376 articles right only for the head, 137 right only for GPT-4.1), the SVM by 4.3 points ($p=2\times10^{-37}$), the QLoRA-adapted model by 5.7 points ($p<10^{-80}$); GPT-4.1 exceeds Claude Haiku 4.5 by 0.8 points ($p=3\times10^{-4}$); full fine-tuning exceeds the frozen dense head by 2.6 points ($p=8\times10^{-34}$) and the QLoRA model by 0.4 points ($p=0.015$); and 512 input tokens improve the dense head over 150 by 1.1 points ($p=3\times10^{-7}$). On the original random split the frozen systems score 96.8\% and 97.2\%, so deduplication cost 0.1--0.4 points, consistent with the leakage measurement in Section~\ref{dataset}.
-}\DIFaddend 
-
-\DIFdelbegin %DIFDELCMD < \begin{table}[h!]
-%DIFDELCMD <     \centering
-%DIFDELCMD <     \caption{Representative Examples Correctly Classified by All Models}
-%DIFDELCMD <     \label{tab:correct-examples}
-%DIFDELCMD <     \small
-%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.55\textwidth} c c}
-%DIFDELCMD <         \toprule
-%DIFDELCMD <         \textbf{Text} & \textbf{Category} & \textbf{All Models} \\
-%DIFDELCMD <         \midrule
-%DIFDELCMD <         \RTL{انضم ساندرو فاغنر مهاجم فريق دارمشتاد لفريق هوفنهايم الألماني بعقد يمتد حتى عام 2019. وأحرز فاغنر 14 هدفاً ببطولة الدوري الموسم الماضي ليصبح ثاني لاعب ألماني أكثر تسجيلاً للأهداف في البطولة خلف توماس مولر نجم بايرن ميونيخ الذي سجل 20 هدفاً.} &
-%DIFDELCMD <         Sports & \checkmark \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         \RTL{أكدت مجموعة الدراسات إتش سي أن صكوك شركة الدار العقارية والتي تستحق عام 2014 لم تتأثر بخفض موديز لتقييم الشركة، بل على العكس، قفز سعر الصك من 103،5 إلى 106،5 دولار في الوقت الذي لم تتغير فيه نسبة العائد، وثبتت عند 9،75\%.} &
-%DIFDELCMD <         Finance & \checkmark \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         \RTL{نفذت إدارة مركز الطب الوقائي في الذيد عدداً من الفعاليات المتنوعة، التي هدفت إلى سعادة الموظفين من خلال أهدافها وبرامجها، التي تعد ركناً أساسياً من أركان سمعتها الطيبة ودورها الطبي.} &
-%DIFDELCMD <         Medical & \checkmark \\
-%DIFDELCMD <         \bottomrule
-%DIFDELCMD <     \end{tabularx}
-%DIFDELCMD < \end{table}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \subsection{\DIFadd{Class-Level Analysis}}
-\label{sec:classes}
-\DIFaddend 
-
-\DIFdelbegin \DIFdel{The }\textit{\DIFdel{Sports}} %DIFAUXCMD
-\DIFdel{example demonstrates clear lexical boundaries through player names, team references, and competition terminology (goals, league, season) that all models readily identify. The }\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:confusion} shows the confusion matrices of the frozen dense head and of GPT-4.1, and Table~\ref{tab:perclass} the per-class recall of all systems. The two families err in different places. The supervised head's residual errors are spread thinly, with the two largest cells }\textit{\DIFadd{Religion}}\DIFadd{$\to$}\textit{\DIFadd{Culture}} \DIFadd{(44 of 973) and }\textit{\DIFadd{Tech}}\DIFadd{$\to$}\DIFaddend \textit{Finance} \DIFdelbegin \DIFdel{example contains unambiguous financial indicators (bonds, credit ratings, yields, prices) that establish clear category membership. The }\textit{\DIFdel{Medical}} %DIFAUXCMD
-\DIFdel{example references preventive medicine centers and health-related initiatives with explicit medical vocabulary. These characteristics---domain-specific terminology, clear institutional references, and unambiguous topical framing---facilitate reliable classification across all model types.
-}%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\subsubsection{\DIFdel{BERT Correct, LLMs Incorrect}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{Table~\ref{tab:bert-correct-llm-wrong} presents cases where the fine-tuned BERT model correctly classified texts that multiple zero-shot LLMs misclassified. These examples highlight the advantages of domain-specific }\DIFdelend \DIFaddbegin \DIFadd{(28 of 975); full }\DIFaddend fine-tuning \DIFdelbegin \DIFdel{.
-}%DIFDELCMD < 
-
-%DIFDELCMD < \begin{table}[h!]
-%DIFDELCMD <     \centering
-%DIFDELCMD <     \caption{Examples Where BERT Succeeded and Zero-Shot LLMs Failed}
-%DIFDELCMD <     \label{tab:bert-correct-llm-wrong}
-%DIFDELCMD <     \small
-%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.32\textwidth} c c >{\raggedright\arraybackslash}p{0.28\textwidth}}
-%DIFDELCMD <         \toprule
-%DIFDELCMD <         \textbf{Text} & \textbf{True Label} & \textbf{BERT} & \textbf{LLM Predictions} \\
-%DIFDELCMD <         \midrule
-%DIFDELCMD <         \RTL{ارتفع عدد مشتركي خطوط الهاتف المتحرك لدى شركة الإمارات للاتصالات المتكاملة دو إلى أكثر من 4 ملايين مشترك حالياً، بينما ارتفع عدد الخطوط المباعة منذ انطلاق الشركة حتى الآن إلى حوالي 7 ملايين خط.} &
-%DIFDELCMD <         Tech & Tech \checkmark & GPT: Finance \texttimes \newline Gemini: Finance \texttimes \\
-%DIFDELCMD <         \addlinespace[1em]
-%DIFDELCMD <         \RTL{تذهب بعض المصادر التاريخية الى أن قطز ينتمي في أصوله الى الخوارزمية، وخاله هو السلطان جلال الدين منكبرتي آخر الخوارزمشاهية، وأنه بعد ان تغيرت الحال بأسرته استرق، وتداولته أيادي التجار، الى أن صار في جملة المماليك.} &
-%DIFDELCMD <         Religion & Religion \checkmark & GPT: Culture \texttimes \newline Gemini: Politics \texttimes \newline Claude: Politics \texttimes \newline DeepSeek: Culture \texttimes \\
-%DIFDELCMD <         \addlinespace[1em]
-%DIFDELCMD <         \RTL{اعتمد المدير التنفيذي لمؤسسة دبي لخدمات الإسعاف، خليفة الدراي، تشكيل مجلس الشباب بالمؤسسة، خلال اجتماع موسع مع مديري الإدارات وكبار الموظفين والمسؤولين.} &
-%DIFDELCMD <         Medical & Medical \checkmark & GPT: Culture \texttimes \newline Gemini: Politics \texttimes \newline Claude: Politics \texttimes \newline DeepSeek: Politics \texttimes \\
-%DIFDELCMD <         \bottomrule
-%DIFDELCMD <     \end{tabularx}
-%DIFDELCMD < \end{table}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{The first example illustrates the }\textit{\DIFdel{Technology}}%DIFAUXCMD
-\DIFdel{--}\DIFdelend \DIFaddbegin \DIFadd{removes most of them (}\textit{\DIFadd{Religion}} \DIFadd{recall 0.99). The zero-shot LLMs are at or above the supervised systems on }\textit{\DIFadd{Culture}}\DIFadd{, }\DIFaddend \textit{Finance} \DIFdelbegin \DIFdel{confusion pattern prevalent among LLMs . Although the article discusses a telecommunications company (du), the numerical focus on subscriber counts and sales figures triggered financial classification by }\DIFdelend \DIFaddbegin \DIFadd{and }\textit{\DIFadd{Sports}} \DIFadd{but lose 4--13 points on }\textit{\DIFadd{Medical}}\DIFadd{, }\textit{\DIFadd{Politics}} \DIFadd{and }\textit{\DIFadd{Tech}}\DIFadd{, and 20--25 points on }\textit{\DIFadd{Religion}}\DIFadd{, where }\DIFaddend GPT-4.1 \DIFdelbegin \DIFdel{and Gemini-2.0-Flash. The fine-tuned BERT model correctly identified the technological context---mobile phone lines and telecommunications services---demonstrating its learned ability to distinguish between technology companies and financial reporting. }%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{The second example reveals the }\DIFdelend \DIFaddbegin \DIFadd{routes 172 of 973 articles to }\textit{\DIFadd{Culture}} \DIFadd{and smaller numbers to }\textit{\DIFadd{Medical}} \DIFadd{and }\textit{\DIFadd{Politics}}\DIFadd{. The pattern is the same for all four API models (}\DIFaddend \textit{Religion} \DIFdelbegin \DIFdel{--}\textit{\DIFdel{Culture}} %DIFAUXCMD
-\DIFdel{confusion that affected all four LLMs. The historical narrative about Qutuz, a Mamluk sultan who played a crucial role in Islamic history, was misclassified as either }\textit{\DIFdel{Culture}} %DIFAUXCMD
-\DIFdel{or }\textit{\DIFdel{Politics}}%DIFAUXCMD
-\DIFdel{. While the text employs historical narrative style that superficially resembles cultural content, it discusses Islamic historical figures in a religious-historical context. The fine-tuned model learned through exposure to labeled training data that such historical Islamic narratives belong to the }\DIFdelend \DIFaddbegin \DIFadd{recall 0.71--0.76) and more pronounced for Qwen2.5-7B (0.53), so it is a property of the task framing rather than of one model. The articles involved are typically historical or devotional pieces that the publisher files under }\DIFaddend \textit{Religion} \DIFdelbegin \DIFdel{category in Gulf Arabic journalism conventions.
-}%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{The third example demonstrates how institutional announcements can mislead zero-shot LLMs. Despite explicit references to Dubai Ambulance Services and medical context, all LLMs classified this as either }\textit{\DIFdel{Politics}} %DIFAUXCMD
-\DIFdel{or }\textit{\DIFdel{Culture}}%DIFAUXCMD
-\DIFdel{, likely triggered by administrative terminology (board formation, executive meetings). The BERT model correctly recognized the medical institutional context}\DIFdelend \DIFaddbegin \DIFadd{and that a general-purpose model can defensibly read as cultural; the supervised systems learn this publisher-specific convention from the labels, which the LLMs cannot know}\DIFaddend .
-
-\DIFdelbegin \subsubsection{\DIFdel{LLMs Correct, BERT Incorrect}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \begin{figure}[!ht]
 \centering
 \includegraphics[width=\textwidth]{fig_confusion.pdf}
@@ -1118,7 +966,14 @@ Qwen2.5-7B-Instruct, zero-shot & 0 & 85.2 & [84.3, 86.0] & 87.9 & 85.2 & 84.9 \\
 \end{figure}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{Table~\ref{tab:llm-correct-bert-wrong} presents contrasting cases where zero-shot LLMs correctly classified texts that the BERT model misclassified, revealing limitations of the supervised approach. }\DIFdelend \DIFaddbegin \begin{table}[!ht]
+\DIFdelbegin %DIFDELCMD < \begin{figure}[H]
+%DIFDELCMD < \centering
+%DIFDELCMD < \includegraphics[width=0.9\textwidth]{Figures/Test_time.png}
+%DIFDELCMD < \caption{Inference time comparison between BERT Dense Head and BERT SVM Head models.}
+%DIFDELCMD < \label{fig:test_time}
+%DIFDELCMD < \end{figure}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
 \caption{Per-class recall on the shared test split (975 articles per class, 973--977 after deduplication). Supervised systems: mean over seeds; LLMs: zero-shot, primary prompt. Religion is the weakest class for every zero-shot LLM and the only class where the gap to the supervised systems exceeds 20 points.}
 \label{tab:perclass}
@@ -1145,93 +1000,74 @@ Macro F1 & 0.964 & 0.971 & 0.989 & 0.985 & 0.927 & 0.919 & 0.914 & 0.914 \\
 \DIFaddend 
 
 
-\DIFdelbegin %DIFDELCMD < \begin{table}[h!]
-%DIFDELCMD <     \centering
-%DIFDELCMD <     \caption{Examples Where Zero-Shot LLMs Succeeded and BERT Failed}
-%DIFDELCMD <     \label{tab:llm-correct-bert-wrong}
-%DIFDELCMD <     \small
-%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.38\textwidth} c c >{\raggedright\arraybackslash}p{0.28\textwidth}}
-%DIFDELCMD <         \toprule
-%DIFDELCMD <         \textbf{Text} & \textbf{True Label} & \textbf{BERT} & \textbf{LLM Predictions} \\
-%DIFDELCMD <         \midrule
-%DIFDELCMD <         \RTL{قضت محكمة عمانية بالسجن ثلاث سنوات والغرامة 76 ألفاً و804 ريالات و8 بيسات على ضابط شرطة برتبة عميد، حيث أدانته المحكمة الابتدائية بمسقط بجنحتي الرشوة عن مشروع تحصيل رسوم دخول المنافذ البرية واختلاس مخصصات.} &
-%DIFDELCMD <         Politics & Finance \texttimes & GPT: Politics \checkmark \newline Gemini: Politics \checkmark \newline Claude: Politics \checkmark \newline DeepSeek: Politics \checkmark \\
-%DIFDELCMD <         \addlinespace[1em]
-%DIFDELCMD <         \RTL{دبي ``الخليج'': استضاف ``مجلس الإمارات للأبنية الخضراء''، أمس، بالتعاون مع ``مجلس الأعمال الفرنسي'' بدبي فعالية خاصة حول أحدث الابتكارات الخضراء. وشارك في الفعالية ممثلون عن أكثر من 20 هيئة ومؤسسة.} &
-%DIFDELCMD <         Tech & Medical \texttimes & Gemini: Tech \checkmark \newline Claude: Tech \checkmark \newline DeepSeek: Tech \checkmark \\
-%DIFDELCMD <         \addlinespace[1em]
-%DIFDELCMD <         \RTL{تستقطب قناة القصباء في الشارقة يومياً عشرات بل مئات الأسر العربية وغير العربية من مختلف الجاليات المقيمة في الامارات، وتأتي هذه الأسر مع أطفالها إلى ساحات ومرافق القناة نظراً لطبيعة المكان المفتوحة.} &
-%DIFDELCMD <         Culture & Religion \texttimes & GPT: Culture \checkmark \newline Gemini: Culture \checkmark \newline Claude: Culture \checkmark \newline DeepSeek: Culture \checkmark \\
-%DIFDELCMD <         \bottomrule
-%DIFDELCMD <     \end{tabularx}
-%DIFDELCMD < \end{table}
-%DIFDELCMD < %%%
+\DIFdelbegin \subsection{\DIFdel{Qualitative Error Analysis}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \subsection{\DIFadd{How Much Supervision Does the Lightweight System Need?}}
 \label{sec:lc}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{The first example demonstrates BERT's susceptibility to surface-level lexical cues. The article about a court case involving bribery and embezzlement charges against a police officer was misclassified as }\textit{\DIFdel{Finance}} %DIFAUXCMD
-\DIFdel{due to monetary figures (fines, amounts)and financial terminology. All }\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:lc} and Table~\ref{tab:lc} report the learning curve. With 10 labelled articles per class the frozen dense head reaches 82.5\% (88.4\% at 512 wordpieces), with 50 per class 90.9\% (94.2\%), and with 100 per class 92.9\% (95.1\%), which already matches or exceeds the best }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs correctly identified the political}\DIFdelend \DIFaddbegin \DIFadd{LLM (92.8\%). At 500 per class (95.0\% }\DIFaddend / \DIFdelbegin \DIFdel{legal nature of the content through broader contextual understanding of court proceedings and governmental corruption cases.
-}%DIFDELCMD < 
+\DIFdelbegin \DIFdel{Despite overall high performance, misclassifications provide insight into model limitations. Table~\ref{tab:model-evaluation} shows examples where the BERT Dense Head failed. Financial news with embedded numeric details was sometimes mislabeled as }\textit{\DIFdel{Sports}}%DIFAUXCMD
+\DIFdel{, likely due to superficial lexical overlap. Similarly, medical-sector content was mislabeled as }\textit{\DIFdel{Religion}}%DIFAUXCMD
+\DIFdel{, showing challenges in distinguishing domain-specific entities when contextual cues are weak}\DIFdelend \DIFaddbegin \DIFadd{Figure~\ref{fig:lc} and Table~\ref{tab:lc} report the learning curve. With 10 labelled articles per class the frozen dense head reaches 82.5\% (88.4\% at 512 wordpieces), with 50 per class 90.9\% (94.2\%), and with 100 per class 92.9\% (95.1\%), which already matches or exceeds the best zero-shot LLM (92.8\%)}\DIFaddend . \DIFdelbegin %DIFDELCMD < 
 
-%DIFDELCMD < %%%
-\DIFdel{The second example shows how BERT can be confused by institutional overlap. The Emirates Green Building Council event about green innovations was misclassified as }\textit{\DIFdel{Medical}}%DIFAUXCMD
-\DIFdel{, possibly due to associations between ``green'' terminology and health-related contexts in the training data. The LLMs' broader world knowledge allowed them to correctly associate green building technology with the }\textit{\DIFdel{Technology}} %DIFAUXCMD
-\DIFdel{category. }%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{The third example reveals the }\textit{\DIFdel{Culture}}%DIFAUXCMD
-\DIFdel{--}\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{confusion in reverse. BERT misclassified a cultural article about Al Qasba Canal in Sharjah as }\textit{\DIFdel{Religion}}%DIFAUXCMD
-\DIFdel{, while all LLMs correctly identified the cultural}\DIFdelend \DIFaddbegin \DIFadd{96.3\%) the head passes the best few-shot condition of any LLM (95.3\%), and the curve continues to rise to 96.4\% }\DIFaddend / \DIFdelbegin \DIFdel{leisure content. This suggests that certain cultural venue descriptions may share linguistic patterns with religious site descriptions in the training data. }%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\subsubsection{\DIFdel{Model-Specific Error Patterns}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < \begin{table}[h!]
+%DIFDELCMD <     \centering
+%DIFDELCMD <     \caption{Representative Misclassifications — BERT Dense Head}
+%DIFDELCMD <     \label{tab:model-evaluation}
+%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}X c c c}
+%DIFDELCMD <         \toprule
+%DIFDELCMD <         \textbf{Text} & \textbf{Model Output} & \textbf{Original Output} & \textbf{Result} \\
+%DIFDELCMD <         \midrule
+%DIFDELCMD <         \RTL{دبي "الخليج" : أعلنت شركة "غلفا للمياه المعدنية" أنها حققت أرباحاً بلغت مليون درهم في 2015 مقارنة مع 6.4 مليون درهم في 2014، بعد خصم أعباء حقوق حكومة عجمان البالغة مليوني درهم، وتراجعت المبيعات إلى 7 ملايين كرتونة في 2015 مقابل 7.9 مليون كرتونة في 2014.} &
+%DIFDELCMD <         Sports & Finance & miss \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         \RTL{دبي: "الخليج" استقبل خلف أحمد الحبتور، مؤسس ورئيس مجلس إدارة مجموعة الحبتور، الدكتور ستيفن فيكتور، الرئيس التنفيذي والمدير الطبي لدى "ريجين مديكال" في دبي.} &
+%DIFDELCMD <         Religion & Medical & miss \\
+%DIFDELCMD <         \bottomrule
+%DIFDELCMD <     \end{tabularx}
+%DIFDELCMD < \end{table}
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{Analysis of the }\DIFdelend \DIFaddbegin \DIFadd{97.5\% with the full split. The RBF-SVM follows the same curve within one point. Full fine-tuning and QLoRA start higher and saturate earlier: 96.6\% and 95.7\% with 100 per class, 98.4\% for both with }\DIFaddend 1,\DIFdelbegin \DIFdel{000-sample test set reveals systematic error patterns for each modelarchitecture.
-Table~\ref{tab:error-summary} summarizes the key confusion patterns observed. }\DIFdelend \DIFaddbegin \DIFadd{000 per class, and 98.9\% and 98.5\% with the full split. In other words, the crossover between zero-shot LLM inference and in-domain supervision on this task lies at roughly 100 labelled articles per class for a 0.3\,M-parameter head, and the ceiling of the task is reached with about 1,000 per class by any adapted model.
-}\DIFaddend 
+\DIFdelend The \DIFdelbegin \DIFdel{SVM-based model produced different error patterns (Table~\ref{tab:model-svm-evaluation}) . It often mislabeled }%DIFDELCMD < \textit{%%%
+\DIFdel{Technology}%DIFDELCMD < \MBLOCKRIGHTBRACE %%%
+\DIFdel{news as }\textit{\DIFdel{Finance}}%DIFAUXCMD
+\DIFdelend \DIFaddbegin \DIFadd{few-shot conditions were measured on the 700-article subset, so we compare them with the supervised systems scored on the same 700 articles: at 500 per class the 512-wordpiece head reaches 96.7\% there against 95.3\% for the best few-shot condition (Gemini 3.8 Flash, $k=2$), whereas the 150-wordpiece head (94.4\% at 500 and 95.0\% at 1,000 per class) only passes it with the full training split (96.5\%; the RBF-SVM does so from 1}\DIFaddend ,\DIFdelbegin \DIFdel{suggesting an over-reliance on economic keywords. This points to a sensitivity to surface-level tokens without capturing deeper semantic relationships. }%DIFDELCMD < 
 
-\DIFdelbegin %DIFDELCMD < \begin{table}[h!]
+%DIFDELCMD < \begin{table}[h!]
 %DIFDELCMD <     \centering
-%DIFDELCMD <     \caption{Summary of Model-Specific Error Patterns}
-%DIFDELCMD <     \label{tab:error-summary}
-%DIFDELCMD <     \small
-%DIFDELCMD <     \begin{tabular}{lll}
+%DIFDELCMD <     \caption{Representative Misclassifications — BERT SVM Head}
+%DIFDELCMD <     \label{tab:model-svm-evaluation}
+%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}X c c c}
 %DIFDELCMD <         \toprule
-%DIFDELCMD <         \textbf{Model} & \textbf{Primary Confusion} & \textbf{Likely Cause} \\
+%DIFDELCMD <         \textbf{Text} & \textbf{Model Output} & \textbf{Original Output} & \textbf{Result} \\
 %DIFDELCMD <         \midrule
-%DIFDELCMD <         BERT Dense Head & Finance $\leftrightarrow$ Tech & Numerical/financial terms in tech contexts \\
-%DIFDELCMD <         & Religion $\leftrightarrow$ Culture & Shared formal MSA register \\
+%DIFDELCMD <         \RTL{دبي: محمد إبراهيم أطلقت وزارة التربية والتعليم خلال مشاركتها في "أسبوع جيتكس للتقنية" خدمتين جديدتين تضافان إلى خدماتها الذكية الأخرى.} &
+%DIFDELCMD <         Finance & Tech & miss \\
 %DIFDELCMD <         \addlinespace
-%DIFDELCMD <         GPT-4.1 & Tech $\rightarrow$ Finance & Economic framing of technology news \\
-%DIFDELCMD <         & Religion $\rightarrow$ Culture & Historical/narrative style overlap \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         Gemini-2.0-Flash & Tech $\rightarrow$ Finance & Business context dominance \\
-%DIFDELCMD <         & Religion $\rightarrow$ Culture/Politics & Institutional announcement patterns \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         Claude-3.5-Haiku & Religion $\rightarrow$ Culture (59\%) & Fundamental category boundary issues \\
-%DIFDELCMD <         & Religion $\rightarrow$ Politics (28\%) & Religious-political discourse overlap \\
-%DIFDELCMD <         \addlinespace
-%DIFDELCMD <         DeepSeek V3 & Tech $\rightarrow$ Finance & Similar to GPT-4.1 patterns \\
-%DIFDELCMD <         & Religion $\rightarrow$ Culture & Similar to GPT-4.1 patterns \\
+%DIFDELCMD <         \RTL{دبي: "الخليج" أعلنت شركة "إل جي" أنها ستوفر أحدث الحلول التفاعلية الرقمية في دبي باركس آند ريزورتس، أكبر منتجع سياحي وترفيهي في المنطقة.} &
+%DIFDELCMD <         Finance & Tech & miss \\
 %DIFDELCMD <         \bottomrule
-%DIFDELCMD <     \end{tabular}
+%DIFDELCMD <     \end{tabularx}
 %DIFDELCMD < \end{table}
+%DIFDELCMD < 
+
 %DIFDELCMD < %%%
+\DIFdel{To provide a comprehensive understanding of model behavior, this section presents systematic qualitative analysis organized into three categories: (}\DIFdelend \DIFaddbegin \DIFadd{000 per class, 95.7\%). On the full test set the curves continue to rise to 96.4\% / 97.5\% with the full split. The RBF-SVM follows the same curve within one point. Full fine-tuning and QLoRA start higher and saturate earlier: 96.6\% and 95.7\% with 100 per class, 98.4\% for both with }\DIFaddend 1\DIFdelbegin \DIFdel{) examples where all models correctly classify the text, (2) instances where the proposed BERT models succeed while }\DIFdelend \DIFaddbegin \DIFadd{,000 per class, and 98.9\% and 98.5\% with the full split. In other words, the crossover between }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs fail, and (3)cases where LLMs correctly predict the label while BERT models err. This analysis reveals the complementary strengths and distinct failure modes of supervised and zero-shot approaches}\DIFdelend \DIFaddbegin \DIFadd{LLM inference and in-domain supervision on this task lies at roughly 100 labelled articles per class for a 0.3\,M-parameter head, and the ceiling of the task is reached with about 1,000 per class by any adapted model}\DIFaddend .
+
+\DIFdelbegin \subsubsection{\DIFdel{Correctly Classified Examples}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.9\textwidth]{fig_learning_curve.pdf}
-\caption{Learning curve on the shared test split: accuracy as a function of labelled training articles per class (log scale; mean and standard deviation over three seeds; nested subsets). Horizontal lines mark the best zero-shot LLM on the full test set and the best few-shot condition on the evaluation subset.}
+\caption{Learning curve on the shared test split: accuracy as a function of labelled training articles per class (log scale; mean and standard deviation over three seeds; nested subsets). The horizontal line marks the best zero-shot LLM on the full test set; the few-shot conditions were measured on the 700-article subset and are compared with the supervised systems on that subset in the text.}
 \label{fig:lc}
 \end{figure}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{Claude-3}\DIFdelend \DIFaddbegin \begin{table}[!ht]
+\DIFdelbegin \DIFdel{Table~\ref{tab:correct-examples} presents representative examples where both BERT architectures and all zero-shot LLMs achieved correct classifications. These examples illustrate the characteristics of unambiguous news articles that models handle reliably. }\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
 \caption{Learning curve: test accuracy (\%) as a function of the number of labelled training articles per class (mean $\pm$ standard deviation over three seeds; ``all'' = the full training split, about 4{,}545 per class). Nested subsets drawn with a fixed ranking of the training split. For reference, the best zero-shot LLM reaches 92.8\,\% and the best few-shot condition 95.3\,\% (Table~\ref{tab:prompts}).}
 \label{tab:lc}
@@ -1249,18 +1085,92 @@ Qwen2.5-7B + QLoRA & -- & -- & 95.7 & -- & 98.4 & 98.5 \\
 \bottomrule
 \end{tabular}}
 \end{table}
+\DIFaddend 
 
 
-\subsection{\DIFadd{Prompt Robustness, Few-Shot Conditions and Output Mapping}}
+\DIFdelbegin %DIFDELCMD < \begin{table}[h!]
+%DIFDELCMD <     \centering
+%DIFDELCMD <     \caption{Representative Examples Correctly Classified by All Models}
+%DIFDELCMD <     \label{tab:correct-examples}
+%DIFDELCMD <     \small
+%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.55\textwidth} c c}
+%DIFDELCMD <         \toprule
+%DIFDELCMD <         \textbf{Text} & \textbf{Category} & \textbf{All Models} \\
+%DIFDELCMD <         \midrule
+%DIFDELCMD <         \RTL{انضم ساندرو فاغنر مهاجم فريق دارمشتاد لفريق هوفنهايم الألماني بعقد يمتد حتى عام 2019. وأحرز فاغنر 14 هدفاً ببطولة الدوري الموسم الماضي ليصبح ثاني لاعب ألماني أكثر تسجيلاً للأهداف في البطولة خلف توماس مولر نجم بايرن ميونيخ الذي سجل 20 هدفاً.} &
+%DIFDELCMD <         Sports & \checkmark \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         \RTL{أكدت مجموعة الدراسات إتش سي أن صكوك شركة الدار العقارية والتي تستحق عام 2014 لم تتأثر بخفض موديز لتقييم الشركة، بل على العكس، قفز سعر الصك من 103،5 إلى 106،5 دولار في الوقت الذي لم تتغير فيه نسبة العائد، وثبتت عند 9،75\%.} &
+%DIFDELCMD <         Finance & \checkmark \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         \RTL{نفذت إدارة مركز الطب الوقائي في الذيد عدداً من الفعاليات المتنوعة، التي هدفت إلى سعادة الموظفين من خلال أهدافها وبرامجها، التي تعد ركناً أساسياً من أركان سمعتها الطيبة ودورها الطبي.} &
+%DIFDELCMD <         Medical & \checkmark \\
+%DIFDELCMD <         \bottomrule
+%DIFDELCMD <     \end{tabularx}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The }\textit{\DIFdel{Sports}} %DIFAUXCMD
+\DIFdel{example demonstrates clear lexical boundaries through player names, team references, and competition terminology (goals, league, season)that all models readily identify. The }\textit{\DIFdel{Finance}} %DIFAUXCMD
+\DIFdel{example contains unambiguous financial indicators (bonds, credit ratings, yields,prices) that establish clear category membership. The }\textit{\DIFdel{Medical}} %DIFAUXCMD
+\DIFdel{example references preventive medicine centers and health-related initiatives with explicit medical vocabulary. These characteristics---domain-specific terminology, clear institutional references, and unambiguous topical framing---facilitate reliable classification across all modeltypes.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsubsection{\DIFdel{BERT Correct, LLMs Incorrect}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Table~\ref{tab:bert-correct-llm-wrong} presents cases where the fine-tuned BERT model correctly classified texts that multiple zero-shot LLMs misclassified. These examples highlight the advantages of domain-specific fine-tuning.
+}%DIFDELCMD < 
+
+%DIFDELCMD < \begin{table}[h!]
+%DIFDELCMD <     \centering
+%DIFDELCMD <     \caption{Examples Where BERT Succeeded and Zero-Shot LLMs Failed}
+%DIFDELCMD <     \label{tab:bert-correct-llm-wrong}
+%DIFDELCMD <     \small
+%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.32\textwidth} c c >{\raggedright\arraybackslash}p{0.28\textwidth}}
+%DIFDELCMD <         \toprule
+%DIFDELCMD <         \textbf{Text} & \textbf{True Label} & \textbf{BERT} & \textbf{LLM Predictions} \\
+%DIFDELCMD <         \midrule
+%DIFDELCMD <         \RTL{ارتفع عدد مشتركي خطوط الهاتف المتحرك لدى شركة الإمارات للاتصالات المتكاملة دو إلى أكثر من 4 ملايين مشترك حالياً، بينما ارتفع عدد الخطوط المباعة منذ انطلاق الشركة حتى الآن إلى حوالي 7 ملايين خط.} &
+%DIFDELCMD <         Tech & Tech \checkmark & GPT: Finance \texttimes \newline Gemini: Finance \texttimes \\
+%DIFDELCMD <         \addlinespace[1em]
+%DIFDELCMD <         \RTL{تذهب بعض المصادر التاريخية الى أن قطز ينتمي في أصوله الى الخوارزمية، وخاله هو السلطان جلال الدين منكبرتي آخر الخوارزمشاهية، وأنه بعد ان تغيرت الحال بأسرته استرق، وتداولته أيادي التجار، الى أن صار في جملة المماليك.} &
+%DIFDELCMD <         Religion & Religion \checkmark & GPT: Culture \texttimes \newline Gemini: Politics \texttimes \newline Claude: Politics \texttimes \newline DeepSeek: Culture \texttimes \\
+%DIFDELCMD <         \addlinespace[1em]
+%DIFDELCMD <         \RTL{اعتمد المدير التنفيذي لمؤسسة دبي لخدمات الإسعاف، خليفة الدراي، تشكيل مجلس الشباب بالمؤسسة، خلال اجتماع موسع مع مديري الإدارات وكبار الموظفين والمسؤولين.} &
+%DIFDELCMD <         Medical & Medical \checkmark & GPT: Culture \texttimes \newline Gemini: Politics \texttimes \newline Claude: Politics \texttimes \newline DeepSeek: Politics \texttimes \\
+%DIFDELCMD <         \bottomrule
+%DIFDELCMD <     \end{tabularx}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The first example illustrates the }\textit{\DIFdel{Technology}}%DIFAUXCMD
+\DIFdel{--}\textit{\DIFdel{Finance}} %DIFAUXCMD
+\DIFdel{confusion pattern prevalent among LLMs. Although the article discusses a telecommunications company (du), the numerical focus on subscriber counts and sales figures triggered financial classification by }\DIFdelend \DIFaddbegin \subsection{\DIFadd{Prompt Robustness, Few-Shot Conditions and Output Mapping}}
 \label{sec:robustness}
 
-\DIFadd{Table~\ref{tab:prompts} and Figure~\ref{fig:prompts} report the sweeps on the fixed 700-article subset. Across the five prompt formulations the standard deviation of accuracy is 0.5 points for GPT-4.1, 0.7 for Claude Haiku 4.5 and 0.3 for Gemini 3.8 Flash, 1.5 for DeepSeek V4 Flash and 2.5 for Qwen2}\DIFaddend .5\DIFdelbegin \DIFdel{-Haiku exhibited the most severe category confusion, with 32 out of 135 Religion samples (24\%) misclassified, primarily as }\textit{\DIFdel{Culture}} %DIFAUXCMD
-\DIFdel{(59\%) or }\textit{\DIFdel{Politics}} %DIFAUXCMD
-\DIFdel{(28\%). This systematic failure suggests fundamental difficulties in distinguishing Gulf Arabic religious discourse from related cultural and political content without domain-specific training.
-}\DIFdelend \DIFaddbegin \DIFadd{-7B; the Arabic prompts are neither systematically better nor worse than the English ones (for DeepSeek they are the best two, for Claude the lowest two). The ranking of the API models is the same under every prompt. A second identical pass of the primary prompt reproduces every model's accuracy to within 0.1 points, so decoding at temperature 0 is effectively deterministic and the variability that matters is the one across prompt wordings. Few-shot examples help the weaker models and not the stronger ones: with two exemplars per class Gemini gains 1.9 points, DeepSeek 1.1 and Qwen2.5-7B 5.0 (with one exemplar per class), while GPT-4.1 loses 1.0 point and Claude 0.4; no few-shot condition reaches the frozen dense head trained on 500 articles per class.
-}\DIFaddend 
+\DIFadd{Table~\ref{tab:prompts} and Figure~\ref{fig:prompts} report the sweeps on the fixed 700-article subset. Across the five prompt formulations the standard deviation of accuracy is 0.5 points for }\DIFaddend GPT-4.1\DIFaddbegin \DIFadd{, 0.7 for Claude Haiku 4.5 }\DIFaddend and \DIFdelbegin \DIFdel{Gemini-2.0-Flash. The fine-tuned BERT model correctly identified the technological context---mobile phone lines and telecommunications services---demonstrating its learned ability to distinguish between technology companies and financial reporting. }%DIFDELCMD < 
 
-\DIFdelbegin \subsubsection{\DIFdel{Implications for Model Selection}}
+%DIFDELCMD < %%%
+\DIFdel{The second example reveals the }\textit{\DIFdel{Religion}}%DIFAUXCMD
+\DIFdel{--}\textit{\DIFdel{Culture}} %DIFAUXCMD
+\DIFdel{confusion that affected all four LLMs. The historical narrative about Qutuz, a Mamluk sultan who played a crucial role in Islamic history, was misclassified as either }\textit{\DIFdel{Culture}} %DIFAUXCMD
+\DIFdel{or }\textit{\DIFdel{Politics}}%DIFAUXCMD
+\DIFdel{. While the text employs historical narrative style that superficially resembles cultural content, it discusses Islamic historical figures in a religious-historical context. The fine-tuned model learned through exposure to labeled training data that such historical Islamic narratives belong to the }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{category in Gulf Arabic journalism conventions. }%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The third example demonstrates how institutional announcements can mislead zero-shot LLMs. Despite explicit references to Dubai Ambulance Services and medical context, all LLMs classified this as either }\textit{\DIFdel{Politics}} %DIFAUXCMD
+\DIFdel{or }\textit{\DIFdel{Culture}}%DIFAUXCMD
+\DIFdel{, likely triggered by administrative terminology (board formation, executive meetings) . The BERT model correctly recognized the medical institutional context}\DIFdelend \DIFaddbegin \DIFadd{0.3 for Gemini 3.8 Flash, 1.5 for DeepSeek V4 Flash and 2.5 for Qwen2.5-7B; the Arabic prompts are neither systematically better nor worse than the English ones (for DeepSeek they are the best two, for Claude the lowest two). The ranking of the API models is the same under every prompt. A second identical pass of the primary prompt reproduces every model's accuracy to within 0.1 points, so decoding at temperature 0 is effectively deterministic and the variability that matters is the one across prompt wordings. Few-shot examples help the weaker models and not the stronger ones: with two exemplars per class Gemini gains 1.9 points, DeepSeek 1.1 and Qwen2.5-7B 5.0 (with one exemplar per class), while GPT-4.1 loses 1.0 point and Claude 0.4; on the same 700 articles the best few-shot condition (95.3\%) is below the 512-wordpiece dense head trained on 500 articles per class (96.7\%) and above the 150-wordpiece head at that size (94.4\%; Section~\ref{sec:lc})}\DIFaddend .
+
+\DIFdelbegin \subsubsection{\DIFdel{LLMs Correct, BERT Incorrect}}
 %DIFAUXCMD
 \addtocounter{subsubsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \begin{table}[!ht]
@@ -1287,36 +1197,44 @@ Qwen2.5-7B-Instruct & 86.6 & 87.4$\pm$2.5 & 84.9--90.3 & 91.6 & 88.9 & -- & -- &
 \DIFaddend 
 
 
-\DIFdelbegin \DIFdel{These qualitative findings yield practical recommendations for Arabic news classification deployment:
-}\DIFdelend \DIFaddbegin \begin{figure}[!ht]
+\DIFdelbegin \DIFdel{Table~\ref{tab:llm-correct-bert-wrong} presents contrasting cases where zero-shot LLMs correctly classified texts that the BERT model misclassified, revealing limitations of the supervised approach. }%DIFDELCMD < 
+
+%DIFDELCMD < \begin{table}[h!]
+%DIFDELCMD <     \centering
+%DIFDELCMD <     \caption{Examples Where Zero-Shot LLMs Succeeded and BERT Failed}
+%DIFDELCMD <     \label{tab:llm-correct-bert-wrong}
+%DIFDELCMD <     \small
+%DIFDELCMD <     \begin{tabularx}{\textwidth}{>{\raggedleft\arraybackslash}p{0.38\textwidth} c c >{\raggedright\arraybackslash}p{0.28\textwidth}}
+%DIFDELCMD <         \toprule
+%DIFDELCMD <         \textbf{Text} & \textbf{True Label} & \textbf{BERT} & \textbf{LLM Predictions} \\
+%DIFDELCMD <         \midrule
+%DIFDELCMD <         \RTL{قضت محكمة عمانية بالسجن ثلاث سنوات والغرامة 76 ألفاً و804 ريالات و8 بيسات على ضابط شرطة برتبة عميد، حيث أدانته المحكمة الابتدائية بمسقط بجنحتي الرشوة عن مشروع تحصيل رسوم دخول المنافذ البرية واختلاس مخصصات.} &
+%DIFDELCMD <         Politics & Finance \texttimes & GPT: Politics \checkmark \newline Gemini: Politics \checkmark \newline Claude: Politics \checkmark \newline DeepSeek: Politics \checkmark \\
+%DIFDELCMD <         \addlinespace[1em]
+%DIFDELCMD <         \RTL{دبي ``الخليج'': استضاف ``مجلس الإمارات للأبنية الخضراء''، أمس، بالتعاون مع ``مجلس الأعمال الفرنسي'' بدبي فعالية خاصة حول أحدث الابتكارات الخضراء. وشارك في الفعالية ممثلون عن أكثر من 20 هيئة ومؤسسة.} &
+%DIFDELCMD <         Tech & Medical \texttimes & Gemini: Tech \checkmark \newline Claude: Tech \checkmark \newline DeepSeek: Tech \checkmark \\
+%DIFDELCMD <         \addlinespace[1em]
+%DIFDELCMD <         \RTL{تستقطب قناة القصباء في الشارقة يومياً عشرات بل مئات الأسر العربية وغير العربية من مختلف الجاليات المقيمة في الامارات، وتأتي هذه الأسر مع أطفالها إلى ساحات ومرافق القناة نظراً لطبيعة المكان المفتوحة.} &
+%DIFDELCMD <         Culture & Religion \texttimes & GPT: Culture \checkmark \newline Gemini: Culture \checkmark \newline Claude: Culture \checkmark \newline DeepSeek: Culture \checkmark \\
+%DIFDELCMD <         \bottomrule
+%DIFDELCMD <     \end{tabularx}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The first example demonstrates BERT's susceptibility to surface-level lexical cues. The article about a court case involving bribery and embezzlement charges against a police officer was misclassified as }\textit{\DIFdel{Finance}} %DIFAUXCMD
+\DIFdel{due to monetary figures (fines, amounts)}\DIFdelend \DIFaddbegin \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.85\textwidth]{fig_prompt_robustness.pdf}
 \caption{Prompt sensitivity and few-shot effect on the 700-article evaluation subset. For each model: mean and range of zero-shot accuracy over five semantically equivalent prompts, the primary prompt, and the few-shot condition.}
 \label{fig:prompts}
 \end{figure}
-\DIFaddend 
 
-\DIFdelbegin %DIFDELCMD < \begin{enumerate}
-%DIFDELCMD <     \item %%%
-\textbf{\DIFdel{High-stakes applications}}%DIFAUXCMD
-\DIFdel{: Fine-tuned BERT models provide more consistent performance across all categories, particularly for Religion/Culture disambiguation where LLMs systematically struggle.
-    }%DIFDELCMD < 
+\DIFadd{Table~\ref{tab:mapping} audits the label-mapping step over every run of each model. All four API models return a bare label for most requests, and the share of unmapped outputs on the full test set is 0.00\% (GPT-4.1), 0.04\% (Claude), 0.06\% (Gemini) and 0.01\% (DeepSeek), at most four articles. The resolved share shows which models deviate from the requested format and how: under one English prompt Claude Haiku 4.5 wrapped the label in surrounding text in 55\% of answers, under the Arabic prompts GPT-4.1 answered with the Arabic label name in 8--12\% of cases and Gemini added formatting to 97\% of answers; all of these were resolved by the fixed rules, }\DIFaddend and \DIFdelbegin \DIFdel{financial terminology. All }\DIFdelend \DIFaddbegin \DIFadd{none of them changed accuracy by more than the unmapped rate. Qwen2.5-7B }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs correctly identified the political/legal nature of the content through broader contextual understanding of court proceedings and governmental corruption cases }\DIFdelend \DIFaddbegin \DIFadd{produces 0.3--0.7\% unmapped outputs (a free continuation of the article instead of a label); after QLoRA the model answers with a bare label in every case. The mapping step is therefore not a hidden source of the differences reported above}\DIFaddend .
 
-%DIFDELCMD <     \item %%%
-\textbf{\DIFdel{Technology/Finance contexts}}%DIFAUXCMD
-\DIFdel{: Consider ensemble approaches or post-hoc verification when articles contain both technological content and financial metrics, as both model families exhibit confusion in this domain.
-    }%DIFDELCMD < 
-
-%DIFDELCMD <     \item %%%
-\textbf{\DIFdel{Resource-constrained scenarios}}%DIFAUXCMD
-\DIFdel{: Among zero-shot LLMs, }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:mapping} audits the label-mapping step over every run of each model. All four API models return a bare label for most requests, and the share of unmapped outputs on the full test set is 0.00\% (}\DIFaddend GPT-4.1\DIFdelbegin \DIFdel{and DeepSeek V3 offer the best balance of performance and accessibility, while Claude-3}\DIFdelend \DIFaddbegin \DIFadd{), 0.04\% (Claude), 0.06\% (Gemini) and 0.01\% (DeepSeek), at most four articles. The resolved share shows which models deviate from the requested format and how: under one English prompt Claude Haiku 4.5 wrapped the label in surrounding text in 55\% of answers, under the Arabic prompts GPT-4.1 answered with the Arabic label name in 8--12\% of cases and Gemini added formatting to 97\% of answers; all of these were resolved by the fixed rules, and none of them changed accuracy by more than the unmapped rate. Qwen2}\DIFaddend .5\DIFdelbegin \DIFdel{-Haiku should be avoided for Arabic classification tasks without further promptoptimization. }\DIFdelend \DIFaddbegin \DIFadd{-7B zero-shot produces 0.3--0.7\% unmapped outputs (a free continuation of the article instead of a label); after QLoRA the model answers with a bare label in every case. The mapping step is therefore not a hidden source of the differences reported above.
-}\DIFaddend 
-
-\DIFdelbegin %DIFDELCMD < \item %%%
-\textbf{\DIFdel{Edge cases}}%DIFAUXCMD
-\DIFdel{: Articles with institutional announcements, historical narratives, or mixed domain terminology benefit from fine-tuned models that have learned corpus-specific classification conventions. }%DIFDELCMD < \end{enumerate}
-%DIFDELCMD < %%%
-\DIFdelend \DIFaddbegin \begin{table}[!ht]
+\DIFdelbegin \DIFdel{The second example shows how BERT can be confused by institutional overlap. The Emirates Green Building Council event about green innovations was misclassified as }\textit{\DIFdel{Medical}}%DIFAUXCMD
+\DIFdel{, possibly due to associations between ``green'' terminology and health-related contexts in the training data. The LLMs' broader world knowledge allowed them to correctly associate green building technology with the }\textit{\DIFdel{Technology}} %DIFAUXCMD
+\DIFdel{category. }\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
 \caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. Percentages of all outputs.}
 \label{tab:mapping}
@@ -1338,45 +1256,97 @@ Qwen2.5-7B + QLoRA (all) & 1 & 6,822 & 100.0 & 0.0 & 0.0 & 0.00 & 0.00 \\
 \DIFaddend 
 
 
-\DIFdelbegin \DIFdel{These qualitative insights reinforce the quantitative findings: domain-specific fine-tuning enhances robustness, but different model heads exhibit distinct error profiles. Dense heads better capture semantic nuance, while SVM heads emphasize token-level features, leading to divergent failure cases}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Controlled Analyses: Input Length and the Dateline}}
+\DIFdelbegin \DIFdel{The third example reveals the }\textit{\DIFdel{Culture}}%DIFAUXCMD
+\DIFdel{--}\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{confusion in reverse. BERT misclassified a cultural article about Al Qasba Canal in Sharjah as }\textit{\DIFdel{Religion}}%DIFAUXCMD
+\DIFdel{, while all LLMs correctly identified the cultural/leisure content. This suggests that certain cultural venue descriptions may share linguistic patterns with religious site descriptions in the training data.
+}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Controlled Analyses: Input Length and the Dateline}}
 \label{sec:controls}
+\DIFaddend 
 
-\DIFadd{Two interventions test whether either family relies on superficial cues. Input length: giving the frozen encoder 512 instead of 150 wordpieces adds 1.1 points on the full split and up to 5.9 points with 10 articles per class (Table~\ref{tab:lc}), so the lightweight systems do use the body of the article, not only its opening; restricting the LLMs to the first 100 words costs them 0.6--1.0 points (Table~\ref{tab:prompts}). Dateline: removing the city-and-source prefix from the test articles changes the dense head's accuracy from 96.4\% to 96.5\% ($\pm$0.2), and removing it from training and test as well gives 96.4\% ($\pm$0.2); for the LLMs the change is between $-0.4$ and $+0.1$ points. Although the dateline is strongly correlated with the class in this corpus, neither family uses it as a shortcut, and the accuracy of the supervised systems does not depend on it}\DIFaddend .
+\DIFdelbegin \subsubsection{\DIFdel{Model-Specific Error Patterns}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
 
-%DIF < %%%%%%%%%%%%%%%
-\DIFaddbegin \subsection{\DIFadd{Training and Inference Cost}}
+%DIFDELCMD < %%%
+\DIFdel{Analysis of the 1}\DIFdelend \DIFaddbegin \DIFadd{Two interventions test whether either family relies on superficial cues. Input length: giving the frozen encoder 512 instead of 150 wordpieces adds 1.1 points on the full split and up to 5.9 points with 10 articles per class (Table~\ref{tab:lc}), so the lightweight systems do use the body of the article, not only its opening; restricting the LLMs to the first 100 words costs them 0.6--1.0 points (Table~\ref{tab:prompts}). Dateline: removing the city-and-source prefix from the test articles changes the dense head's accuracy from 96.4\% to 96.5\% ($\pm$0.2)}\DIFaddend , \DIFdelbegin \DIFdel{000-sample test set reveals systematic error patterns for each model architecture. Table~\ref{tab:error-summary} summarizes the key confusion patterns observed.
+}%DIFDELCMD < 
+
+%DIFDELCMD < \begin{table}[h!]
+%DIFDELCMD <     \centering
+%DIFDELCMD <     \caption{Summary of Model-Specific Error Patterns}
+%DIFDELCMD <     \label{tab:error-summary}
+%DIFDELCMD <     \small
+%DIFDELCMD <     \begin{tabular}{lll}
+%DIFDELCMD <         \toprule
+%DIFDELCMD <         \textbf{Model} & \textbf{Primary Confusion} & \textbf{Likely Cause} \\
+%DIFDELCMD <         \midrule
+%DIFDELCMD <         BERT Dense Head & Finance $\leftrightarrow$ Tech & Numerical/financial terms in tech contexts \\
+%DIFDELCMD <         & Religion $\leftrightarrow$ Culture & Shared formal MSA register \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         GPT-4.1 & Tech $\rightarrow$ Finance & Economic framing of technology news \\
+%DIFDELCMD <         & Religion $\rightarrow$ Culture & Historical/narrative style overlap \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         Gemini-2.0-Flash & Tech $\rightarrow$ Finance & Business context dominance \\
+%DIFDELCMD <         & Religion $\rightarrow$ Culture/Politics & Institutional announcement patterns \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         Claude-3.5-Haiku & Religion $\rightarrow$ Culture (59\%) & Fundamental category boundary issues \\
+%DIFDELCMD <         & Religion $\rightarrow$ Politics (28\%) & Religious-political discourse overlap \\
+%DIFDELCMD <         \addlinespace
+%DIFDELCMD <         DeepSeek V3 & Tech $\rightarrow$ Finance & Similar to GPT-4.1 patterns \\
+%DIFDELCMD <         & Religion $\rightarrow$ Culture & Similar to GPT-4.1 patterns \\
+%DIFDELCMD <         \bottomrule
+%DIFDELCMD <     \end{tabular}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Claude-3.5-Haiku exhibited the most severe category confusion, with 32 out of 135 Religion samples (24\% ) misclassified, primarily as }\textit{\DIFdel{Culture}} %DIFAUXCMD
+\DIFdelend \DIFaddbegin \DIFadd{and removing it from training and test as well gives 96.4\% }\DIFaddend (\DIFdelbegin \DIFdel{59\% ) or }\textit{\DIFdel{Politics}} %DIFAUXCMD
+\DIFdel{(28\%). This systematic failure suggests fundamental difficulties in distinguishing Gulf Arabic religious discourse from related cultural and political content without domain-specific training.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsubsection{\DIFdel{Implications for Model Selection}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{These qualitative findings yield practical recommendations for Arabic news classification deployment:
+}%DIFDELCMD < 
+
+%DIFDELCMD < \begin{enumerate}
+%DIFDELCMD <     \item %%%
+\textbf{\DIFdel{High-stakes applications}}%DIFAUXCMD
+\DIFdel{: Fine-tuned BERT models provide more consistent performance across all categories, particularly for Religion/Culture disambiguation where LLMs systematically struggle.
+    }%DIFDELCMD < 
+
+%DIFDELCMD <     \item %%%
+\textbf{\DIFdel{Technology/Finance contexts}}%DIFAUXCMD
+\DIFdel{: Consider ensemble approaches or post-hoc verification when articles contain both technological content and financial metrics, as both model families exhibit confusion in this domain.
+    }%DIFDELCMD < 
+
+%DIFDELCMD <     \item %%%
+\textbf{\DIFdel{Resource-constrained scenarios}}%DIFAUXCMD
+\DIFdel{: Among zero-shot LLMs, GPT-4.1 and DeepSeek V3 offer the best balance of performance and accessibility, while Claude-3.5-Haiku should be avoided for Arabic classification tasks without further prompt optimization}\DIFdelend \DIFaddbegin \DIFadd{$\pm$0.2); for the LLMs the change is between $-0.4$ and $+0.1$ points. Although the dateline is strongly correlated with the class in this corpus, neither family uses it as a shortcut, and the accuracy of the supervised systems does not depend on it}\DIFaddend .
+
+\DIFdelbegin %DIFDELCMD < \item %%%
+\textbf{\DIFdel{Edge cases}}%DIFAUXCMD
+\DIFdel{: Articles with institutional announcements, historical narratives, or mixed domain terminology benefit from fine-tuned models that have learned corpus-specific classification conventions.
+}%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \subsection{\DIFadd{Training and Inference Cost}}
 \label{sec:efficiency}
 \DIFaddend 
 
-\DIFdelbegin \subsection{\DIFdel{Linguistic and Contextual Challenges for LLMs}}
-%DIFAUXCMD
-\addtocounter{subsection}{-1}%DIFAUXCMD
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{To strengthen the analysis, we examined the linguistic and contextual challenges faced by zero-shot LLMs in Arabic news classification, which help explain the performance gap compared to fine-tuned supervised approaches.
-}%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\subsubsection{\DIFdel{Morphological Complexity and Tokenization}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{Arabic\'s rich morphological system presents unique challenges for general-purpose LLMs. Words in Arabic are formed through complex patterns of roots and affixes, with prefixes and suffixes that can encode grammatical information such as tense, gender, number, and case. For instance, a single Arabic word can contain a conjunction, future tense marker, verb root, plural masculine suffix, and object pronoun---all in a single token.
-General-purpose LLMs trained primarily on English and other European languages may struggle with such dense morphological encoding, leading to suboptimal semantic understanding.
-}%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{In contrast, CAMeLBERT was pre-trained on 167 GB of Arabic text using domain-adaptive tokenization strategies that better capture morphological boundaries. The }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:timing} reports the measured cost of the supervised systems, and Table~\ref{tab:lora} the adaptation budget of the QLoRA baseline. The two frozen-encoder heads share one encoder pass over the corpus (60 seconds for 45,477 articles at 150 wordpieces, 111 seconds at 512, on an A100); once the embeddings exist, the dense head trains in 9 seconds and the SVM in 1.4 seconds, and both predict the 6,822 test articles in well under a second. Full }\DIFaddend fine-tuning \DIFdelbegin \DIFdel{process further specializes these representations for news categorization, allowing the model to distinguish subtle morphological patterns that signal topical boundaries. For example, technical terminology in }\textit{\DIFdel{Technology}} %DIFAUXCMD
-\DIFdel{articles often follows specific derivational patterns that fine-tuned models learn to associate with the correct category}\DIFdelend \DIFaddbegin \DIFadd{takes 11.6 minutes on the full split and 15 seconds to predict the test set, and QLoRA of the 7B model 3.3 GPU-hours on the full split (0.3 GPU-hours with 100 articles per class)}\DIFaddend . \DIFaddbegin \DIFadd{Zero-shot inference with the API models costs no training but one request per article at every use; at 2025--2026 list prices a single pass over the 6,822-article test set costs between about one and ten US dollars depending on the model, and the open-weight model served locally processed about ten articles per second on the same GPU. We do not report API latency because it is dominated by provider-side variability.
+\DIFdelbegin \DIFdel{These qualitative insights reinforce the quantitative findings: domain-specific }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:timing} reports the measured cost of the supervised systems, and Table~\ref{tab:lora} the adaptation budget of the QLoRA baseline. The two frozen-encoder heads share one encoder pass over the corpus (60 seconds for 45,477 articles at 150 wordpieces, 111 seconds at 512, on an A100); once the embeddings exist, the dense head trains in 9 seconds and the SVM in 1.4 seconds, and both predict the 6,822 test articles in well under a second. Full }\DIFaddend fine-tuning \DIFdelbegin \DIFdel{enhances robustness, but different model heads exhibit distinct error profiles. Dense heads better capture semantic nuance,while SVM heads emphasize token-level features, leading to divergent failure cases.
+}\DIFdelend \DIFaddbegin \DIFadd{takes 11.6 minutes on the full split and 15 seconds to predict the test set, and QLoRA of the 7B model 3.3 GPU-hours on the full split (0.3 GPU-hours with 100 articles per class). Zero-shot inference with the API models costs no training but one request per article at every use; at 2025--2026 list prices a single pass over the 6,822-article test set costs between about one and ten US dollars depending on the model, and the open-weight model served locally processed about ten articles per second on the same GPU. We do not report API latency because it is dominated by provider-side variability.
 }\DIFaddend 
 
-\DIFdelbegin \subsubsection{\DIFdel{Diglossia and Register Variation}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
-\DIFdelend \DIFaddbegin \begin{table}[!ht]
+%DIF < %%%%%%%%%%%%%%%
+\DIFaddbegin \begin{table}[!ht]
 \centering
 \caption{Training and inference cost of the supervised systems on one A100-PCIE-40GB (full training split of 31{,}833 articles; test split of 6{,}822). The frozen-encoder heads share one encoder pass, which dominates their cost and is reported separately; the head numbers are the training and prediction time of the head alone. Wall-clock seconds, mean over seeds.}
 \label{tab:timing}
@@ -1396,10 +1366,12 @@ Prediction on the test split (head only / full model) & 0.008 & 0.59 & 14.8 \\
 \end{table}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{Arabic exists in a state of diglossia, with Modern Standard Arabic (MSA) used in formal writing and various dialects in spoken communication. News articles predominantly use MSA, but they may incorporate dialectal expressions, loanwords, or code-switching, particularly in quotes or informal sections. Zero-shot LLMs, lacking exposure to the specific stylistic conventions of Gulf Arabic news sources, may misinterpret these register shifts as topical indicators rather than stylistic choices.
-}\DIFdelend \DIFaddbegin \begin{table}[!ht]
+\DIFdelbegin \subsection{\DIFdel{Linguistic and Contextual Challenges for LLMs}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
-\caption{Adaptation budget of the QLoRA baseline (Qwen2.5-7B-Instruct, 4-bit NF4 base, LoRA rank 16, $\alpha=32$, all linear projections, 40.4\,M trainable parameters = 0.82\,\%; one NVIDIA A100-PCIE-40GB). Accuracy on the full test set.}
+\caption{Adaptation budget of the QLoRA baseline (Qwen2.5-7B-Instruct, 4-bit NF4 base, LoRA rank 16, $\alpha=32$, all linear projections, 40.4\,M trainable parameters, 0.53\,\% of the 7.62\,B parameters of the base model; one NVIDIA A100-PCIE-40GB). Accuracy on the full test set.}
 \label{tab:lora}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
@@ -1416,9 +1388,36 @@ all & 31,833 & 1 & 20.2\,M & 3.27 & 9.3 & 98.5 \\
 \DIFaddend 
 
 
-\DIFdelbegin \DIFdel{The misclassification of medical content as }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{(Table~\ref{tab:model-evaluation})exemplifies this challenge. Both domains share formal register and may usesimilar syntactic structures for institutional announcements. Without fine-tuning on domain-specific examples, LLMs may over-weight superficial lexical similarities (e. g.
-, honorific titles, formal verb forms) at the expense of semantic content. Fine-tuned models, having seen numerous examples from each category, develop robust feature representations that distinguish genuine religious content from other formal discourse}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Qualitative Error Analysis}}
+\DIFdelbegin \DIFdel{To strengthen the analysis, we examined the linguistic and contextual challenges faced by zero-shot LLMs in Arabic news classification, which help explain the performance gap compared to fine-tuned supervised approaches.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsubsection{\DIFdel{Morphological Complexity and Tokenization}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Arabic\'s rich morphological system presents unique challenges for general-purpose LLMs. Words in Arabic are formed through complex patterns of roots and affixes, with prefixes and suffixes that can encode grammatical information such as tense,gender, number, and case. For instance, a single Arabic word can contain a conjunction, future tense marker, verb root, plural masculine suffix, and object pronoun---all in a single token. General-purpose LLMs trained primarily on English and other European languages may struggle with such dense morphological encoding, leading to suboptimal semantic understanding.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{In contrast, CAMeLBERT was pre-trained on 167 GB of Arabic text using domain-adaptive tokenization strategies that better capture morphological boundaries. The fine-tuning process further specializes these representations for news categorization, allowing the model to distinguish subtle morphological patterns that signal topical boundaries. For example, technical terminology in }\textit{\DIFdel{Technology}} %DIFAUXCMD
+\DIFdel{articles often follows specific derivational patterns that fine-tuned models learn to associate with the correct category.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsubsection{\DIFdel{Diglossia and Register Variation}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Arabic exists in a state of diglossia, with Modern Standard Arabic (MSA)used in formal writing and various dialects in spoken communication. News articles predominantly useMSA,but they may incorporate dialectal expressions, loanwords, or code-switching, particularly in quotes or informal sections. Zero-shot LLMs, lacking exposure to the specific stylistic conventions of Gulf Arabic news sources, may misinterpret these register shifts as topical indicators rather than stylistic choices. }%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The misclassification of medical content as }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{(Table~\ref{tab:model-evaluation}) exemplifies this challenge. Both domains share formal register and may use similar syntactic structures for institutional announcements. Without fine-tuning on domain-specific examples , LLMs may over-weight superficial lexical similarities (e.g., honorific titles, formal verb forms) at the expense of semantic content. Fine-tuned models, having seen numerous examples from each category, develop robust feature representations that distinguish genuine religious content from other formal discourse}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Qualitative Error Analysis}}
 \label{sec:qualitative}
 
 \DIFadd{The examples below are drawn from the final runs on the shared test split (dense head, seed 0; API models with the primary prompt). Table~\ref{tab:correct-examples} shows articles that every system classifies correctly: unambiguous domain vocabulary (a poetry evening, a football club presidency, console sales figures) that needs no corpus-specific knowledge}\DIFaddend .
@@ -1596,7 +1595,7 @@ However, the Dense Head delivered slightly faster inference, which is advantageo
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{Taken together, the findings suggest several directions for future research. One promising line is domain-adaptive pretraining for LLMs on Arabic corpora, which could bridge the gap between generalization and cultural grounding. Another is exploring }\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Limitations.}} \DIFadd{The study covers one publisher, one language variety (Modern Standard Arabic) and a label set whose boundaries partly reflect editorial conventions; the size of the crossover will differ on noisier or dialectal corpora. The prompt-robustness, }\DIFaddend few-shot \DIFdelbegin \DIFdel{prompting strategies, which may enhance zero-shot models without full retraining. Finally, extending evaluation to dialectal Arabic corpora would test }\DIFdelend \DIFaddbegin \DIFadd{and control analyses use a fixed 700-article subset, which was slightly easier than the full test set for every model; the main comparison and }\DIFaddend the \DIFdelbegin \DIFdel{robustness of both supervised and zero-shot approaches in more linguistically diverse and realistic settings. Such directions would contribute to building hybrid systems that combine the scalability of large pretrained models with the adaptability of lightweight fine-tuning. }%DIFDELCMD < 
+\DIFdel{Taken together, the findings suggest several directions for future research. One promising line is domain-adaptive pretraining for LLMs on Arabic corpora, which could bridge the gap between generalization and cultural grounding. Another is exploring }\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Limitations.}} \DIFadd{The study covers one publisher, one language variety (Modern Standard Arabic) and a label set whose boundaries partly reflect editorial conventions; the size of the crossover will differ on noisier or dialectal corpora. The prompt-robustness, }\DIFaddend few-shot \DIFdelbegin \DIFdel{prompting strategies, which may enhance zero-shot models without full retraining. Finally, extending evaluation to dialectal Arabic corpora would test }\DIFdelend \DIFaddbegin \DIFadd{and control analyses use a fixed 700-article subset on which the LLMs score 1.4--2.6 points higher than on the full test set; subset results are therefore reported as within-subset differences, and the main comparison and }\DIFaddend the \DIFdelbegin \DIFdel{robustness of both supervised and zero-shot approaches in more linguistically diverse and realistic settings. Such directions would contribute to building hybrid systems that combine the scalability of large pretrained models with the adaptability of lightweight fine-tuning. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
 \DIFdel{In summary, supervised domain-adapted models remain the most effective solution for high-accuracy Arabic text classification under current conditions. However, strategically combining them with foundation models —through domain adaptation, few-shot learning, or dialectal transfer—represents a compelling future path for both research and deployment}\DIFdelend \DIFaddbegin \DIFadd{learning curve use the full split. The adapted-LLM baseline uses one open-weight model and one LoRA configuration, and full fine-tuning on the full split uses a single seed. API models were evaluated through a routing service with pinned providers; the identifiers served are logged, but the behaviour of hosted models may change when providers update them. Finally, one of the API models (Gemini 3.8 Flash) could not be run with reasoning fully disabled and used a minimal reasoning budget, which we report but cannot remove}\DIFaddend .
@@ -1607,7 +1606,7 @@ However, the Dense Head delivered slightly faster inference, which is advantageo
 This \DIFdelbegin \DIFdel{study benchmarked lightweight supervised models against state-of-the-art zero-shot LLMs for Arabic multi-class text classification using the balanced SANAD (AlKhaleej) dataset. Two architectures based on CAMeLBERT embeddings—a dense neural head and an SVM classifier—were compared to leading LLMs: GPT-4.1, DeepSeek V3, Gemini 2.0-Flash, and Claude 3.5-Haiku. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{The fine-tuned supervised models consistently outperformed their zero-shot counterparts across all evaluation metrics. Both the Dense and SVM heads achieved 97}\DIFdelend \DIFaddbegin \DIFadd{paper compared lightweight supervised classifiers built on a frozen CAMeLBERT encoder with large language models for seven-way Arabic news classification on the SANAD-AlKhaleej corpus, under a protocol in which every system is scored on the same deduplicated test split, LLM decoding is deterministic, prompt sensitivity and output parsing are measured, and the amount of supervision is varied on both sides. With the full training split the frozen-encoder heads reach 96.4--98.1}\DIFaddend \% accuracy, \DIFdelbegin \DIFdel{while the best-performing LLM (}\DIFdelend \DIFaddbegin \DIFadd{full fine-tuning 98.9\%, and a QLoRA-adapted Qwen2.5-7B-Instruct 98.5\%, against 91.5--92.8\% for zero-shot }\DIFaddend GPT-4.1\DIFdelbegin \DIFdel{) reached 93\%. Claude 3.5-Haiku lagged significantly, particularly in sensitive categories such as }\DIFdelend \DIFaddbegin \DIFadd{, Claude Haiku 4.5, Gemini 3.8 Flash and DeepSeek V4 Flash, all of which share a weakness on the }\DIFaddend \textit{Religion} \DIFaddbegin \DIFadd{class. About 100 labelled articles per class suffice for a 0.3\,M-parameter head to match the best zero-shot LLM, and 500 per class to pass every few-shot condition; prompt wording moves the strong API models by less than one point, replicate runs are identical, and neither the dateline nor the opening words of an article act as a shortcut for any system}\DIFaddend .
+\DIFdel{The fine-tuned supervised models consistently outperformed their zero-shot counterparts across all evaluation metrics. Both the Dense and SVM heads achieved 97}\DIFdelend \DIFaddbegin \DIFadd{paper compared lightweight supervised classifiers built on a frozen CAMeLBERT encoder with large language models for seven-way Arabic news classification on the SANAD-AlKhaleej corpus, under a protocol in which every system is scored on the same deduplicated test split, LLM decoding is deterministic, prompt sensitivity and output parsing are measured, and the amount of supervision is varied on both sides. With the full training split the frozen-encoder heads reach 96.4--98.1}\DIFaddend \% accuracy, \DIFdelbegin \DIFdel{while the best-performing LLM (}\DIFdelend \DIFaddbegin \DIFadd{full fine-tuning 98.9\%, and a QLoRA-adapted Qwen2.5-7B-Instruct 98.5\%, against 91.5--92.8\% for zero-shot }\DIFaddend GPT-4.1\DIFdelbegin \DIFdel{) reached 93\%. Claude 3.5-Haiku lagged significantly, particularly in sensitive categories such as }\DIFdelend \DIFaddbegin \DIFadd{, Claude Haiku 4.5, Gemini 3.8 Flash and DeepSeek V4 Flash, all of which share a weakness on the }\DIFaddend \textit{Religion} \DIFaddbegin \DIFadd{class. About 100 labelled articles per class suffice for a 0.3\,M-parameter head to match the best zero-shot LLM, and 500 per class for the 512-wordpiece head to pass the best few-shot condition on the same articles; prompt wording moves the strong API models by less than one point, replicate runs are identical, and neither the dateline nor the opening words of an article act as a shortcut for any system}\DIFaddend .
 \DIFdelbegin \DIFdel{Class-level analysis further confirmed the robustness of fine-tuned models , especially in capturing nuanced semantic distinctions.
 }\DIFdelend 
 

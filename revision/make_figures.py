@@ -23,7 +23,6 @@ for name, d, col, mk in series:
 lora = [(100, L["lora100"]["acc"] * 100), (1000, L["lora1000"]["acc"] * 100), (x_all, L["lora_all"]["acc"] * 100)]
 ax.plot([q[0] for q in lora], [q[1] for q in lora], color=C["magenta"], marker="P", ms=7, lw=2, label="Qwen2.5-7B + QLoRA", zorder=3)
 ax.axhline(L["gpt41"]["acc"] * 100, color=MUTED, lw=1.2, ls="--", zorder=1); ax.text(10.5, L["gpt41"]["acc"] * 100 + 0.25, "best zero-shot LLM (GPT-4.1, 92.8)", va="bottom", ha="left", fontsize=7.5, color=INK2)
-ax.axhline(95.3, color=MUTED, lw=1.2, ls=":", zorder=1); ax.text(10.5, 95.3 + 0.25, "best few-shot LLM (Gemini 3.8 Flash, $k$=2, 95.3)", va="bottom", ha="left", fontsize=7.5, color=INK2)
 ax.set_xscale("log"); ax.set_xticks(xs); ax.set_xticklabels(["10", "50", "100", "500", "1,000", "all\n(4,545)"])
 ax.set_xlabel("Labelled training articles per class"); ax.set_ylabel("Test accuracy (%)"); ax.set_ylim(80, 100); ax.grid(axis="y", color=GRID, lw=0.6); ax.set_axisbelow(True)
 ax.legend(frameon=False, fontsize=8, loc="lower right"); ax.set_xlim(8, x_all * 1.6)

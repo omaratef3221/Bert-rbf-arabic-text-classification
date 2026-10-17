@@ -2,7 +2,7 @@
 
 | File | What it is |
 |---|---|
-| `manuscript_revised.pdf` | Clean revised manuscript (33 pages, elsarticle preprint layout with line numbers). |
+| `manuscript_revised.pdf` | Clean revised manuscript (34 pages, elsarticle preprint layout with line numbers). |
 | `manuscript_revised_tracked_changes.pdf` | Tracked-changes copy produced with `latexdiff` against the submitted version: blue/underlined = added, red/struck = deleted. New tables and figures are shown as blocks without markup; tables and figures of the submitted version that were removed do not appear. |
 | `overleaf_upload.zip` | Sources ready to upload as a new Overleaf project (see below). |
 
