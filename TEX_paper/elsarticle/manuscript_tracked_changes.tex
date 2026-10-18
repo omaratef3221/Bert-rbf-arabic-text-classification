@@ -1,7 +1,7 @@
 %DIF 1-17c1-3
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL old_flat.tex   Sat Oct 17 14:35:16 2026
-%DIF ADD new_flat.tex   Sat Oct 17 14:35:16 2026
+%DIF DEL old_flat.tex   Sun Oct 18 18:01:49 2026
+%DIF ADD new_flat.tex   Sun Oct 18 18:01:49 2026
 %DIF < %% Copyright 2007-2025 Elsevier Ltd
 %DIF < %% 
 %DIF < %% This file is part of the 'Elsarticle Bundle'.
@@ -1312,13 +1312,33 @@ Qwen2.5-7B-Instruct & 86.6 & 87.4$\pm$2.5 & 84.9--90.3 & 91.6 & 88.9 & -- & -- &
 
 %DIFDELCMD <     \item %%%
 \textbf{\DIFdel{Resource-constrained scenarios}}%DIFAUXCMD
-\DIFdel{: Among zero-shot LLMs, }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:mapping} audits the label-mapping step over every run of each model. All four API models return a bare label for most requests, and the share of unmapped outputs on the full test set is 0.00\% (}\DIFaddend GPT-4.1\DIFdelbegin \DIFdel{and DeepSeek V3 offer the best balance of performance and accessibility, while Claude-3}\DIFdelend \DIFaddbegin \DIFadd{), 0.04\% (Claude), 0.06\% (Gemini) and 0.01\% (DeepSeek), at most four articles. The resolved share shows which models deviate from the requested format and how: under one English prompt Claude Haiku 4.5 wrapped the label in surrounding text in 55\% of answers, under the Arabic prompt }\texttt{\DIFadd{ar\_v1}} \DIFadd{GPT-4.1 never returned a bare label (92\% of answers embedded the English label in a sentence and 8\% gave the Arabic label name; 37\% of answers under }\texttt{\DIFadd{ar\_v2}}\DIFadd{), and Gemini added formatting to 97\% of answers; all of these were resolved by the fixed rules, and none of them changed accuracy by more than the unmapped rate. Qwen2}\DIFaddend .5\DIFdelbegin \DIFdel{-Haiku should be avoided for Arabic classification tasks without further promptoptimization. }\DIFdelend \DIFaddbegin \DIFadd{-7B zero-shot produces 0.3--0.7\% unmapped outputs (a free continuation of the article instead of a label); after QLoRA the model answers with a bare label in every case. The mapping step is therefore not a hidden source of the differences reported above.
-}\DIFaddend 
+\DIFdel{: Among zero-shot LLMs, }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:mapping} audits the label-mapping step over every run of each model. All four API models return a bare label for most requests, and the share of unmapped outputs on the full test set is 0.00\% (}\DIFaddend GPT-4.1\DIFdelbegin \DIFdel{and DeepSeek V3 offer the best balance of performance and accessibility, while Claude-3}\DIFdelend \DIFaddbegin \DIFadd{), 0.04\% (Claude), 0.06\% (Gemini) and 0.01\% (DeepSeek), at most four articles. The resolved share shows which models deviate from the requested format and how: under one English prompt Claude Haiku 4.5 wrapped the label in surrounding text in 55\% of answers, under the Arabic prompt }\texttt{\DIFadd{ar\_v1}} \DIFadd{GPT-4.1 never returned a bare label (92\% of answers embedded the English label in a sentence and 8\% gave the Arabic label name; 37\% of answers under }\texttt{\DIFadd{ar\_v2}}\DIFadd{), and Gemini added formatting to 97\% of answers; all of these were resolved by the fixed rules, and none of them changed accuracy by more than the unmapped rate. Qwen2}\DIFaddend .5\DIFdelbegin \DIFdel{-Haiku should be avoided for Arabic classification tasks without further promptoptimization. }%DIFDELCMD < 
 
-\DIFdelbegin %DIFDELCMD < \item %%%
+%DIFDELCMD <     \item %%%
 \textbf{\DIFdel{Edge cases}}%DIFAUXCMD
 \DIFdel{: Articles with institutional announcements, historical narratives, or mixed domain terminology benefit from fine-tuned models that have learned corpus-specific classification conventions. }%DIFDELCMD < \end{enumerate}
+%DIFDELCMD < 
+
 %DIFDELCMD < %%%
+\DIFdel{These qualitative insights reinforce the quantitative findings: domain-specific fine-tuning enhances robustness, but different model heads exhibit distinct error profiles. Dense heads better capture semantic nuance, while SVM heads emphasize token-level features, leading to divergent failure cases.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+%DIF < %%%%%%%%%%%%%%%
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsection{\DIFdel{Linguistic and Contextual Challenges for LLMs}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{To strengthen the analysis, we examined the linguistic and contextual challenges faced by }\DIFdelend \DIFaddbegin \DIFadd{-7B }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs in Arabic news classification, which help explain the performance gap compared to fine-tuned supervised approaches}\DIFdelend \DIFaddbegin \DIFadd{produces 0.3--0.7\% unmapped outputs (a free continuation of the article instead of a label); after QLoRA the model answers with a bare label in every case. The mapping step is therefore not a hidden source of the differences reported above}\DIFaddend .
+
+\DIFdelbegin \subsubsection{\DIFdel{Morphological Complexity and Tokenization}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
 \caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. All shares are percentages of the outputs of the model; ``worst run'' is the highest share in any single run.}
@@ -1344,42 +1364,37 @@ Qwen2.5-7B + QLoRA, all & 1 & 6,822 & 100.0 & 0.0 & 0.0 & 0.00 & 0.00 \\
 \DIFaddend 
 
 
-\DIFdelbegin \DIFdel{These qualitative insights reinforce the quantitative findings: domain-specific fine-tuning enhances robustness, but different model heads exhibit distinct error profiles. Dense heads better capture semantic nuance, while SVM heads emphasize token-level features, leading to divergent failure cases}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Controlled Analyses: Input Length and the Dateline}}
+\DIFdelbegin \DIFdel{Arabic\'s rich morphological system presents unique challenges for general-purpose LLMs. Words in Arabic are formed through complex patterns of roots and affixes, with prefixes and suffixes that can encode grammatical information such as tense, gender, number, and case. For instance, a single Arabic word can contain a conjunction, future tense marker, verb root, plural masculine suffix, and object pronoun---all in a single token. General-purpose LLMs trained primarily on English and other European languages may struggle with such dense morphological encoding, leading to suboptimal semantic understanding.
+}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Controlled Analyses: Input Length and the Dateline}}
 \label{sec:controls}
-
-\DIFadd{Two interventions test whether either family relies on superficial cues. Input length: giving the frozen encoder 512 instead of 150 wordpieces adds 1.1 points on the full split and up to 5.9 points with 10 articles per class (Table~\ref{tab:lc}), so the lightweight systems do use the body of the article, not only its opening; restricting the LLMs to the first 100 words costs them 0.6--1.0 points (Table~\ref{tab:prompts}). Dateline: removing the city-and-source prefix from the test articles changes the dense head's accuracy from 96.4\% to 96.5\% ($\pm$0.2), and removing it from training and test as well gives 96.4\% ($\pm$0.2); for the LLMs the change is between $-0.4$ and $+0.1$ points. Although the dateline is strongly correlated with the class in this corpus, neither family uses it as a shortcut, and the accuracy of the supervised systems does not depend on it}\DIFaddend .
-
-%DIF < %%%%%%%%%%%%%%%
-\DIFaddbegin \subsection{\DIFadd{Training and Inference Cost}}
-\label{sec:efficiency}
 \DIFaddend 
 
-\DIFdelbegin \subsection{\DIFdel{Linguistic and Contextual Challenges for LLMs}}
-%DIFAUXCMD
-\addtocounter{subsection}{-1}%DIFAUXCMD
-%DIFDELCMD < 
+\DIFdelbegin \DIFdel{In contrast, CAMeLBERT was pre-trained on 167 GB of Arabic text using domain-adaptive tokenization strategies that better capture morphological boundaries. The fine-tuning process further specializes these representations for news categorization, allowing the model to distinguish subtle morphological patterns that signal topical boundaries. For example, technical terminology in }\textit{\DIFdel{Technology}} %DIFAUXCMD
+\DIFdel{articles often follows specific derivational patterns that fine-tuned models learn to associate with the correct category. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{To strengthen the analysis, we examined the linguistic and contextual challenges faced by zero-shot LLMs in Arabic news classification, which help explain the performance gap compared to fine-tuned supervised approaches.
-}%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\subsubsection{\DIFdel{Morphological Complexity and Tokenization}}
+\subsubsection{\DIFdel{Diglossia and Register Variation}}
 %DIFAUXCMD
 \addtocounter{subsubsection}{-1}%DIFAUXCMD
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{Arabic\'s rich morphological system presents unique challenges for general-purpose LLMs. Words in Arabic are formed through complex patterns of roots and affixes, with prefixes and suffixes that can encode grammatical information such as tense, gender, number, and case. For instance, a single Arabic word can contain a conjunction, future tense marker, verb root, plural masculine suffix, and object pronoun---all in a single token.
-General-purpose LLMs trained primarily on English and other European languages may struggle with such dense morphological encoding, leading to suboptimal semantic understanding.
+\DIFdel{Arabic exists in a state of diglossia, with Modern Standard Arabic (MSA)used in formal writing and various dialects in spoken communication. News articles predominantly use MSA, but they may incorporate dialectal expressions, loanwords, or code-switching, particularly in quotes or informal sections. Zero-shot LLMs, lacking exposure to the specific stylistic conventions of Gulf Arabic news sources, may misinterpret these register shifts as topical indicators rather than stylistic choices.
 }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
-\DIFdel{In contrast, CAMeLBERT was pre-trained on 167 GB of Arabic text using domain-adaptive tokenization strategies that better capture morphological boundaries. The }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:timing} reports the measured cost of the supervised systems, and Table~\ref{tab:lora} the adaptation budget of the QLoRA baseline. The two frozen-encoder heads share one encoder pass over the corpus (60 seconds for 45,477 articles at 150 wordpieces, 111 seconds at 512, on an A100); once the embeddings exist, the dense head trains in 9 seconds and the SVM in 1.4 seconds, and both predict the 6,822 test articles in well under a second. Full }\DIFaddend fine-tuning \DIFdelbegin \DIFdel{process further specializes these representations for news categorization, allowing the model to distinguish subtle morphological patterns that signal topical boundaries. For example, technical terminology in }\textit{\DIFdel{Technology}} %DIFAUXCMD
-\DIFdel{articles often follows specific derivational patterns that fine-tuned models learn to associate with the correct category}\DIFdelend \DIFaddbegin \DIFadd{takes 11.6 minutes on the full split and 15 seconds to predict the test set, and QLoRA of the 7B model 3.3 GPU-hours on the full split (0.3 GPU-hours with 100 articles per class)}\DIFaddend . \DIFaddbegin \DIFadd{Zero-shot inference with the API models costs no training but one request per article at every use; at 2025--2026 list prices a single pass over the 6,822-article test set costs between about one and ten US dollars depending on the model, and the open-weight model served locally processed about ten articles per second on the same GPU. We do not report API latency because it is dominated by provider-side variability.
+\DIFdel{The misclassification of medical content as }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdelend \DIFaddbegin \DIFadd{Two interventions test whether either family relies on superficial cues. Input length: giving the frozen encoder 512 instead of 150 wordpieces adds 1.1 points on the full split and up to 5.9 points with 10 articles per class }\DIFaddend (Table~\DIFdelbegin \DIFdel{\ref{tab:model-evaluation})exemplifies this challenge. Both domains share formal register and may use similar syntactic structures for institutional announcements. Without }\DIFdelend \DIFaddbegin \DIFadd{\ref{tab:lc}), so the lightweight systems do use the body of the article, not only its opening; restricting the LLMs to the first 100 words costs them 0.6--1.0 points (Table~\ref{tab:prompts}). Dateline: removing the city-and-source prefix from the test articles changes the dense head's accuracy from 96.4\% to 96.5\% ($\pm$0.2), and removing it from training and test as well gives 96.4\% ($\pm$0.2); for the LLMs the change is between $-3$ and $+1$ articles of the 700 ($-0.4$ to $+0.1$ points; Gemini's 93.4 to 93.6 in Table~\ref{tab:prompts} is one article, 93.43 to 93.57). Although the dateline is strongly correlated with the class in this corpus, neither family uses it as a shortcut, and the accuracy of the supervised systems does not depend on it.
+}
+
+\subsection{\DIFadd{Training and Inference Cost}}
+\label{sec:efficiency}
+
+\DIFadd{Table~\ref{tab:timing} reports the measured cost of the supervised systems, and Table~\ref{tab:lora} the adaptation budget of the QLoRA baseline. The two frozen-encoder heads share one encoder pass over the corpus (60 seconds for 45,477 articles at 150 wordpieces, 111 seconds at 512, on an A100); once the embeddings exist, the dense head trains in 9 seconds and the SVM in 1.4 seconds, and both predict the 6,822 test articles in well under a second. Full }\DIFaddend fine-tuning \DIFdelbegin \DIFdel{on domain-specific examples, LLMs may over-weight superficial lexical similarities (e.g., honorific titles, formal verb forms)at the expense of semantic content. Fine-tuned models, having seen numerous examples from each category, develop robust feature representations that distinguish genuine religious content from other formal discourse.
+}\DIFdelend \DIFaddbegin \DIFadd{takes 11.6 minutes on the full split and 15 seconds to predict the test set, and QLoRA of the 7B model 3.3 GPU-hours on the full split (0.3 GPU-hours with 100 articles per class). Zero-shot inference with the API models costs no training but one request per article at every use; at 2025--2026 list prices a single pass over the 6,822-article test set costs between about one and ten US dollars depending on the model, and the open-weight model served locally processed about ten articles per second on the same GPU. We do not report API latency because it is dominated by provider-side variability.
 }\DIFaddend 
 
-\DIFdelbegin \subsubsection{\DIFdel{Diglossia and Register Variation}}
+\DIFdelbegin \subsubsection{\DIFdel{Named Entity Ambiguity and Cultural Context}}
 %DIFAUXCMD
 \addtocounter{subsubsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \begin{table}[!ht]
@@ -1402,7 +1417,9 @@ Prediction on the test split (head only / full model) & 0.008 & 0.59 & 14.8 \\
 \end{table}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{Arabic exists in a state of diglossia, with Modern Standard Arabic (MSA) used in formal writing and various dialects in spoken communication. News articles predominantly use MSA, but they may incorporate dialectal expressions, loanwords, or code-switching, particularly in quotes or informal sections. Zero-shot LLMs, lacking exposure to the specific stylistic conventions of Gulf Arabic news sources, may misinterpret these register shifts as topical indicators rather than stylistic choices.
+\DIFdelbegin \DIFdel{Arabic news articles frequently reference named entities---organizations, locations, public figures---whose categorization depends heavily on cultural and contextual knowledge. For example, Al-Hilal could refer to a prominent football club (}\textit{\DIFdel{Sports}}%DIFAUXCMD
+\DIFdel{)or the Red Crescent humanitarian organization (}\textit{\DIFdel{Politics or Society}}%DIFAUXCMD
+\DIFdel{). Similarly, Al-Nassr is both a sports club and a common term meaning victory used across domains.
 }\DIFdelend \DIFaddbegin \begin{table}[!ht]
 \centering
 \caption{Adaptation budget of the QLoRA baseline (Qwen2.5-7B-Instruct, 4-bit NF4 base, LoRA rank 16, $\alpha=32$, all linear projections, 40.4\,M trainable parameters, 0.53\,\% of the 7.62\,B parameters of the base model; one NVIDIA A100-PCIE-40GB). Accuracy on the full test set.}
@@ -1422,14 +1439,13 @@ all & 31,833 & 1 & 20.2\,M & 3.27 & 9.3 & 98.5 \\
 \DIFaddend 
 
 
-\DIFdelbegin \DIFdel{The misclassification of medical content as }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{(Table~\ref{tab:model-evaluation})exemplifies this challenge. Both domains share formal register and may usesimilar syntactic structures for institutional announcements. Without fine-tuning on domain-specific examples, LLMs may over-weight superficial lexical similarities (e. g.
-, honorific titles, formal verb forms) at the expense of semantic content. Fine-tuned models, having seen numerous examples from each category, develop robust feature representations that distinguish genuine religious content from other formal discourse}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Qualitative Error Analysis}}
+\DIFdelbegin \DIFdel{Zero-shot LLMs , despite their broad knowledge, may lack the fine-grained understanding of Gulf region entities and their primary associations within this specific news corpus. The complete failure of Claude-3.5-Haiku on the }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{category (}\DIFdelend \DIFaddbegin \subsection{\DIFadd{Qualitative Error Analysis}}
 \label{sec:qualitative}
 
-\DIFadd{The examples below are drawn from the final runs on the shared test split (dense head, seed 0; API models with the primary prompt). Table~\ref{tab:correct-examples} shows articles that every system classifies correctly: unambiguous domain vocabulary (a poetry evening, a football club presidency, console sales figures) that needs no corpus-specific knowledge}\DIFaddend .
+\DIFadd{The examples below are drawn from the final runs on the shared test split (dense head, seed }\DIFaddend 0\DIFdelbegin \DIFdel{\% recall) suggests systematic misunderstanding of how religious topics are framed in Gulf Arabic journalism. This contrasts sharply with fine-tuned models, which learn }\DIFdelend \DIFaddbegin \DIFadd{; API models with the primary prompt). Table~\ref{tab:correct-examples} shows articles that every system classifies correctly: unambiguous domain vocabulary (a poetry evening, a football club presidency, console sales figures) that needs no }\DIFaddend corpus-specific \DIFdelbegin \DIFdel{entity-category associations during training. The supervised learning process effectively builds a domain-specific knowledge graph that captures which entities and phrases reliably predict each news category}\DIFdelend \DIFaddbegin \DIFadd{knowledge}\DIFaddend .
 
-\DIFdelbegin \subsubsection{\DIFdel{Named Entity Ambiguity and Cultural Context}}
+\DIFdelbegin \subsubsection{\DIFdel{Prompt Engineering Limitations}}
 %DIFAUXCMD
 \addtocounter{subsubsection}{-1}%DIFAUXCMD
 \DIFdelend \DIFaddbegin \begin{table}[h!]
@@ -1451,17 +1467,11 @@ all & 31,833 & 1 & 20.2\,M & 3.27 & 9.3 & 98.5 \\
 \end{table}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{Arabic news articles frequently reference named entities---organizations, locations, public figures---whose categorization depends heavily on cultural and contextual knowledge. For example, Al-Hilal could refer to a prominent football club (}\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:bert-correct-llm-wrong} shows articles that the supervised head classifies correctly and most LLMs do not. All three are cases where the publisher's section assignment follows the }\emph{\DIFadd{institution}} \DIFadd{behind the story rather than its }\emph{\DIFadd{topic}}\DIFadd{: a reading-month campaign organised by the Ministry of Health is filed under }\textit{\DIFadd{Medical}} \DIFadd{(all four LLMs: }\DIFaddend \textit{\DIFdelbegin \DIFdel{Sports}\DIFdelend \DIFaddbegin \DIFadd{Culture}\DIFaddend })\DIFdelbegin \DIFdel{or the Red Crescent humanitarian organization (}\DIFdelend \DIFaddbegin \DIFadd{; the expulsion of a missionary by the Mauritanian authorities is filed under }\textit{\DIFadd{Politics}} \DIFadd{(all four: }\DIFaddend \textit{\DIFdelbegin \DIFdel{Politics or Society}\DIFdelend \DIFaddbegin \DIFadd{Religion}\DIFaddend })\DIFdelbegin \DIFdel{. Similarly, Al-Nassr is both a sports club and a common term meaning victory used across domains.
-}%DIFDELCMD < 
+\DIFdelbegin \DIFdel{The performance of zero-shot LLMs is highly sensitive to prompt design, yet optimal prompts for Arabic classification may differ significantly from English best practices due to structural and pragmatic differences between the languages. Arabic\'s VSO (Verb-Subject-Object)word order flexibility and optional case marking create ambiguities that English prompts may not adequately address. Furthermore, culturally appropriate framing of classification instructions requires understanding how category boundaries are conceptualized in Arabic journalism---for instance, where the line between }\textit{\DIFdel{Politics}} %DIFAUXCMD
+\DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:bert-correct-llm-wrong} shows articles that the supervised head classifies correctly and most LLMs do not. All three are cases where the publisher's section assignment follows the }\emph{\DIFadd{institution}} \DIFadd{behind the story rather than its }\emph{\DIFadd{topic}}\DIFadd{: a reading-month campaign organised by the Ministry of Health is filed under }\textit{\DIFadd{Medical}} \DIFadd{(all four LLMs: }\textit{\DIFadd{Culture}}\DIFadd{); the expulsion of a missionary by the Mauritanian authorities is filed under }\textit{\DIFadd{Politics}} \DIFadd{(all four: }\DIFaddend \textit{Religion}\DIFdelbegin \DIFdel{falls in coverage of religious authorities making policy statements. }\DIFdelend \DIFaddbegin \DIFadd{); and a health-insurance company's smartphone applications are filed under }\textit{\DIFadd{Medical}} \DIFadd{(three LLMs: }\textit{\DIFadd{Tech}}\DIFadd{). The LLM answers are defensible readings of the text; the supervised systems have learned the publisher's convention from thousands of labelled examples, which is precisely the advantage of in-domain supervision and also a reminder that part of the measured gap reflects corpus-specific labelling rather than language understanding.
+}\DIFaddend 
 
-%DIFDELCMD < %%%
-\DIFdel{Zero-shot LLMs, despite their broad knowledge, may lack the fine-grained understanding of Gulf region entities and their primary associations within this specific news corpus. The complete failure of Claude-3.5-Haiku on the }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{category (0\% recall) suggests systematic misunderstanding of how religious topics are framed in Gulf Arabic journalism. This contrasts sharply with fine-tuned models, which learn }\DIFdelend \DIFaddbegin \DIFadd{; and a health-insurance company's smartphone applications are filed under }\textit{\DIFadd{Medical}} \DIFadd{(three LLMs: }\textit{\DIFadd{Tech}}\DIFadd{). The LLM answers are defensible readings of the text; the supervised systems have learned the publisher's convention from thousands of labelled examples, which is precisely the advantage of in-domain supervision and also a reminder that part of the measured gap reflects }\DIFaddend corpus-specific \DIFdelbegin \DIFdel{entity-category associations during training. The supervised learning process effectively builds a domain-specific knowledge graph that captures which entities and phrases reliably predict each news category}\DIFdelend \DIFaddbegin \DIFadd{labelling rather than language understanding}\DIFaddend .
-
-\DIFdelbegin \subsubsection{\DIFdel{Prompt Engineering Limitations}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
-\DIFdelend \DIFaddbegin \begin{table}[h!]
+\DIFdelbegin \DIFdel{Without extensive prompt optimization for each LLM and careful validation on Arabic-specific test cases, zero-shot performance remains inconsistent. The 18-percentage-point gap between GPT-4.1 (93\%) and Claude-3.5-Haiku (75\%)suggests that model architecture, training data composition,and inference-time prompt processing all significantly impact Arabic text understanding. Fine-tuned models bypass these challenges entirely, as the classification head learns optimal decision boundaries directly from labeled examples without relying on natural language instructions. }\DIFdelend \DIFaddbegin \begin{table}[h!]
     \centering
     \caption{Articles classified correctly by the dense head and incorrectly by most zero-shot LLMs.}
     \label{tab:bert-correct-llm-wrong}
@@ -1483,12 +1493,37 @@ all & 31,833 & 1 & 20.2\,M & 3.27 & 9.3 & 98.5 \\
 \end{table}
 \DIFaddend 
 
-\DIFdelbegin \DIFdel{The performance of zero-shot LLMs is highly sensitive to prompt design, yet optimal prompts for Arabic classification may differ significantly from English best practices due to structural and pragmatic differences between the languages. Arabic\'s VSO (Verb-Subject-Object) word order flexibility and optional casemarking create ambiguities that English prompts may not adequately address. Furthermore, culturally appropriate framing of classification instructions requires understanding how category boundaries are conceptualized in Arabic journalism---for instance, where the line between }\textit{\DIFdel{Politics}} %DIFAUXCMD
-\DIFdel{and }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:llm-correct-bert-wrong} shows the reverse case. A tender for the construction of a new trade-centre building was labelled }\textit{\DIFadd{Tech}} \DIFadd{by the head and }\DIFaddend \textit{\DIFdelbegin \DIFdel{Religion}\DIFdelend \DIFaddbegin \DIFadd{Finance}\DIFaddend } \DIFdelbegin \DIFdel{falls in coverage of religious authorities making policy statements.
-}\DIFdelend \DIFaddbegin \DIFadd{by every LLM, and a food-control authority's new inspection systems were labelled }\textit{\DIFadd{Medical}} \DIFadd{by the head and }\textit{\DIFadd{Tech}} \DIFadd{by every LLM; in both the head appears to key on domain vocabulary (construction and office space; food safety and inspection) that co-occurs with the wrong class in the training data, while the LLMs read the article as a whole.
-}\DIFaddend 
+\DIFdelbegin \subsubsection{\DIFdel{Advantages of Supervised Fine-Tuning}}
+%DIFAUXCMD
+\addtocounter{subsubsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
 
-\DIFdelbegin \DIFdel{Without extensive prompt optimization for each LLM}\DIFdelend \DIFaddbegin \begin{table}[h!]
+%DIFDELCMD < %%%
+\DIFdel{The consistent 97\% accuracy achieved by both BERT-based architectures demonstrates the effectiveness of supervised fine-tuning in overcoming the above challenges.
+Several mechanisms contribute to this success:
+}%DIFDELCMD < 
+
+%DIFDELCMD < \begin{itemize}
+%DIFDELCMD <     \item %%%
+\textbf{\DIFdel{Task-specific feature learning}}%DIFAUXCMD
+\DIFdel{: Fine-tuning adjusts the entire model to emphasize features relevant to news categorization, down-weighting irrelevant linguistic patterns that dominate pre-training objectives.
+    }%DIFDELCMD < 
+
+%DIFDELCMD <     \item %%%
+\textbf{\DIFdel{Boundary refinement}}%DIFAUXCMD
+\DIFdel{: Exposure to labeled examples from all categories allows the model to learn precise decision boundaries that separate similar domains (e.g., }\textit{\DIFdel{Technology}} %DIFAUXCMD
+\DIFdel{vs. }\DIFdelend \DIFaddbegin \DIFadd{Table~\ref{tab:llm-correct-bert-wrong} shows the reverse case. A tender for the construction of a new trade-centre building was labelled }\textit{\DIFadd{Tech}} \DIFadd{by the head and }\DIFaddend \textit{Finance} \DIFdelbegin \DIFdel{in business contexts). }%DIFDELCMD < 
+
+%DIFDELCMD <     \item %%%
+\textbf{\DIFdel{Error correction feedback}}%DIFAUXCMD
+\DIFdel{: The backpropagation of classification errors during training directly updates model parameters to reduce confusion between frequently conflated categories, creating category-specific feature detectors}\DIFdelend \DIFaddbegin \DIFadd{by every LLM, and a food-control authority's new inspection systems were labelled }\textit{\DIFadd{Medical}} \DIFadd{by the head and }\textit{\DIFadd{Tech}} \DIFadd{by every LLM; in both the head appears to key on domain vocabulary (construction and office space; food safety and inspection) that co-occurs with the wrong class in the training data, while the LLMs read the article as a whole}\DIFaddend .
+
+\DIFdelbegin %DIFDELCMD < \item %%%
+\textbf{\DIFdel{Calibrated confidence}}%DIFAUXCMD
+\DIFdel{: Fine-tuned models produce well-calibrated probability distributions over categories, reflecting genuine uncertainty in ambiguous cases rather than the overconfident or poorly calibrated predictions sometimes observed in zero-shot scenarios.
+}%DIFDELCMD < \end{itemize}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{table}[h!]
     \centering
     \caption{Articles classified correctly by all four zero-shot LLMs and incorrectly by the dense head.}
     \label{tab:llm-correct-bert-wrong}
@@ -1505,14 +1540,15 @@ all & 31,833 & 1 & 20.2\,M & 3.27 & 9.3 & 98.5 \\
         \bottomrule
     \end{tabularx}
 \end{table}
+\DIFaddend 
 
-\DIFadd{Across the test split the error profiles summarised in Table~\ref{tab:error-summary} are stable across prompts and models: the supervised systems confuse }\textit{\DIFadd{Religion}} \DIFadd{with }\textit{\DIFadd{Culture}} \DIFaddend and \DIFdelbegin \DIFdel{careful validation on Arabic-specific test cases, }\DIFdelend \DIFaddbegin \textit{\DIFadd{Tech}} \DIFadd{with }\textit{\DIFadd{Finance}} \DIFadd{in both directions, at a rate of a few percent; the }\DIFaddend zero-shot \DIFdelbegin \DIFdel{performance remains inconsistent. The 18-percentage-point gap between GPT-4.1 (93\%) and Claude-3.5-Haiku (75\%) suggests that model architecture, training datacomposition, }\DIFdelend \DIFaddbegin \DIFadd{LLMs share these two confusions, add }\textit{\DIFadd{Medical}}\DIFadd{$\to$}\textit{\DIFadd{Culture}}\DIFadd{/}\textit{\DIFadd{Tech}} \DIFaddend and \DIFdelbegin \DIFdel{inference-time prompt processing all significantly impact Arabic text understanding.
-Fine-tuned modelsbypass these challenges entirely, as the classification headlearns optimal decision boundaries directly from labeled examples without relying on natural language instructions}\DIFdelend \DIFaddbegin \textit{\DIFadd{Politics}}\DIFadd{$\to$}\textit{\DIFadd{Religion}}\DIFadd{, and their }\textit{\DIFadd{Religion}}\DIFadd{$\to$}\textit{\DIFadd{Culture}} \DIFadd{rate is about four times that of the supervised head}\DIFaddend .
+\DIFdelbegin \DIFdel{The near-identical performance of Dense and SVM heads (both 97\%)further validates that the primary performance gains come from the fine-tuned BERT encoder rather than the classification architecture. This suggests that domain adaptation at the representation level---learning Arabic news-specific semantic embeddings---is the critical factor for high accuracy.
+}%DIFDELCMD < 
 
-\DIFdelbegin \subsubsection{\DIFdel{Advantages of Supervised Fine-Tuning}}
-%DIFAUXCMD
-\addtocounter{subsubsection}{-1}%DIFAUXCMD
-\DIFdelend \DIFaddbegin \begin{table}[h!]
+%DIFDELCMD < %%%
+\DIFdel{These qualitative insights reinforce the quantitative findings: while large language modelsdemonstrate impressive general capabilities, domain-specific fine-tuning remains essential for achieving robust performance on Arabic NLP tasks. The linguistic complexity, cultural specificity, and morphological richness of Arabic create barriers that general-purpose models struggle to overcome through }\DIFdelend \DIFaddbegin \DIFadd{Across the test split the error profiles summarised in Table~\ref{tab:error-summary} are stable across prompts and models: the supervised systems confuse }\textit{\DIFadd{Religion}} \DIFadd{with }\textit{\DIFadd{Culture}} \DIFadd{and }\textit{\DIFadd{Tech}} \DIFadd{with }\textit{\DIFadd{Finance}} \DIFadd{in both directions, at a rate of a few percent; the }\DIFaddend zero-shot \DIFdelbegin \DIFdel{inference alone, even with sophisticated prompting strategies}\DIFdelend \DIFaddbegin \DIFadd{LLMs share these two confusions, add }\textit{\DIFadd{Medical}}\DIFadd{$\to$}\textit{\DIFadd{Culture}}\DIFadd{/}\textit{\DIFadd{Tech}} \DIFadd{and }\textit{\DIFadd{Politics}}\DIFadd{$\to$}\textit{\DIFadd{Religion}}\DIFadd{, and their }\textit{\DIFadd{Religion}}\DIFadd{$\to$}\textit{\DIFadd{Culture}} \DIFadd{rate is about four times that of the supervised head}\DIFaddend .
+
+\DIFaddbegin \begin{table}[h!]
     \centering
     \caption{Largest confusions on the shared test split (counts out of 973--975 articles per true class).}
     \label{tab:error-summary}
@@ -1533,76 +1569,30 @@ Fine-tuned modelsbypass these challenges entirely, as the classification headlea
         \bottomrule
     \end{tabular}
 \end{table}
-\DIFaddend 
 
-\DIFdelbegin \DIFdel{The consistent 97\% accuracy achieved by both BERT-based architectures demonstrates the effectiveness of supervised fine-tuning in overcoming the above challenges. Several mechanisms contribute to this success:
-}%DIFDELCMD < 
-
-%DIFDELCMD < \begin{itemize}
-%DIFDELCMD <     \item %%%
-\textbf{\DIFdel{Task-specific feature learning}}%DIFAUXCMD
-\DIFdel{: Fine-tuning adjusts the entire model to emphasize features relevant to news categorization, down-weighting irrelevant linguistic patterns that dominate pre-training objectives. }%DIFDELCMD < 
-
-%DIFDELCMD <     \item %%%
-\textbf{\DIFdel{Boundary refinement}}%DIFAUXCMD
-\DIFdel{: Exposure to labeled examples from all categories allows the model to learn precise decision boundaries that separate similar domains (e.g., }\textit{\DIFdel{Technology}} %DIFAUXCMD
-\DIFdel{vs. }\textit{\DIFdel{Finance}} %DIFAUXCMD
-\DIFdel{in business contexts).
-    }%DIFDELCMD < 
-
-%DIFDELCMD <     \item %%%
-\textbf{\DIFdel{Error correction feedback}}%DIFAUXCMD
-\DIFdel{: The backpropagation of classification errors during training directly updates model parameters to reduce confusion between frequently conflated categories, creating category-specific feature detectors}\DIFdelend \DIFaddbegin \section{\DIFadd{Discussion}}
+\DIFaddend \section{Discussion}
 \label{discussion}
 
-\DIFadd{The results answer a narrower question than the one posed in an earlier version of this work, and they answer it more reliably. The question is not whether lightweight models are better than large language models, but how much in-domain supervision it takes, and in which form, to beat zero-shot and few-shot inference on a well-defined Arabic classification task, and what each option costs}\DIFaddend .
+The results \DIFdelbegin \DIFdel{highlight several important insights into the relative strengths and weaknesses of domain-adapted supervised models versus general-purpose }\DIFdelend \DIFaddbegin \DIFadd{answer a narrower question than the one posed in an earlier version of this work, and they answer it more reliably. The question is not whether lightweight models are better than large language models, but how much in-domain supervision it takes, and in which form, to beat }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs in Arabic text classification }\DIFdelend \DIFaddbegin \DIFadd{and few-shot inference on a well-defined Arabic classification task, and what each option costs}\DIFaddend .
 
-\DIFdelbegin %DIFDELCMD < \item %%%
-\textbf{\DIFdel{Calibrated confidence}}%DIFAUXCMD
-\DIFdel{: Fine-tuned models produce well-calibrated probability distributions over categories, reflecting genuine uncertainty in ambiguous cases rather than the overconfident or poorly calibrated predictions sometimes observed in }\DIFdelend \DIFaddbegin \DIFadd{First, a frozen Arabic encoder with a small trained decision function is a strong system for this task: 96--98\% accuracy on a deduplicated test split, three to five points above the best }\DIFaddend zero-shot \DIFdelbegin \DIFdel{scenarios. }%DIFDELCMD < \end{itemize}
-%DIFDELCMD < 
+First, \DIFdelbegin \DIFdel{the domain-specific supervised models---particularly the BERT-based Dense Head and SVM Head---consistently outperformed }\DIFdelend \DIFaddbegin \DIFadd{a frozen Arabic encoder with a small trained decision function is a strong system for this task: 96--98\% accuracy on a deduplicated test split, three to five points above the best }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs across all evaluation metrics. The fine-tuned models captured task-specific linguistic and morphological cues in Arabic that generalist models overlooked. For instance, in the }\textit{\DIFdel{Politics}} %DIFAUXCMD
+\DIFdel{and }\textit{\DIFdel{Finance}} %DIFAUXCMD
+\DIFdel{categories, fine-tuned models effectively recognized subtle lexical markers, collocations, and syntactic structures that carry domain-specific meaning. Zero-shot LLMs, trained on broad multilingual corpora, tended to conflate semantically close but contextually distinct terms, leading to lower precision in these categories. This demonstrates the value of explicit adaptation to domain distributions where word choice and framing strongly influence meaning}\DIFdelend \DIFaddbegin \DIFadd{LLM on the same articles, with statistical significance that leaves no doubt. The gain does not come from adapting the encoder to the domain, because the encoder is not adapted; it comes from supervised decision-boundary learning on a representation that already separates the classes well. When the encoder is adapted, by full fine-tuning or by QLoRA on a 7B instruction-tuned model, another two to three points follow, and the two adapted systems converge to the same ceiling (98.5--98.9\%). The learning curve places the crossover with zero-shot LLMs at about 100 labelled articles per class, and with the best few-shot condition at about 500 per class for the 512-wordpiece head}\DIFaddend .
 
-%DIFDELCMD < %%%
-\DIFdel{The near-identical performance of Dense and SVM heads (both 97\%) further validates that the primary performance gains come from the fine-tuned BERT encoder rather than the classification architecture. This suggests that domainadaptation at the representation level---learning Arabic news-specific semantic embeddings---is the critical factor for high accuracy. }%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{These qualitative insights reinforce the quantitative findings: while large language models demonstrate impressive general capabilities, domain-specific }\DIFdelend \DIFaddbegin \DIFadd{LLM on the same articles, with statistical significance that leaves no doubt. The gain does not come from adapting the encoder to the domain, because the encoder is not adapted; it comes from supervised decision-boundary learning on a representation that already separates the classes well. When the encoder is adapted, by full }\DIFaddend fine-tuning \DIFdelbegin \DIFdel{remains essential for achieving robust performance on Arabic NLP tasks. The linguistic complexity, cultural specificity, and morphological richness of Arabic create barriers that general-purpose models struggle to overcome through }\DIFdelend \DIFaddbegin \DIFadd{or by QLoRA on a 7B instruction-tuned model, another two to three points follow, and the two adapted systems converge to the same ceiling (98.5--98.9\%). The learning curve places the crossover with }\DIFaddend zero-shot \DIFdelbegin \DIFdel{inference alone, even with sophisticated prompting strategies. }%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\section{\DIFdel{Discussion}}
-%DIFAUXCMD
-\addtocounter{section}{-1}%DIFAUXCMD
-%DIFDELCMD < \label{discussion}
-%DIFDELCMD < 
-
-%DIFDELCMD < %%%
-\DIFdel{The results highlight several important insights into the relative strengths and weaknesses of domain-adapted supervised models versus general-purpose zero-shot }\DIFdelend LLMs \DIFdelbegin \DIFdel{in Arabic text classification}\DIFdelend \DIFaddbegin \DIFadd{at about 100 labelled articles per class, and with the best few-shot condition at about 500 per class}\DIFaddend .
-
-\DIFdelbegin \DIFdel{First, the domain-specific supervised models---particularly the BERT-based Dense Head and SVM Head---consistently outperformed }\DIFdelend \DIFaddbegin \DIFadd{Second, the }\DIFaddend zero-shot LLMs \DIFdelbegin \DIFdel{across all evaluation metrics. The fine-tuned models captured task-specific linguistic and morphological cues in Arabic that generalist models overlooked. For instance, in the }\textit{\DIFdel{Politics}} %DIFAUXCMD
-\DIFdelend \DIFaddbegin \DIFadd{are far more consistent with each other than the earlier version of this study suggested. Four API models from four providers lie within 1.3 points, their ranking is stable across five prompts in two languages, }\DIFaddend and \DIFdelbegin \textit{\DIFdel{Finance}} %DIFAUXCMD
-\DIFdel{categories, fine-tuned models effectively recognized subtle lexical markers, collocations, and syntactic structures that carry domain-specific meaning. Zero-shot LLMs, trained on broad multilingual corpora, tended to conflate semantically close but contextually distinct terms, leading to lower precision in these categories. This demonstrates the value of explicit adaptation to domain distributions where word choice and framing strongly influence meaning.
-}\DIFdelend \DIFaddbegin \DIFadd{decoding at temperature 0 is reproducible. Their accuracy is nevertheless bounded by two things that in-context examples cannot fix: a class, }\textit{\DIFadd{Religion}}\DIFadd{, whose boundary with }\textit{\DIFadd{Culture}} \DIFadd{follows the publisher's section conventions rather than the surface topic, and a handful of institution-based labelling conventions illustrated in Section~\ref{sec:qualitative}. Few-shot examples help the weaker models by one to five points and the stronger models not at all, which suggests that the stronger models already understand the task and lack the convention, not the instruction. The 7B open-weight model is the clearest illustration: 85\% zero-shot, 90\% with one example per class, 96\% with QLoRA on 100 articles per class and 98.5\% with the full split.
-}\DIFaddend 
-
-\DIFdelbegin \DIFdel{Second, the analysis reveals a clear asymmetry in the performance of }\DIFdelend \DIFaddbegin \DIFadd{Third, the controlled analyses argue against two explanations that we had entertained and that the reviewers of the earlier version rightly questioned. Neither family uses the newspaper dateline, a highly class-correlated prefix, as a shortcut; and both families use more than the opening words of an article. We therefore make no claim about the internal mechanisms of either family. What the data support is a statement about supervision: the information that separates the supervised systems from }\DIFaddend zero-shot \DIFdelbegin \DIFdel{LLMs across different categories. These models performed relatively better in more objective or factual domains such as }\textit{\DIFdel{Technology}} %DIFAUXCMD
+Second, the \DIFdelbegin \DIFdel{analysis reveals a clear asymmetry in the performance of }\DIFdelend zero-shot LLMs \DIFdelbegin \DIFdel{across different categories. These models performed relatively better in more objective or factual domains such as }\textit{\DIFdel{Technology}} %DIFAUXCMD
 \DIFdel{or }\textit{\DIFdel{Sports}}%DIFAUXCMD
-\DIFdel{, where classboundaries rely on surface-level lexical cues and globally shared terminology.
-However, they struggled in subjective or culturally sensitive categories such as }\textit{\DIFdel{Religion}}%DIFAUXCMD
-\DIFdel{, where accurate classification requires nuanced understanding of culturally embedded references and pragmatic context. Notably, Claude 3.5-Haiku failed to classify any instance in the }\textit{\DIFdel{Religion}} %DIFAUXCMD
-\DIFdel{class. This failure suggests that the model\'s training data or alignment constraints may lead to systematic avoidance or misclassification of religion-related content, possibly due to safety filters, data gaps, or alignment bias against sensitive domains. By contrast, the fine-tuned models, trained directly on representative labeled data , learned to reliably separate culturally salient linguistic patterns that general-purpose systems avoided.
-}\DIFdelend \DIFaddbegin \DIFadd{inference on this corpus is carried by the labels, and most of it is available from a few hundred labelled articles per class.
-}\DIFaddend 
+\DIFdel{, where class boundaries rely on surface-level lexical cues and globally shared terminology. However, they struggled in subjective or culturally sensitive categories such as }\DIFdelend \DIFaddbegin \DIFadd{are far more consistent with each other than the earlier version of this study suggested. Four API models from four providers lie within 1.3 points, their ranking is stable across five prompts in two languages, and decoding at temperature 0 is reproducible. Their accuracy is nevertheless bounded by two things that in-context examples cannot fix: a class, }\DIFaddend \textit{Religion}, \DIFdelbegin \DIFdel{where accurate classification requires nuanced understanding of culturally embedded references and pragmatic context. Notably, Claude 3.5-Haiku failed to classify any instance in the }\textit{\DIFdel{Religion}} %DIFAUXCMD
+\DIFdel{class. This failure }\DIFdelend \DIFaddbegin \DIFadd{whose boundary with }\textit{\DIFadd{Culture}} \DIFadd{follows the publisher's section conventions rather than the surface topic, and a handful of institution-based labelling conventions illustrated in Section~\ref{sec:qualitative}. Few-shot examples help the weaker models by one to five points and the stronger models not at all, which }\DIFaddend suggests that the \DIFdelbegin \DIFdel{model\'s training data or alignment constraints may lead to systematic avoidance or misclassification of religion-related content, possibly due to safety filters, data gaps, or alignment bias against sensitive domains. By contrast, the fine-tuned models, trained directly on representative labeled data, learned to reliably separate culturally salient linguistic patterns that general-purpose systems avoided}\DIFdelend \DIFaddbegin \DIFadd{stronger models already understand the task and lack the convention, not the instruction. The 7B open-weight model is the clearest illustration: 85\% zero-shot on the full test set (86.6\% on the 700-article subset), 91.6\% on that subset with one example per class, 96\% with QLoRA on 100 articles per class and 98.5\% with the full split}\DIFaddend .
 
-\DIFdelbegin \DIFdel{Third, we observe trade-offs in computational efficiency. The SVM Head trained more quickly than the Dense Head (4.38 vs.\ 10.54 seconds), making it more suitable when rapid retraining or limited compute resources are key constraints.
-However, the Dense Head delivered slightly faster inference, which is advantageous for latency-sensitive applications such as interactive systems . These results show that model choice should depend on deployment requirements rather than absolute performance alone.
-}\DIFdelend \DIFaddbegin \DIFadd{Fourth, the cost picture favours the lightweight systems whenever labels exist. One encoder pass of a minute, a head that trains in seconds, sub-second prediction of the whole test set, no per-request fee and no dependence on a third-party service; full fine-tuning adds twelve minutes of GPU time, and QLoRA of a 7B model about three GPU-hours. Zero-shot inference requires no labels and no training, which remains decisive when labels are unavailable or the label set changes often, but it costs a request per article at every use and its behaviour depends on the provider's snapshot, three of which were retired within the year this work was revised.
+Third, \DIFdelbegin \DIFdel{we observe trade-offs in computational efficiency. The SVM Head trained more quickly than the Dense Head (4.38 vs. \ 10.54 seconds), making it more suitable when rapid retraining or limited compute resources are key constraints. However, the Dense Head delivered slightly faster inference , which is advantageous for latency-sensitive applications such as interactive systems . These results show that model choice should depend on deployment requirements rather than absolute performance alone.
+}\DIFdelend \DIFaddbegin \DIFadd{the controlled analyses argue against two explanations that we had entertained and that the reviewers of the earlier version rightly questioned. Neither family uses the newspaper dateline, a highly class-correlated prefix, as a shortcut; and both families use more than the opening words of an article. We therefore make no claim about the internal mechanisms of either family. What the data support is a statement about supervision: the information that separates the supervised systems from zero-shot inference on this corpus is carried by the labels, and most of it is available from a few hundred labelled articles per class.
 }\DIFaddend 
 
 \DIFdelbegin \DIFdel{Beyond accuracy and efficiency, supervised models also offered predictability and control. API-based LLMs exhibit runtime variability due to external serviceconditions, while fine-tuned models provided stable inference times and full transparency in training and deployment. This consistency is critical in real-world pipelines where reproducibility and predictable costs are essential.
-}%DIFDELCMD < 
+}\DIFdelend \DIFaddbegin \DIFadd{Fourth, the cost picture favours the lightweight systems whenever labels exist. One encoder pass of a minute, a head that trains in seconds, sub-second prediction of the whole test set, no per-request fee and no dependence on a third-party service; full fine-tuning adds twelve minutes of GPU time, and QLoRA of a 7B model about three GPU-hours. Zero-shot inference requires no labels and no training, which remains decisive when labels are unavailable or the label set changes often, but it costs a request per article at every use and its behaviour depends on the provider's snapshot, three of which were retired within the year this work was revised.
+}\DIFaddend 
 
-%DIFDELCMD < %%%
-\DIFdel{Taken together, the findings suggest several directions for future research. One promising line is domain-adaptive pretraining for LLMs on Arabic corpora, which could bridge the gap between generalization and cultural grounding. Another is exploring }\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Limitations.}} \DIFadd{The study covers one publisher, one language variety (Modern Standard Arabic) and a label set whose boundaries partly reflect editorial conventions; the size of the crossover will differ on noisier or dialectal corpora. The prompt-robustness, }\DIFaddend few-shot \DIFdelbegin \DIFdel{prompting strategies, which may enhance zero-shot models without full retraining. Finally, extending evaluation to dialectal Arabic corpora would test }\DIFdelend \DIFaddbegin \DIFadd{and control analyses use a fixed 700-article subset on which the LLMs score 1.4--2.6 points higher than on the full test set; subset results are therefore reported as within-subset differences, and the main comparison and }\DIFaddend the \DIFdelbegin \DIFdel{robustness of both supervised and zero-shot approaches in more linguistically diverse and realistic settings. Such directions would contribute to building hybrid systems that combine the scalability of large pretrained models with the adaptability of lightweight fine-tuning. }%DIFDELCMD < 
+\DIFdelbegin \DIFdel{Taken together, the findings suggest several directions for future research. One promising line is domain-adaptive pretraining for LLMs on Arabic corpora, which could bridge the gap between generalization and cultural grounding. Another is exploring }\DIFdelend \DIFaddbegin \paragraph{\DIFadd{Limitations.}} \DIFadd{The study covers one publisher, one language variety (Modern Standard Arabic) and a label set whose boundaries partly reflect editorial conventions; the size of the crossover will differ on noisier or dialectal corpora. The prompt-robustness, }\DIFaddend few-shot \DIFdelbegin \DIFdel{prompting strategies, which may enhance zero-shot models without full retraining. Finally, extending evaluation to dialectal Arabic corpora would test }\DIFdelend \DIFaddbegin \DIFadd{and control analyses use a fixed 700-article subset on which the LLMs score 1.4--2.6 points higher than on the full test set; subset results are therefore reported as within-subset differences, and the main comparison and }\DIFaddend the \DIFdelbegin \DIFdel{robustness of both supervised and zero-shot approaches in more linguistically diverse and realistic settings. Such directions would contribute to building hybrid systems that combine the scalability of large pretrained models with the adaptability of lightweight fine-tuning. }%DIFDELCMD < 
 
 %DIFDELCMD < %%%
 \DIFdel{In summary, supervised domain-adapted models remain the most effective solution for high-accuracy Arabic text classification under current conditions. However, strategically combining them with foundation models —through domain adaptation, few-shot learning, or dialectal transfer—represents a compelling future path for both research and deployment}\DIFdelend \DIFaddbegin \DIFadd{learning curve use the full split. The adapted-LLM baseline uses one open-weight model and one LoRA configuration, and full fine-tuning on the full split uses a single seed. API models were evaluated through a routing service with pinned providers; the identifiers served are logged, but the behaviour of hosted models may change when providers update them. Finally, one of the API models (Gemini 3.8 Flash) could not be run with reasoning switched off: it was requested at the lowest reasoning level the route accepts and spent 0--246 thinking tokens per request (mean 45), which we report but cannot remove}\DIFaddend .
