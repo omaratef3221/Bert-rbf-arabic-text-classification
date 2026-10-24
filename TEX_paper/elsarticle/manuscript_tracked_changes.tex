@@ -1,7 +1,7 @@
 %DIF 1-17c1-3
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL old_flat.tex   Sun Oct 18 18:10:35 2026
-%DIF ADD new_flat.tex   Sun Oct 18 18:10:35 2026
+%DIF DEL old_flat.tex   Sat Oct 24 13:35:22 2026
+%DIF ADD new_flat.tex   Sat Oct 24 13:35:22 2026
 %DIF < %% Copyright 2007-2025 Elsevier Ltd
 %DIF < %% 
 %DIF < %% This file is part of the 'Elsarticle Bundle'.
@@ -102,7 +102,7 @@
 \newcommand{\RTL}[1]{\foreignlanguage{arabic}{#1}} %DIF > 
 %DIF -------
 
-%DIF 73-85d36
+%DIF 73-81d36
 %DIF < \newcommand{\RTL}[1]{%
 %DIF <   \bgroup
 %DIF <   \arabicfont
@@ -112,10 +112,14 @@
 %DIF < }
 %DIF < %% The amsthm package provides extended theorem environments
 %DIF < %% \usepackage{amsthm}
-%DIF < 
+%DIF -------
+
+%DIF 83-85c37
 %DIF < %% The lineno packages adds line numbers. Start line numbering with
 %DIF < %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
 %DIF < %% for the whole article with \linenumbers.
+%DIF -------
+ %DIF > 
 %DIF -------
 \usepackage{lineno}
 \linenumbers
@@ -194,6 +198,7 @@ $^a$ College of Computing and Informatics, University of Sharjah, Sharjah, UAE \
 Ashraf Elnagar \\
 Dept of CS, University of Sharjah, Sharjah, UAE \\
 Email: ashraf@sharjah.ac.ae
+
 
 \end{flushleft}
 \end{center}
@@ -644,7 +649,7 @@ Qwen2.5-7B-Instruct & \texttt{Qwen/\allowbreak Qwen2.5-7B-Instruct}, bf16 & loca
 }%DIFAUXCMD
 %DIFDELCMD < \\
 %DIFDELCMD < %%%
-\DIFdel{Class:}\DIFdelend }\DIFaddbegin \\
+\DIFdel{Class:}\DIFdelend } \DIFaddbegin \\
 \textit{\DIFadd{User: Classify the Arabic news article below into exactly one of these categories: }[\DIFadd{'Culture', 'Finance', 'Medical', 'Politics', 'Religion', 'Sports', 'Tech'}]\DIFadd{. Respond with the category name only, copied exactly from the list, with no explanation.}} [\DIFadd{examples}] \textit{\DIFadd{Article:}} [\DIFadd{text}] \textit{\DIFadd{Category:}}
 \DIFaddend \end{quote}
 \DIFaddbegin \DIFadd{In the few-shot conditions, $k\in\{1,2\}$ exemplars per class are inserted before the article: the first $k$ articles per class of a fixed random ranking of the training split, truncated to 120 words, in a fixed shuffled order, identical for every model. The examples and the instruction form a prefix shared by all requests of a run, which allows provider-side prompt caching.
