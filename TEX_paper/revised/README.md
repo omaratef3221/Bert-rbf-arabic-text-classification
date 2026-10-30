@@ -2,10 +2,11 @@
 
 | File | What it is |
 |---|---|
-| `manuscript_revised.pdf` | Clean revised manuscript (34 pages, elsarticle preprint layout with line numbers). |
+| `manuscript_revised.pdf` | Clean revised manuscript (38 pages, elsarticle preprint layout with line numbers). |
 | `manuscript_revised_marked.pdf` | The same manuscript with the additions and changes made for the reviewers printed in blue: the new experiments and protocol sections, the corrections, the terminology fix, the new tables and figures, and the sentences in the abstract, introduction, related work, results and discussion that state the new findings. Passages that were only reworded stay black. A legend sits on the title page. |
 | `manuscript_revised_tracked_changes.pdf` | Tracked-changes copy produced with `latexdiff` against the submitted version: blue/underlined = added, red/struck = deleted. New tables and figures are shown as blocks without markup; tables and figures of the submitted version that were removed do not appear. |
 | `overleaf_upload.zip` | Sources ready to upload as a new Overleaf project (see below). |
+| `update_tex_only.zip` | Only the files that change between rounds (`manuscript_revised.tex`, `tables/`, the learning-curve figure), to drop into an existing Overleaf project. |
 
 ## Sources
 

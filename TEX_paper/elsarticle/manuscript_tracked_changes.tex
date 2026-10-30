@@ -1,7 +1,7 @@
 %DIF 1-17c1-3
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL old_flat.tex   Fri Oct 30 23:01:35 2026
-%DIF ADD new_flat.tex   Fri Oct 30 23:01:35 2026
+%DIF DEL old_flat.tex   Fri Oct 30 23:38:41 2026
+%DIF ADD new_flat.tex   Fri Oct 30 23:38:41 2026
 %DIF < %% Copyright 2007-2025 Elsevier Ltd
 %DIF < %% 
 %DIF < %% This file is part of the 'Elsarticle Bundle'.
@@ -1645,7 +1645,7 @@ Class-level analysis further confirmed the robustness of fine-tuned models, espe
 
 \DIFadd{The mapper applies the following rules, in order, to the generated text: (1) exact match to one of the seven labels; (2) match after normalisation (surrounding whitespace, quotes, brackets, asterisks and punctuation removed, a leading ``class:''-type prefix dropped, case ignored); (3) match to one of the accepted Arabic label forms in Table~\ref{tab:vocab}; (4) if exactly one label, English or Arabic, occurs anywhere in the output, that label. Outputs that mention two or more labels are ambiguous, outputs with none are unmapped, and empty responses are those for which the API returned no content after the retry policy; all three are scored as errors. The lenient tier, reported only as a sensitivity analysis, additionally accepts the English synonyms in the last column of Table~\ref{tab:vocab}. Table~\ref{tab:invalid} breaks the invalid outputs of Table~\ref{tab:mapping} down by cause}\DIFaddend .
 
-\DIFaddbegin \begin{table}[!ht]
+\DIFaddbegin \begin{table}[H]
 \centering
 \caption{Label vocabulary of the mapper. The strict tier (all reported accuracies) accepts the seven English labels, case-insensitively and after normalisation, and the Arabic forms listed; the lenient tier, used only for the sensitivity analysis, additionally accepts the English synonyms. Normalisation removes surrounding whitespace, quotes, brackets, asterisks and punctuation and a leading ``class:'', ``category:'', ``answer:'', ``label:'', ``the class is'' or the Arabic equivalents (\RTL{الفئة}, \RTL{القسم}, \RTL{التصنيف}).}
 \label{tab:vocab}
@@ -1666,7 +1666,7 @@ Class-level analysis further confirmed the robustness of fine-tuned models, espe
 \end{table}
 
 
-\begin{table}[!ht]
+\begin{table}[H]
 \centering
 \caption{Invalid outputs of Table~\ref{tab:mapping} broken down by cause, over all runs of each model. ``No label'': the output contains none of the seven labels or their accepted Arabic forms; ``two labels'': more than one label (scored as ambiguous); ``empty'': no content returned after the retry policy (API error). ``Cut by budget'' counts outputs that hit the output-token limit (16 tokens; 256 for Gemini 3.8 Flash), with the number of those that still contained a mappable label; the remainder are included in the no-label count.}
 \label{tab:invalid}

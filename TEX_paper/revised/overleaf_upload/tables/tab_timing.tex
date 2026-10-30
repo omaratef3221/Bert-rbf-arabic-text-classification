@@ -1,0 +1,18 @@
+\begin{table}[!ht]
+\centering
+\caption{Training and inference cost of the supervised systems on one A100-PCIE-40GB (full training split of 31{,}833 articles; test split of 6{,}822). The frozen-encoder heads share one encoder pass, which dominates their cost and is reported separately; the head numbers are the training and prediction time of the head alone. Wall-clock seconds, mean over seeds.}
+\label{tab:timing}
+\small
+\resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+\textbf{Component} & \textbf{Dense head} & \textbf{RBF-SVM (cuML)} & \textbf{Full fine-tuning} \\
+\midrule
+Encoder forward pass, all 45{,}477 articles (150 tokens) & \multicolumn{2}{c}{60} & -- \\
+Encoder forward pass, all articles (512 tokens) & \multicolumn{2}{c}{111} & included \\
+Training (150 tokens) & 8.8 & 1.4 & -- \\
+Training (512 tokens) & 11.0 & 4.1 & 697 \\
+Prediction on the test split (head only / full model) & 0.008 & 0.59 & 14.8 \\
+\bottomrule
+\end{tabular}}
+\end{table}

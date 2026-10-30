@@ -1,0 +1,19 @@
+\begin{table}[!ht]
+\centering
+\caption{Label vocabulary of the mapper. The strict tier (all reported accuracies) accepts the seven English labels, case-insensitively and after normalisation, and the Arabic forms listed; the lenient tier, used only for the sensitivity analysis, additionally accepts the English synonyms. Normalisation removes surrounding whitespace, quotes, brackets, asterisks and punctuation and a leading ``class:'', ``category:'', ``answer:'', ``label:'', ``the class is'' or the Arabic equivalents (\RTL{الفئة}, \RTL{القسم}, \RTL{التصنيف}).}
+\label{tab:vocab}
+\small
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.2cm}@{}}
+\toprule
+\textbf{Label} & \textbf{Accepted Arabic forms (strict tier)} & \textbf{English synonyms (lenient tier)} \\
+\midrule
+\textbf{Culture} & \RTL{ثقافة}, \RTL{الثقافة}, \RTL{ثقافية}, \RTL{الثقافية}, \RTL{ثقافه}, \RTL{الثقافه} & cultural, arts, art, heritage, history, literature \\
+\textbf{Finance} & \RTL{اقتصاد}, \RTL{الاقتصاد}, \RTL{مالية}, \RTL{المالية}, \RTL{اقتصادية}, \RTL{الاقتصادية}, \RTL{مال}, \RTL{المال}, \RTL{ماليه}, \RTL{الماليه} & economy, economic, economics, business, financial, finances, markets \\
+\textbf{Medical} & \RTL{طب}, \RTL{الطب}, \RTL{طبية}, \RTL{الطبية}, \RTL{صحة}, \RTL{الصحة}, \RTL{طبي}, \RTL{الطبي}, \RTL{صحه}, \RTL{الصحه} & health, medicine, healthcare \\
+\textbf{Politics} & \RTL{سياسة}, \RTL{السياسة}, \RTL{سياسية}, \RTL{السياسية}, \RTL{سياسه}, \RTL{السياسه} & political, politic \\
+\textbf{Religion} & \RTL{دين}, \RTL{الدين}, \RTL{ديني}, \RTL{الديني}, \RTL{دينية}, \RTL{الدينية}, \RTL{إسلام}, \RTL{الإسلام}, \RTL{اسلام}, \RTL{الاسلام} & religious, islamic, islam \\
+\textbf{Sports} & \RTL{رياضة}, \RTL{الرياضة}, \RTL{رياضية}, \RTL{الرياضية} & sport \\
+\textbf{Tech} & \RTL{تقنية}, \RTL{التقنية}, \RTL{تكنولوجيا}, \RTL{التكنولوجيا}, \RTL{تقنيه}, \RTL{التقنيه}, \RTL{تقني}, \RTL{التقني} & technology, technological, science and technology \\
+\bottomrule
+\end{tabularx}
+\end{table}
