@@ -16,6 +16,19 @@
 * References added in this revision: `TEX_paper/references_revision.bib` (loaded together with `references.bib`).
 * Tracked-changes source: `TEX_paper/elsarticle/manuscript_tracked_changes.tex` (latexdiff output; tables inlined, standalone).
 
+## Rebuilding everything
+
+```
+python revision/make_tables.py            # result tables from revision/results/paper_numbers.json
+python revision/make_figures.py           # figures
+python revision/mark_revisions.py         # blue markup (curated list CURATED in the script)
+zsh TEX_paper/build_revised.sh            # marked, clean and tracked-changes PDFs into TEX_paper/build_rev/
+zsh TEX_paper/package_revised.sh          # copies the PDFs here and rebuilds overleaf_upload.zip
+python revision/letter_locations.py TEX_paper/revised/manuscript_revised_tracked_changes.pdf   # page/line index for the letter
+```
+
+Appendix B (label vocabulary, Table B.1; invalid-output breakdown, Table B.2) is generated from the mapper's constants in `revision/llm_eval.py` and from the raw output logs by the editing script of 30 Oct 2026; its two table files live in `elsarticle/tables/`.
+
 ## Compiling
 
 The manuscript needs **LuaLaTeX** (fontspec + the Amiri font for the Arabic excerpts, babel with `bidi=basic` so that digits inside Arabic text keep their direction). From `TEX_paper/elsarticle/`:

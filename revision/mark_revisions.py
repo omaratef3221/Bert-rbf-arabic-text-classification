@@ -77,6 +77,7 @@ CURATED = {
         # conclusion (first paragraph), data availability, appendix with the verbatim prompts (R2 C3, C4)
         "The split file with per-article checksums, the deduplication clusters, the evaluation subset",
         "All prompts present the seven labels and request exactly one.",
+        "The mapper applies the following rules, in order, to the generated text",
         "(original wording)]", "(primary)]", "\\item[\\texttt{en\\_v3}]", "\\item[\\texttt{ar\\_v1}]", "\\item[\\texttt{ar\\_v2}]",
     ],
     "sentences": [
@@ -86,7 +87,7 @@ CURATED = {
         "All systems are scored on the same deduplicated test split of 6,822 articles",
         "Zero-shot LLMs reach 91.5--92.8\\%",
         "A learning curve shows that about 100 labelled articles per class",
-        "Two controlled interventions show that neither family relies on the newspaper dateline",
+        "Two controlled interventions show that removing the newspaper dateline",
         # introduction framing and the systems compared (R2 C2)
         "paired comparisons between the two paradigms within the Arabic domain remain scarce",
         "On the supervised side we evaluate two lightweight systems built on a frozen CAMeLBERT encoder",
@@ -116,6 +117,7 @@ CURATED = {
         # conclusion: the protocol and the supervision statement
         "under a protocol in which every system is scored on the same deduplicated test split",
         "About 100 labelled articles per class suffice for a 0.3",
+        # (the second-round sentences in 3.1, 3.3, 3.5, 4.3 and 4.4 sit inside paragraphs that are marked whole)
         # 4.6 adaptation budget (R1 M2 i)
         "and QLoRA of the 7B model 3.3 GPU-hours on the full split",
         "Full fine-tuning takes 11.6 minutes on the full split",
@@ -128,11 +130,11 @@ CURATED = {
         "Evaluation and Statistical Analysis", "Infrastructure and Reproducibility",
         "Corrections to the Originally Reported Experiments", "How Much Supervision Does the Lightweight System Need?",
         "Prompt Robustness, Few-Shot Conditions and Output Mapping", "Controlled Analyses: Input Length and the Dateline",
-        "Data and code availability", "Prompt variants",
+        "Data and code availability", "Prompt variants", "Label mapping: vocabulary and invalid outputs",
     ],
     "floats": [
         "tab:split", "tab:models_summary", "tab:llm_snapshots", "tab:hyperparameters", "tab:main", "tab:perclass",
-        "fig:lc", "tab:lc", "tab:prompts", "fig:prompts", "tab:mapping", "tab:lora",
+        "fig:lc", "tab:lc", "tab:prompts", "fig:prompts", "tab:mapping", "tab:lora", "tab:vocab", "tab:invalid",
     ],
 }
 LEGEND_CURATED = (r"\ifrevmarkup\vspace{1cm}{\color{blue}\small Text in blue marks additions and changes made in response to "
