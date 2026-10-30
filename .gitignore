@@ -19,3 +19,8 @@ revision/logs/
 # LaTeX build directories (regenerated; final PDFs are copied to TEX_paper/revised/)
 TEX_paper/build_rev/
 TEX_paper/build_orig/
+
+# folders created by unzipping the deliverable zips next to them
+TEX_paper/revised/overleaf_upload/
+TEX_paper/revised/update_tex_only/
+.DS_Store
