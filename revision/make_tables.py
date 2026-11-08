@@ -1,5 +1,5 @@
 """Generate the LaTeX tables of the revised manuscript from results/paper_numbers.json (single source of truth)."""
-import json, os, pandas as pd, numpy as np
+import json, glob, os, pandas as pd, numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "..", "TEX_paper", "elsarticle", "tables")
 os.makedirs(OUT, exist_ok=True)
 R = json.load(open(os.path.join(HERE, "results", "paper_numbers.json")))
@@ -115,16 +115,29 @@ w("tab_prompts.tex", r"""\begin{table}[!ht]
 \end{table}
 """)
 
-# ---- mapping audit per model
-mb = pd.DataFrame(R["mapping_by_model"]).set_index("model")
+# ---- mapping audit per model: mutually exclusive counts from the raw logs (exact / resolved / invalid), same denominator
+import collections as _c
+_RES, _INV = {"normalized", "arabic", "contains", "synonym"}, {"UNMAPPED", "AMBIGUOUS", "EMPTY"}
+_keys = ["openai_gpt-4.1", "anthropic_claude-haiku-4.5", "google_gemini-3.8-flash", "deepseek-ai_DeepSeek-V4-Flash-0731", "Qwen_Qwen2.5-7B-Instruct", "lora_n100", "lora_n1000", "lora_all"]
+_tot, _runs = {k: _c.Counter() for k in _keys}, {k: [] for k in _keys}
+for _f in sorted(glob.glob(os.path.join(HERE, "results", "*.jsonl"))):
+    _k = os.path.basename(_f).split("__")[1]
+    if _k not in _tot: continue
+    _cnt = _c.Counter()
+    for _l in open(_f):
+        _m = json.loads(_l).get("map_method")
+        _cnt["exact" if _m == "exact" else "resolved" if _m in _RES else "invalid" if _m in _INV else "other"] += 1
+    assert _cnt["other"] == 0, (_f, _cnt)
+    _tot[_k].update(_cnt); _runs[_k].append(_cnt)
 lab = {"openai_gpt-4.1": "GPT-4.1", "anthropic_claude-haiku-4.5": "Claude Haiku 4.5", "google_gemini-3.8-flash": "Gemini 3.8 Flash", "deepseek-ai_DeepSeek-V4-Flash-0731": "DeepSeek V4 Flash", "Qwen_Qwen2.5-7B-Instruct": "Qwen2.5-7B (zero-/few-shot)", "lora_n100": "Qwen2.5-7B + QLoRA, 100 / class", "lora_n1000": "Qwen2.5-7B + QLoRA, 1{,}000 / class", "lora_all": "Qwen2.5-7B + QLoRA, all"}
 body = ""
 for k, nm in lab.items():
-    r = mb.loc[k]
-    body += f"{nm} & {int(r['runs'])} & {int(r['n']):,} & {p(r['exact'])} & {p(1-r['exact'])} & {p(r['nonexact_max'])} & {100*r['unmapped']:.2f} & {100*r['unmapped_max']:.2f} \\\\\n"
+    c, n = _tot[k], sum(_tot[k].values())
+    wr = max(r["resolved"] / sum(r.values()) for r in _runs[k]); wi = max(r["invalid"] / sum(r.values()) for r in _runs[k])
+    body += f"{nm} & {len(_runs[k])} & {n:,} & {100*c['exact']/n:.1f} & {100*c['resolved']/n:.1f} & {100*wr:.1f} & {100*c['invalid']/n:.2f} & {100*wi:.2f} \\\\\n"
 w("tab_mapping.tex", r"""\begin{table}[!ht]
 \centering
-\caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. All shares are percentages of the outputs of the model; ``worst run'' is the highest share in any single run.}
+\caption{Audit of the label-mapping step over all runs of each model (zero-shot prompts, few-shot, controls and repeats, plus the three QLoRA evaluations on the full test set; the DeepSeek V4 Flash subset runs cover a 1,400-article superset of the evaluation subset). ``Exact'' outputs are the bare label string; ``resolved'' outputs contained extra formatting, an Arabic label name, or a sentence with exactly one label and were mapped by the fixed rules; unmapped (no label, two labels, or an API error) outputs are scored as errors. The three categories are mutually exclusive and sum to 100\,\% of the outputs of each model (up to rounding); ``worst run'' is the highest share in any single run.}
 \label{tab:mapping}
 \small
 \resizebox{\ifdim\width>\textwidth\textwidth\else\width\fi}{!}{%
